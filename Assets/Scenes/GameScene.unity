@@ -2593,7 +2593,6 @@ MonoBehaviour:
   rigidbody2d: {fileID: 0}
   currentDirection: {x: 0, y: 0}
   nextDirection: {x: 0, y: 0}
-  startingPosition: {x: 0, y: 0, z: 0}
 --- !u!212 &988709906
 SpriteRenderer:
   m_ObjectHideFlags: 0
