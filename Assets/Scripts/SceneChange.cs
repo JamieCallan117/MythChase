@@ -10,12 +10,35 @@ public class SceneChange : MonoBehaviour {
 
     public void selectLevel(int level) {
         PlayerStats.level = level;
-        
-        //Level One is scene 2
 
         switch (level) {
             case 1:
                 moveToScene(2);
+                break;
+            default:
+                moveToScene(0);
+                break;
+        }
+
+        if (level >= 1 && level <= 3) {
+            moveToScene(2); //Character select scene
+        } else {
+            moveToScene(0); //Main menu
+        }
+    }
+
+    public void selectCharacter(int character) {
+        PlayerStats.character = character;
+
+        switch (PlayerStats.level) {
+            case 1:
+                moveToScene(3);
+                break;
+            case 2:
+                moveToScene(4);
+                break;
+            case 3:
+                moveToScene(5);
                 break;
             default:
                 moveToScene(0);
