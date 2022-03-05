@@ -4,7 +4,7 @@ using UnityEngine;
 public class AnimatedSprites : MonoBehaviour {
     public SpriteRenderer spriteRenderer { get; private set; }
     public Sprite[] sprites;
-    public float animationRate = 0.25f;
+    public float animationRate = 0.05f;
     public int currentFrame { get; private set; }
     public bool loop = true;
     public bool isEnabled = true;
