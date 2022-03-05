@@ -1,16 +1,16 @@
 using UnityEngine;
+using UnityEngine.UI;
 
-[RequireComponent(typeof(SpriteRenderer))]
-public class AnimatedSprites : MonoBehaviour {
-    public SpriteRenderer spriteRenderer { get; private set; }
+[RequireComponent(typeof(Image))]
+public class AnimatedButtons : MonoBehaviour {
     public Sprite[] sprites;
-    public float animationRate = 0.25f;
+    public float animationRate = 0.05f;
     public int currentFrame { get; private set; }
-    public bool loop = true;
-    public bool isEnabled = true;
+    public bool isEnabled = false;
+    private Image image;
 
     private void Awake() {
-        this.spriteRenderer = GetComponent<SpriteRenderer>();
+        image = this.GetComponent<Image>();
     }
 
     private void Start() {
@@ -18,20 +18,22 @@ public class AnimatedSprites : MonoBehaviour {
     }
 
     private void UpdateFrame() {
-        if (enabled) {
+        if (isEnabled) {
             this.currentFrame++;
 
-            if (this.currentFrame >= this.sprites.Length && this.loop) {
+            if (this.currentFrame >= this.sprites.Length) {
                 this.currentFrame = 0;
             }
 
             if (this.currentFrame >= 0 && this.currentFrame < this.sprites.Length) {
-                this.spriteRenderer.sprite = this.sprites[currentFrame];
+                image.sprite = this.sprites[currentFrame];
             }
         }
     }
 
     public void enable(bool enable) {
         this.isEnabled = enable;
+        this.currentFrame = 0;
+        image.sprite = this.sprites[currentFrame];
     }
 }

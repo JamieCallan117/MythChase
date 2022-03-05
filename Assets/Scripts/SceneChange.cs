@@ -8,6 +8,21 @@ public class SceneChange : MonoBehaviour {
         SceneManager.LoadScene(sceneID);
     }
 
+    public void selectLevel(int level) {
+        PlayerStats.level = level;
+        
+        //Level One is scene 2
+
+        switch (level) {
+            case 1:
+                moveToScene(2);
+                break;
+            default:
+                moveToScene(0);
+                break;
+        }
+    }
+
     public void quitGame() {
         Application.Quit();
     }
