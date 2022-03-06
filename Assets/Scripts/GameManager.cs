@@ -12,14 +12,18 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Start() {        
-        loadPlayerSprites();
+        LoadPlayerSprites();
     }
 
     private void Update() {
         
     }
 
-    private void loadPlayerSprites() {
+    public void EatPellet(Pellet pellet) {
+        pellet.gameObject.SetActive(false);
+    }
+
+    private void LoadPlayerSprites() {
         Sprite[] playerSprites = new Sprite[4];
 
         switch(PlayerStats.character) {
