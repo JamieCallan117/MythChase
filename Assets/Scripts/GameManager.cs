@@ -16,6 +16,10 @@ public class GameManager : MonoBehaviour {
     public GameObject powerUp;
     public GameObject scoreValue;
     public GameObject readyText;
+    private Enemy enemyOneAtr;
+    private Enemy enemyTwoAtr;
+    private Enemy enemyThreeAtr;
+    private Enemy enemyFourAtr;
     private SpriteRenderer playerSprite;
     private SpriteRenderer enemyOneSprite;
     private SpriteRenderer enemyTwoSprite;
@@ -50,6 +54,10 @@ public class GameManager : MonoBehaviour {
         lifeTwoImage = lifeTwo.GetComponent(typeof(Image)) as Image;
         lifeThreeImage = lifeThree.GetComponent(typeof(Image)) as Image;
         powerUpImage = powerUp.GetComponent(typeof(Image)) as Image;
+        enemyOneAtr = enemyOne.GetComponent(typeof(Enemy)) as Enemy;
+        enemyTwoAtr = enemyTwo.GetComponent(typeof(Enemy)) as Enemy;
+        enemyThreeAtr = enemyThree.GetComponent(typeof(Enemy)) as Enemy;
+        enemyFourAtr = enemyFour.GetComponent(typeof(Enemy)) as Enemy;
         scoreText = scoreValue.GetComponent(typeof(TextMeshProUGUI)) as TextMeshProUGUI;
         audioSource = GetComponent<AudioSource>();
     }
@@ -129,12 +137,25 @@ public class GameManager : MonoBehaviour {
         SetScore(score + pellet.points);
     }
 
+    public void EatLargePellet(LargePellet pellet) {
+        EatPellet(pellet);
+
+        VulnerableEnemies();
+    }
+
     public void AddPellet(Pellet pellet) {
         pellets.Add(pellet);
     }
 
     private void SetScore(int newScore) {
         this.score = newScore;
+    }
+
+    private void VulnerableEnemies() {
+        enemyOneAtr.SetVulnerable(true);
+        enemyTwoAtr.SetVulnerable(true);
+        enemyThreeAtr.SetVulnerable(true);
+        enemyFourAtr.SetVulnerable(true);
     }
 
     private void LoadPlayerSprites() {
@@ -155,10 +176,10 @@ public class GameManager : MonoBehaviour {
 
                 playerAniSprites.sprites = playerSprites;
 
-                LoadEnemySprites(enemyOneSprite, enemyOneAniSprites, 1);
-                LoadEnemySprites(enemyTwoSprite, enemyTwoAniSprites, 3);
-                LoadEnemySprites(enemyThreeSprite, enemyThreeAniSprites, 4);
-                LoadEnemySprites(enemyFourSprite, enemyFourAniSprites, 5);
+                LoadEnemySprites(enemyOneSprite, enemyOneAniSprites, 1, enemyOneAtr);
+                LoadEnemySprites(enemyTwoSprite, enemyTwoAniSprites, 3, enemyTwoAtr);
+                LoadEnemySprites(enemyThreeSprite, enemyThreeAniSprites, 4, enemyThreeAtr);
+                LoadEnemySprites(enemyFourSprite, enemyFourAniSprites, 5, enemyFourAtr);
                 break;
             case 3:
                 playerSprite.sprite = Resources.Load<Sprite>("Ame_Normal_01");
@@ -174,10 +195,10 @@ public class GameManager : MonoBehaviour {
 
                 playerAniSprites.sprites = playerSprites;
 
-                LoadEnemySprites(enemyOneSprite, enemyOneAniSprites, 1);
-                LoadEnemySprites(enemyTwoSprite, enemyTwoAniSprites, 2);
-                LoadEnemySprites(enemyThreeSprite, enemyThreeAniSprites, 4);
-                LoadEnemySprites(enemyFourSprite, enemyFourAniSprites, 5);
+                LoadEnemySprites(enemyOneSprite, enemyOneAniSprites, 1, enemyOneAtr);
+                LoadEnemySprites(enemyTwoSprite, enemyTwoAniSprites, 2, enemyTwoAtr);
+                LoadEnemySprites(enemyThreeSprite, enemyThreeAniSprites, 4, enemyThreeAtr);
+                LoadEnemySprites(enemyFourSprite, enemyFourAniSprites, 5, enemyFourAtr);
                 break;
             case 4:
                 playerSprite.sprite = Resources.Load<Sprite>("Calli_Normal_01");
@@ -193,10 +214,10 @@ public class GameManager : MonoBehaviour {
 
                 playerAniSprites.sprites = playerSprites;
 
-                LoadEnemySprites(enemyOneSprite, enemyOneAniSprites, 1);
-                LoadEnemySprites(enemyTwoSprite, enemyTwoAniSprites, 2);
-                LoadEnemySprites(enemyThreeSprite, enemyThreeAniSprites, 3);
-                LoadEnemySprites(enemyFourSprite, enemyFourAniSprites, 5);
+                LoadEnemySprites(enemyOneSprite, enemyOneAniSprites, 1, enemyOneAtr);
+                LoadEnemySprites(enemyTwoSprite, enemyTwoAniSprites, 2, enemyTwoAtr);
+                LoadEnemySprites(enemyThreeSprite, enemyThreeAniSprites, 3, enemyThreeAtr);
+                LoadEnemySprites(enemyFourSprite, enemyFourAniSprites, 5, enemyFourAtr);
                 break;
             case 5:
                 playerSprite.sprite = Resources.Load<Sprite>("Gura_Normal_01");
@@ -212,10 +233,10 @@ public class GameManager : MonoBehaviour {
 
                 playerAniSprites.sprites = playerSprites;
 
-                LoadEnemySprites(enemyOneSprite, enemyOneAniSprites, 1);
-                LoadEnemySprites(enemyTwoSprite, enemyTwoAniSprites, 2);
-                LoadEnemySprites(enemyThreeSprite, enemyThreeAniSprites, 3);
-                LoadEnemySprites(enemyFourSprite, enemyFourAniSprites, 4);
+                LoadEnemySprites(enemyOneSprite, enemyOneAniSprites, 1, enemyOneAtr);
+                LoadEnemySprites(enemyTwoSprite, enemyTwoAniSprites, 2, enemyTwoAtr);
+                LoadEnemySprites(enemyThreeSprite, enemyThreeAniSprites, 3, enemyThreeAtr);
+                LoadEnemySprites(enemyFourSprite, enemyFourAniSprites, 4, enemyFourAtr);
                 break;
             default:
                 playerSprite.sprite = Resources.Load<Sprite>("Ina_Normal_01");
@@ -231,16 +252,17 @@ public class GameManager : MonoBehaviour {
 
                 playerAniSprites.sprites = playerSprites;
 
-                LoadEnemySprites(enemyOneSprite, enemyOneAniSprites, 2);
-                LoadEnemySprites(enemyTwoSprite, enemyTwoAniSprites, 3);
-                LoadEnemySprites(enemyThreeSprite, enemyThreeAniSprites, 4);
-                LoadEnemySprites(enemyFourSprite, enemyFourAniSprites, 5);
+                LoadEnemySprites(enemyOneSprite, enemyOneAniSprites, 2, enemyOneAtr);
+                LoadEnemySprites(enemyTwoSprite, enemyTwoAniSprites, 3, enemyTwoAtr);
+                LoadEnemySprites(enemyThreeSprite, enemyThreeAniSprites, 4, enemyThreeAtr);
+                LoadEnemySprites(enemyFourSprite, enemyFourAniSprites, 5, enemyFourAtr);
                 break;
         }
     }
 
-    private void LoadEnemySprites(SpriteRenderer sprite, AnimatedSprites aniSprites, int character) {
+    private void LoadEnemySprites(SpriteRenderer sprite, AnimatedSprites aniSprites, int character, Enemy enemy) {
         Sprite[] enemySprites = new Sprite[4];
+        Sprite[] vulnerableSprites = new Sprite[4];
 
         switch(character) {
             case 1:
@@ -251,7 +273,14 @@ public class GameManager : MonoBehaviour {
                 enemySprites[2] = Resources.Load<Sprite>("Ina_Normal_03");
                 enemySprites[3] = Resources.Load<Sprite>("Ina_Normal_02");
 
+                vulnerableSprites[0] = Resources.Load<Sprite>("Ina_Vulnerable_01");
+                vulnerableSprites[1] = Resources.Load<Sprite>("Ina_Vulnerable_02");
+                vulnerableSprites[2] = Resources.Load<Sprite>("Ina_Vulnerable_03");
+                vulnerableSprites[3] = Resources.Load<Sprite>("Ina_Vulnerable_02");
+
                 aniSprites.sprites = enemySprites;
+                enemy.regularSprites = enemySprites;
+                enemy.vulnerableSprites = vulnerableSprites;
                 break;
             case 2:
                 sprite.sprite = Resources.Load<Sprite>("Kiara_Normal_01");
@@ -261,7 +290,14 @@ public class GameManager : MonoBehaviour {
                 enemySprites[2] = Resources.Load<Sprite>("Kiara_Normal_03");
                 enemySprites[3] = Resources.Load<Sprite>("Kiara_Normal_02");
 
+                vulnerableSprites[0] = Resources.Load<Sprite>("Kiara_Vulnerable_01");
+                vulnerableSprites[1] = Resources.Load<Sprite>("Kiara_Vulnerable_02");
+                vulnerableSprites[2] = Resources.Load<Sprite>("Kiara_Vulnerable_03");
+                vulnerableSprites[3] = Resources.Load<Sprite>("Kiara_Vulnerable_02");
+
                 aniSprites.sprites = enemySprites;
+                enemy.regularSprites = enemySprites;
+                enemy.vulnerableSprites = vulnerableSprites;
                 break;
             case 3:
                 sprite.sprite = Resources.Load<Sprite>("Ame_Normal_01");
@@ -271,7 +307,14 @@ public class GameManager : MonoBehaviour {
                 enemySprites[2] = Resources.Load<Sprite>("Ame_Normal_03");
                 enemySprites[3] = Resources.Load<Sprite>("Ame_Normal_02");
 
+                vulnerableSprites[0] = Resources.Load<Sprite>("Ame_Vulnerable_01");
+                vulnerableSprites[1] = Resources.Load<Sprite>("Ame_Vulnerable_02");
+                vulnerableSprites[2] = Resources.Load<Sprite>("Ame_Vulnerable_03");
+                vulnerableSprites[3] = Resources.Load<Sprite>("Ame_Vulnerable_02");
+
                 aniSprites.sprites = enemySprites;
+                enemy.regularSprites = enemySprites;
+                enemy.vulnerableSprites = vulnerableSprites;
                 break;
             case 4:
                 sprite.sprite = Resources.Load<Sprite>("Calli_Normal_01");
@@ -281,7 +324,14 @@ public class GameManager : MonoBehaviour {
                 enemySprites[2] = Resources.Load<Sprite>("Calli_Normal_03");
                 enemySprites[3] = Resources.Load<Sprite>("Calli_Normal_02");
 
+                vulnerableSprites[0] = Resources.Load<Sprite>("Calli_Vulnerable_01");
+                vulnerableSprites[1] = Resources.Load<Sprite>("Calli_Vulnerable_02");
+                vulnerableSprites[2] = Resources.Load<Sprite>("Calli_Vulnerable_03");
+                vulnerableSprites[3] = Resources.Load<Sprite>("Calli_Vulnerable_02");
+
                 aniSprites.sprites = enemySprites;
+                enemy.regularSprites = enemySprites;
+                enemy.vulnerableSprites = vulnerableSprites;
                 break;
             case 5:
                 sprite.sprite = Resources.Load<Sprite>("Gura_Normal_01");
@@ -291,7 +341,14 @@ public class GameManager : MonoBehaviour {
                 enemySprites[2] = Resources.Load<Sprite>("Gura_Normal_03");
                 enemySprites[3] = Resources.Load<Sprite>("Gura_Normal_02");
 
+                vulnerableSprites[0] = Resources.Load<Sprite>("Gura_Vulnerable_01");
+                vulnerableSprites[1] = Resources.Load<Sprite>("Gura_Vulnerable_02");
+                vulnerableSprites[2] = Resources.Load<Sprite>("Gura_Vulnerable_03");
+                vulnerableSprites[3] = Resources.Load<Sprite>("Gura_Vulnerable_02");
+
                 aniSprites.sprites = enemySprites;
+                enemy.regularSprites = enemySprites;
+                enemy.vulnerableSprites = vulnerableSprites;
                 break;
         }
     }
