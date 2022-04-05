@@ -3,9 +3,15 @@ using UnityEngine;
 [RequireComponent(typeof(Movement))]
 public class Player : MonoBehaviour {
     private Movement movement;
+    private Vector3 startingPos;
 
     private void Awake() {
         movement = GetComponent<Movement>();
+        startingPos = this.transform.position;
+    }
+
+    public void ResetPosition() {
+        this.transform.position = startingPos;
     }
 
     private void Update() {

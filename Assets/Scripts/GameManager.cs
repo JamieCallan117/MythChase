@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using TMPro;
 
 public class GameManager : MonoBehaviour {
@@ -20,6 +22,7 @@ public class GameManager : MonoBehaviour {
     private Enemy enemyTwoAtr;
     private Enemy enemyThreeAtr;
     private Enemy enemyFourAtr;
+    private Player playerAtr;
     private SpriteRenderer playerSprite;
     private SpriteRenderer enemyOneSprite;
     private SpriteRenderer enemyTwoSprite;
@@ -37,7 +40,10 @@ public class GameManager : MonoBehaviour {
     private AnimatedSprites enemyFourAniSprites;
     private AudioSource audioSource;
     private int score;
+    private int lives;
+    private int powerUpID;
     private List<Pellet> pellets = new List<Pellet>();
+    private Leaderboard leaderboard;
 
     private void Awake() {
         playerAniSprites = player.GetComponent(typeof(AnimatedSprites)) as AnimatedSprites;
@@ -58,12 +64,18 @@ public class GameManager : MonoBehaviour {
         enemyTwoAtr = enemyTwo.GetComponent(typeof(Enemy)) as Enemy;
         enemyThreeAtr = enemyThree.GetComponent(typeof(Enemy)) as Enemy;
         enemyFourAtr = enemyFour.GetComponent(typeof(Enemy)) as Enemy;
+        playerAtr = player.GetComponent(typeof(Player)) as Player;
         scoreText = scoreValue.GetComponent(typeof(TextMeshProUGUI)) as TextMeshProUGUI;
         audioSource = GetComponent<AudioSource>();
+
+        SaveFile();
+        //LoadFile();
     }
 
     private void Start() {  
-        SetScore(0);      
+        SetScore(0);
+        SetLives(3);
+        SetPowerUp(0);
         LoadPlayerSprites();  
 
         StartCoroutine(newRoundWait());
@@ -151,11 +163,66 @@ public class GameManager : MonoBehaviour {
         this.score = newScore;
     }
 
+    private void SetLives(int newLives) {
+        this.lives = newLives;
+
+        switch (this.lives) {
+            case 1:
+                lifeOne.SetActive(true);
+                lifeTwo.SetActive(false);
+                lifeThree.SetActive(false);
+                break;
+            case 2:
+                lifeOne.SetActive(true);
+                lifeTwo.SetActive(true);
+                lifeThree.SetActive(false);
+                break;
+            case 3:
+                lifeOne.SetActive(true);
+                lifeTwo.SetActive(true);
+                lifeThree.SetActive(true);
+                break;
+            default:
+                lifeOne.SetActive(false);
+                lifeTwo.SetActive(false);
+                lifeThree.SetActive(false);
+                break;
+        }
+    }
+
+    private void SetPowerUp(int newPowerUpID) {
+        this.powerUpID = newPowerUpID;
+
+        if (this.powerUpID > 0) {
+            powerUp.SetActive(true);
+        } else {
+            powerUp.SetActive(false);
+        }
+    }
+
     private void VulnerableEnemies() {
         enemyOneAtr.SetVulnerable(true);
         enemyTwoAtr.SetVulnerable(true);
         enemyThreeAtr.SetVulnerable(true);
         enemyFourAtr.SetVulnerable(true);
+    }
+
+    public void PlayerHit(Enemy enemyHit) {
+        Movement playerMovement = player.GetComponent(typeof(Movement)) as Movement;
+
+        playerMovement.movementEnabled = false;
+
+        playerAtr.ResetPosition();
+        enemyOneAtr.ResetPosition();
+        enemyTwoAtr.ResetPosition();
+        enemyThreeAtr.ResetPosition();
+        enemyFourAtr.ResetPosition();
+
+        SetLives(this.lives - 1);
+    }
+
+    private void EatEnemy(Enemy enemyHit) {
+        enemyHit.GetEaten();
     }
 
     private void LoadPlayerSprites() {
@@ -351,5 +418,27 @@ public class GameManager : MonoBehaviour {
                 enemy.vulnerableSprites = vulnerableSprites;
                 break;
         }
+    }
+
+    private void SaveFile() {
+        string path = Application.persistentDataPath + "/leaderboard" + PlayerStats.level + ".dat";
+        FileStream file;
+
+        if (File.Exists(path)) {
+            file = File.OpenWrite(path);
+        } else {
+            file = File.Create(path);
+        }
+    }
+
+    private void LoadFile() {
+        string path = Application.persistentDataPath + "/leaderboard" + PlayerStats.level + ".dat";
+        FileStream file = File.OpenRead(path);
+
+        BinaryFormatter bf = new BinaryFormatter();
+        Leaderboard lb = (Leaderboard) bf.Deserialize(file);
+        file.Close();
+
+        leaderboard = lb;
     }
 }
