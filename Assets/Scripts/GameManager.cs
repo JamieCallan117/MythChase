@@ -123,8 +123,13 @@ public class GameManager : MonoBehaviour {
 
     private void startGame() {
         Movement playerMovement = player.GetComponent(typeof(Movement)) as Movement;
+        Movement enemyOneMovement = enemyOne.GetComponent(typeof(Movement)) as Movement;
 
         playerMovement.movementEnabled = true;
+        enemyOneMovement.movementEnabled = true;
+
+        enemyOneMovement.Move(Vector2.left);
+
         readyText.SetActive(false);
     }
 
@@ -223,6 +228,10 @@ public class GameManager : MonoBehaviour {
 
     private void EatEnemy(Enemy enemyHit) {
         enemyHit.GetEaten();
+    }
+
+    public Vector3 GetPlayerPos() {
+        return player.transform.position;
     }
 
     private void LoadPlayerSprites() {

@@ -62,6 +62,10 @@ public class Movement : MonoBehaviour {
         }
     }
 
+    public void ForceMove(Vector2 direction) {
+        currentDirection = direction;
+    }
+
     public bool ValidMove(Vector2 direction) {
         //Check to see if there is a wall in the next tile over or not, returns null if there isn't.
         RaycastHit2D hit = Physics2D.BoxCast(transform.position, Vector2.one * 0.75f, 0f, direction, 1f, obstacleLayer);

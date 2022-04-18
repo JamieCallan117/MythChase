@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(AnimatedSprites))]
@@ -8,12 +9,14 @@ public class Enemy : MonoBehaviour {
     private Vector3 startingPos;
     public Sprite[] regularSprites;
     public Sprite[] vulnerableSprites;
+    private Movement movement;
     public bool vulnerable;
     private GameManager gameManager;
 
 
     private void Awake() {
         aniSprites = GetComponent<AnimatedSprites>();
+        movement = GetComponent<Movement>();
         gameManager = FindObjectOfType<GameManager>();
         startingPos = this.transform.position;
         vulnerable = false;
@@ -37,7 +40,24 @@ public class Enemy : MonoBehaviour {
         this.transform.position = startingPos;
     }
 
-    private void OnTriggerEnter2D(Collider2D other) {
+    private float CalculateXDIstance(Vector3 playerPos) {
+        return playerPos.x - this.transform.position.x;
+    }
+
+    private float CalculateYDistance(Vector3 playerPos) {
+        return playerPos.y - this.transform.position.y;
+    }
+
+    private bool Move(Vector2 direction) {
+        if (movement.ValidMove(direction) == true) {
+            movement.ForceMove(direction);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other) {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player")) {
             if (vulnerable == true) {
                 print("Return to base");
@@ -45,7 +65,50 @@ public class Enemy : MonoBehaviour {
                 gameManager.PlayerHit(this);
             }
         } else if (other.gameObject.layer == LayerMask.NameToLayer("CheckPoints")) {
-            print("Make a choice");
+            Vector3 playerPos = gameManager.GetPlayerPos();
+
+            float xDistance = CalculateXDIstance(playerPos);
+            float yDistance = CalculateYDistance(playerPos);
+
+            bool hasMoved = false;
+
+            if (Math.Abs(xDistance) > Math.Abs(yDistance)) {
+                if (playerPos.x > this.transform.position.x) {
+                    hasMoved = Move(Vector2.right);
+                } else {
+                    hasMoved = Move(Vector2.left);
+                }
+            } 
+            
+            if (hasMoved == false) {
+                if (playerPos.y > this.transform.position.y) {
+                    hasMoved = Move(Vector2.up);
+                } else {
+                    hasMoved = Move(Vector2.down);
+                }
+            }
+
+            if (hasMoved == false) {
+                if (Math.Abs(yDistance) > Math.Abs(xDistance)) {
+                    if (playerPos.y > this.transform.position.y) {
+                        hasMoved = Move(Vector2.down);
+                    } else {
+                        hasMoved = Move(Vector2.up);
+                    }
+                }
+            }
+
+            if (hasMoved == false) {
+                    if (playerPos.x > this.transform.position.x) {
+                        hasMoved = Move(Vector2.left);
+                    } else {
+                        hasMoved = Move(Vector2.right);
+                    }
+                }
+
+            if (hasMoved == false) {
+                print("Either my code is shit or something's gone wrong big time");
+            }
         }
     }
 }
