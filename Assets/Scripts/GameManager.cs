@@ -128,7 +128,7 @@ public class GameManager : MonoBehaviour {
         playerMovement.movementEnabled = true;
         enemyOneMovement.movementEnabled = true;
 
-        enemyOneMovement.Move(Vector2.left);
+        enemyOneMovement.Move(Vector2.down); //CHANGE TO LEFT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         readyText.SetActive(false);
     }
@@ -212,7 +212,7 @@ public class GameManager : MonoBehaviour {
         enemyFourAtr.SetVulnerable(true);
     }
 
-    public void PlayerHit(Enemy enemyHit) {
+    public void PlayerHit() {
         Movement playerMovement = player.GetComponent(typeof(Movement)) as Movement;
 
         playerMovement.movementEnabled = false;

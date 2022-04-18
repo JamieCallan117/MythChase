@@ -12,7 +12,8 @@ public class Movement : MonoBehaviour {
     private float yLower = 0.0f;
     private float xLeft = 0.0f;
     private float xRight = 0.0f;
-
+    public GameObject player;
+    
     private void Awake() {
         rigidbody2d = GetComponent<Rigidbody2D>();
 
@@ -22,11 +23,13 @@ public class Movement : MonoBehaviour {
             xLeft = -0.5f;
             xRight = 0.5f;
         }
+
+        player = GameObject.Find("Player");
     }
 
     private void Update() {
         //Attempts to move in the 'queued' direction
-        if (nextDirection != Vector2.zero) {
+        if (nextDirection != Vector2.zero && this.gameObject == player) {
             Move(nextDirection);
         }
     }
@@ -50,25 +53,36 @@ public class Movement : MonoBehaviour {
     
     }
 
-    public void Move(Vector2 direction) {
+    public bool Move(Vector2 direction) {
         //Check to see if the next tile isn't a wall, and if not set the current direction to
         //the desired direction.
         //If it is a wall, then queue up the direction as the next direction.
         if (ValidMove(direction)) {
             currentDirection = direction;
             nextDirection = Vector2.zero;
+
+            return true;
         } else {
             nextDirection = direction;
+
+            return false;
         }
     }
 
-    public void ForceMove(Vector2 direction) {
-        currentDirection = direction;
+    public bool EnemyMove(Vector2 direction) {
+        if (ValidMove(direction)) {
+            currentDirection = direction;
+
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public bool ValidMove(Vector2 direction) {
         //Check to see if there is a wall in the next tile over or not, returns null if there isn't.
         RaycastHit2D hit = Physics2D.BoxCast(transform.position, Vector2.one * 0.75f, 0f, direction, 1f, obstacleLayer);
+
         return hit.collider == null;
     }
 

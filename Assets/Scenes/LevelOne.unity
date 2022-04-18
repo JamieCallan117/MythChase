@@ -237,7 +237,7 @@ TilemapRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 56321444}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -4064,6 +4064,7 @@ MonoBehaviour:
   rigidbody2d: {fileID: 0}
   currentDirection: {x: 0, y: 0}
   nextDirection: {x: 0, y: 0}
+  player: {fileID: 0}
 --- !u!212 &988709906
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4374,6 +4375,7 @@ MonoBehaviour:
   rigidbody2d: {fileID: 0}
   currentDirection: {x: 0, y: 0}
   nextDirection: {x: 0, y: 0}
+  player: {fileID: 0}
 --- !u!58 &1240750069
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -4553,6 +4555,7 @@ MonoBehaviour:
   rigidbody2d: {fileID: 0}
   currentDirection: {x: 0, y: 0}
   nextDirection: {x: 0, y: 0}
+  player: {fileID: 0}
 --- !u!58 &1253953041
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -10600,6 +10603,7 @@ MonoBehaviour:
   rigidbody2d: {fileID: 0}
   currentDirection: {x: 0, y: 0}
   nextDirection: {x: 0, y: 0}
+  player: {fileID: 0}
 --- !u!58 &1804379999
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -10779,6 +10783,7 @@ MonoBehaviour:
   rigidbody2d: {fileID: 0}
   currentDirection: {x: 0, y: 0}
   nextDirection: {x: 0, y: 0}
+  player: {fileID: 0}
 --- !u!58 &1884864703
 CircleCollider2D:
   m_ObjectHideFlags: 0

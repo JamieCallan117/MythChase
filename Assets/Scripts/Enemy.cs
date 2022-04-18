@@ -13,6 +13,8 @@ public class Enemy : MonoBehaviour {
     public bool vulnerable;
     private GameManager gameManager;
 
+    private int counter = 0;
+
 
     private void Awake() {
         aniSprites = GetComponent<AnimatedSprites>();
@@ -49,12 +51,15 @@ public class Enemy : MonoBehaviour {
     }
 
     private bool Move(Vector2 direction) {
-        if (movement.ValidMove(direction) == true) {
-            movement.ForceMove(direction);
-            return true;
-        } else {
-            return false;
-        }
+        // if (movement.ValidMove(direction) == true) {
+        //     movement.ForceMove(direction);
+        //     //print("Valid move in direction: " + direction.ToString());
+        //     return true;
+        // } else {
+        //     return false;
+        // }
+
+        return movement.Move(direction);
     }
 
     private void OnTriggerStay2D(Collider2D other) {
@@ -62,7 +67,7 @@ public class Enemy : MonoBehaviour {
             if (vulnerable == true) {
                 print("Return to base");
             } else {
-                gameManager.PlayerHit(this);
+                gameManager.PlayerHit();
             }
         } else if (other.gameObject.layer == LayerMask.NameToLayer("CheckPoints")) {
             Vector3 playerPos = gameManager.GetPlayerPos();
@@ -72,19 +77,57 @@ public class Enemy : MonoBehaviour {
 
             bool hasMoved = false;
 
+            Vector2 cd = movement.currentDirection;
+
+            if (cd.x == 0.0 && cd.y == 1.0) {
+                print("Direction: Up " + counter);
+            } else if (cd.x == 0.0 && cd.y == -1.0) {
+                print("Direction: Down " + counter);
+            } else if (cd.x == 1.0 && cd.y == 0.0) {
+                print("Direction: Right " + counter);
+            } else if (cd.x == -1.0 && cd.y == 0.0) {
+                print("Direction: Left " + counter);
+            } 
+
             if (Math.Abs(xDistance) > Math.Abs(yDistance)) {
-                if (playerPos.x > this.transform.position.x) {
+                if (playerPos.x > this.transform.position.x && movement.currentDirection != Vector2.left) {
                     hasMoved = Move(Vector2.right);
-                } else {
+                    print("Wants right " + counter);
+                    // Move(Vector2.right);
+                    // hasMoved = true;
+                } else if (movement.currentDirection != Vector2.right) {
                     hasMoved = Move(Vector2.left);
+                    print("Wants left " + counter);
+                    // Move(Vector2.left);
+                    // hasMoved = true;
                 }
             } 
             
             if (hasMoved == false) {
-                if (playerPos.y > this.transform.position.y) {
+                if (playerPos.y > this.transform.position.y && movement.currentDirection != Vector2.down) {
                     hasMoved = Move(Vector2.up);
-                } else {
+                    print("Wants up " + counter);
+                    // Move(Vector2.up);
+                    // hasMoved = true;
+                } else if (movement.currentDirection != Vector2.up) {
                     hasMoved = Move(Vector2.down);
+                    print("Wants down " + counter);
+                    // Move(Vector2.down);
+                    // hasMoved = true;
+                }
+            }
+
+            if (hasMoved == false) {
+                if (playerPos.x > this.transform.position.x && movement.currentDirection != Vector2.left) {
+                    hasMoved = Move(Vector2.right);
+                    print("Forced but still needed right " + counter);
+                    // Move(Vector2.right);
+                    // hasMoved = true;
+                } else if (playerPos.x < this.transform.position.y && movement.currentDirection != Vector2.right) {
+                    hasMoved = Move(Vector2.left);
+                    print("Forced but still needed left " + counter);
+                    // Move(Vector2.left);
+                    // hasMoved = true;
                 }
             }
 
@@ -92,8 +135,14 @@ public class Enemy : MonoBehaviour {
                 if (Math.Abs(yDistance) > Math.Abs(xDistance)) {
                     if (playerPos.y > this.transform.position.y) {
                         hasMoved = Move(Vector2.down);
+                        print("Forced down " + counter);
+                        // Move(Vector2.down);
+                        // hasMoved = true;
                     } else {
                         hasMoved = Move(Vector2.up);
+                        print("Forced up " + counter);
+                        // Move(Vector2.up);
+                        // hasMoved = true;
                     }
                 }
             }
@@ -101,14 +150,34 @@ public class Enemy : MonoBehaviour {
             if (hasMoved == false) {
                     if (playerPos.x > this.transform.position.x) {
                         hasMoved = Move(Vector2.left);
+                        print("Forced left " + counter);
+                        // Move(Vector2.left);
+                        // hasMoved = true;
                     } else {
                         hasMoved = Move(Vector2.right);
+                        print("Forced right " + counter);
+                        // Move(Vector2.right);
+                        // hasMoved = true;
                     }
                 }
 
             if (hasMoved == false) {
-                print("Either my code is shit or something's gone wrong big time");
+                print("No valid move " + counter);
+            } else {
+                cd = movement.currentDirection;
+
+                if (cd.x == 0.0 && cd.y == 1.0) {
+                    print("Successfully moved: Up " + counter);
+                } else if (cd.x == 0.0 && cd.y == -1.0) {
+                    print("Successfully moved: Down " + counter);
+                } else if (cd.x == 1.0 && cd.y == 0.0) {
+                    print("Successfully moved: Right " + counter);
+                } else if (cd.x == -1.0 && cd.y == 0.0) {
+                    print("Successfully moved: Left " + counter);
+                } 
             }
+
+            counter++;
         }
     }
 }
