@@ -4124,7 +4124,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 988709904}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -3.5, z: -5}
+  m_LocalPosition: {x: 4.5, y: 1.5, z: -5}
   m_LocalScale: {x: 0.04, y: 0.04, z: 0.04}
   m_Children: []
   m_Father: {fileID: 0}
@@ -4513,6 +4513,9 @@ MonoBehaviour:
   regularSprites: []
   vulnerableSprites: []
   vulnerable: 0
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &1253953039
 GameObject:
   m_ObjectHideFlags: 0
@@ -4672,7 +4675,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1253953039}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.5, z: -5}
+  m_LocalPosition: {x: 11.5, y: -3.5, z: -5}
   m_LocalScale: {x: 0.04, y: 0.04, z: 0.04}
   m_Children: []
   m_Father: {fileID: 0}
@@ -4693,6 +4696,9 @@ MonoBehaviour:
   regularSprites: []
   vulnerableSprites: []
   vulnerable: 0
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!1 &1266147879
 GameObject:
   m_ObjectHideFlags: 0
@@ -10741,6 +10747,9 @@ MonoBehaviour:
   regularSprites: []
   vulnerableSprites: []
   vulnerable: 0
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &1884864701
 GameObject:
   m_ObjectHideFlags: 0
@@ -10921,3 +10930,6 @@ MonoBehaviour:
   regularSprites: []
   vulnerableSprites: []
   vulnerable: 0
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 0

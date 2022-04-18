@@ -13,6 +13,8 @@ public class Enemy : MonoBehaviour {
     public bool vulnerable;
     private GameManager gameManager;
 
+    public LayerMask obstacleLayer;
+
     private int counter = 0;
 
 
@@ -59,7 +61,7 @@ public class Enemy : MonoBehaviour {
         //     return false;
         // }
 
-        return movement.Move(direction);
+        return movement.EnemyMove(direction);
     }
 
     private void OnTriggerStay2D(Collider2D other) {
@@ -87,79 +89,163 @@ public class Enemy : MonoBehaviour {
                 print("Direction: Right " + counter);
             } else if (cd.x == -1.0 && cd.y == 0.0) {
                 print("Direction: Left " + counter);
-            } 
+            }
+
+            RaycastHit2D hit = Physics2D.Raycast(this.transform.position, movement.currentDirection, 1.0f, obstacleLayer);
+
+            double distance = Math.Round(hit.distance, 1);
 
             if (Math.Abs(xDistance) > Math.Abs(yDistance)) {
                 if (playerPos.x > this.transform.position.x && movement.currentDirection != Vector2.left) {
-                    hasMoved = Move(Vector2.right);
+                    Move(Vector2.right);
                     print("Wants right " + counter);
-                    // Move(Vector2.right);
-                    // hasMoved = true;
-                } else if (movement.currentDirection != Vector2.right) {
-                    hasMoved = Move(Vector2.left);
+
+                    if (movement.currentDirection == Vector2.right) {
+                        hasMoved = true;
+                    } else {
+                        hasMoved = false;
+                    }
+
+                    if (distance == 0.5) {
+                        hasMoved = false;
+                    }
+                } else if (playerPos.x < this.transform.position.x && movement.currentDirection != Vector2.right) {
+                    Move(Vector2.left);
                     print("Wants left " + counter);
-                    // Move(Vector2.left);
-                    // hasMoved = true;
+
+                    if (movement.currentDirection == Vector2.left) {
+                        hasMoved = true;
+                    } else {
+                        hasMoved = false;
+                    }
+
+                    if (distance == 0.5) {
+                        hasMoved = false;
+                    }
                 }
             } 
             
             if (hasMoved == false) {
                 if (playerPos.y > this.transform.position.y && movement.currentDirection != Vector2.down) {
-                    hasMoved = Move(Vector2.up);
+                    Move(Vector2.up);
                     print("Wants up " + counter);
-                    // Move(Vector2.up);
-                    // hasMoved = true;
-                } else if (movement.currentDirection != Vector2.up) {
-                    hasMoved = Move(Vector2.down);
+
+                    if (movement.currentDirection == Vector2.up) {
+                        hasMoved = true;
+                    } else {
+                        hasMoved = false;
+                    }
+
+                    if (distance == 0.5) {
+                        hasMoved = false;
+                    }
+                } else if (playerPos.y < this.transform.position.y && movement.currentDirection != Vector2.up) {
+                    Move(Vector2.down);
                     print("Wants down " + counter);
-                    // Move(Vector2.down);
-                    // hasMoved = true;
+
+                    if (movement.currentDirection == Vector2.down) {
+                        hasMoved = true;
+                    } else {
+                        hasMoved = false;
+                    }
+
+                    if (distance == 0.5) {
+                        hasMoved = false;
+                    }
                 }
             }
 
             if (hasMoved == false) {
                 if (playerPos.x > this.transform.position.x && movement.currentDirection != Vector2.left) {
-                    hasMoved = Move(Vector2.right);
+                    Move(Vector2.right);
                     print("Forced but still needed right " + counter);
-                    // Move(Vector2.right);
-                    // hasMoved = true;
-                } else if (playerPos.x < this.transform.position.y && movement.currentDirection != Vector2.right) {
-                    hasMoved = Move(Vector2.left);
+
+                    if (movement.currentDirection == Vector2.right) {
+                        hasMoved = true;
+                    } else {
+                        hasMoved = false;
+                    }
+
+                    // if (distance == 0.5) {
+                    //     hasMoved = false;
+                    // }
+                } else if (playerPos.x < this.transform.position.x && movement.currentDirection != Vector2.right) {
+                    Move(Vector2.left);
                     print("Forced but still needed left " + counter);
-                    // Move(Vector2.left);
-                    // hasMoved = true;
+
+                    if (movement.currentDirection == Vector2.left) {
+                        hasMoved = true;
+                    } else {
+                        hasMoved = false;
+                    }
+
+                    // if (distance == 0.5) {
+                    //     hasMoved = false;
+                    // }
                 }
             }
 
             if (hasMoved == false) {
                 if (Math.Abs(yDistance) > Math.Abs(xDistance)) {
                     if (playerPos.y > this.transform.position.y) {
-                        hasMoved = Move(Vector2.down);
+                        Move(Vector2.down);
                         print("Forced down " + counter);
-                        // Move(Vector2.down);
-                        // hasMoved = true;
-                    } else {
-                        hasMoved = Move(Vector2.up);
+
+                        if (movement.currentDirection == Vector2.down) {
+                            hasMoved = true;
+                        } else {
+                            hasMoved = false;
+                        }
+
+                        // if (distance == 0.5) {
+                        //     hasMoved = false;
+                        // }
+                    } else if (playerPos.y < this.transform.position.y) {
+                        Move(Vector2.up);
                         print("Forced up " + counter);
-                        // Move(Vector2.up);
-                        // hasMoved = true;
+
+                        if (movement.currentDirection == Vector2.up) {
+                            hasMoved = true;
+                        } else {
+                            hasMoved = false;
+                        }
+
+                        // if (distance == 0.5) {
+                        //     hasMoved = false;
+                        // }
                     }
                 }
             }
 
             if (hasMoved == false) {
-                    if (playerPos.x > this.transform.position.x) {
-                        hasMoved = Move(Vector2.left);
-                        print("Forced left " + counter);
-                        // Move(Vector2.left);
-                        // hasMoved = true;
+                if (playerPos.x > this.transform.position.x) {
+                    Move(Vector2.left);
+                    print("Forced left " + counter);
+
+                    if (movement.currentDirection == Vector2.left) {
+                        hasMoved = true;
                     } else {
-                        hasMoved = Move(Vector2.right);
-                        print("Forced right " + counter);
-                        // Move(Vector2.right);
-                        // hasMoved = true;
+                        hasMoved = false;
                     }
+
+                    // if (distance == 0.5) {
+                    //     hasMoved = false;
+                    // }
+                } else if (playerPos.x < this.transform.position.x) {
+                    Move(Vector2.right);
+                    print("Forced right " + counter);
+
+                    if (movement.currentDirection == Vector2.right) {
+                        hasMoved = true;
+                    } else {
+                        hasMoved = false;
+                    }
+
+                    // if (distance == 0.5) {
+                    //     hasMoved = false;
+                    // }
                 }
+            }
 
             if (hasMoved == false) {
                 print("No valid move " + counter);

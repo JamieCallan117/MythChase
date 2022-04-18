@@ -13,7 +13,7 @@ public class Movement : MonoBehaviour {
     private float xLeft = 0.0f;
     private float xRight = 0.0f;
     public GameObject player;
-    
+
     private void Awake() {
         rigidbody2d = GetComponent<Rigidbody2D>();
 
