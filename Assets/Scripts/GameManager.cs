@@ -226,10 +226,6 @@ public class GameManager : MonoBehaviour {
         SetLives(this.lives - 1);
     }
 
-    private void EatEnemy(Enemy enemyHit) {
-        enemyHit.GetEaten();
-    }
-
     public Vector3 GetPlayerPos() {
         return player.transform.position;
     }

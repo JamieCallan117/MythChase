@@ -11,7 +11,10 @@ public class Enemy : MonoBehaviour {
     public Sprite[] vulnerableSprites;
     private Movement movement;
     public bool vulnerable;
+    public bool eaten;
     private GameManager gameManager;
+
+    public GameObject homePoint;
 
     private void Awake() {
         aniSprites = GetComponent<AnimatedSprites>();
@@ -19,6 +22,7 @@ public class Enemy : MonoBehaviour {
         gameManager = FindObjectOfType<GameManager>();
         startingPos = this.transform.position;
         vulnerable = false;
+        eaten = false;
     }
 
     public void SetVulnerable(bool vulnerable) {
@@ -32,7 +36,11 @@ public class Enemy : MonoBehaviour {
     }
 
     public void GetEaten() {
-        this.vulnerable = false;
+        SetVulnerable(false);
+
+        eaten = true;
+
+        //Need to disable collision with player after eaten
     }
 
     public void ResetPosition() {
@@ -47,83 +55,249 @@ public class Enemy : MonoBehaviour {
         return playerPos.y - this.transform.position.y;
     }
 
-    private void OnTriggerEnter2D(Collider2D other) {
+    private void OnCollisionEnter2D(Collision2D other) {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player")) {
             if (vulnerable == true) {
-                print("Return to base");
+                GetEaten();
             } else {
                 gameManager.PlayerHit();
             }
-        } else if (other.gameObject.layer == LayerMask.NameToLayer("CheckPoints")) {
-            Vector3 playerPos = gameManager.GetPlayerPos();
+        } 
+    }
 
-            float xDistance = CalculateXDIstance(playerPos);
-            float yDistance = CalculateYDistance(playerPos);
-
-            CheckPoint checkPointHit = other.GetComponent<CheckPoint>();
-
-            List<Vector2> availableDirections = checkPointHit.directions;
-
-            bool hasMoved = false;
-
-            if (Math.Abs(xDistance) > Math.Abs(yDistance)) {
-                if (playerPos.x > this.transform.position.x && movement.currentDirection != Vector2.left && availableDirections.Contains(Vector2.right)) {
-                    movement.Move(Vector2.right);
-
-                    hasMoved = true;
-                } else if (movement.currentDirection != Vector2.right && availableDirections.Contains(Vector2.left)) {
-                    movement.Move(Vector2.left);
-
-                    hasMoved = true;
-                }
+    private void OnTriggerEnter2D(Collider2D other) {
+        if (other.gameObject.layer == LayerMask.NameToLayer("CheckPoints")) {
+            if (vulnerable && other.gameObject != homePoint) {
+                RunAway(other);
+            } else if (eaten && other.gameObject != homePoint) {
+                ReturnHome(other);
+            } else if (eaten && other.gameObject == homePoint) {
+                EnterHome();
+            } else if (!vulnerable && !eaten && other.gameObject != homePoint) {
+                ChasePlayer(other);
             }
+        }
+    }
 
-            if (hasMoved == false) {
-                if (playerPos.y > this.transform.position.y && movement.currentDirection != Vector2.down && availableDirections.Contains(Vector2.up)) {
-                    movement.Move(Vector2.up);
+    private void EnterHome() {
 
-                    hasMoved = true;
-                } else if (playerPos.y < this.transform.position.y && movement.currentDirection != Vector2.up && availableDirections.Contains(Vector2.down)) {
-                    movement.Move(Vector2.down);
+    }
 
-                    hasMoved = true;
-                }
+    private void RunAway(Collider2D other) {
+        Vector3 playerPos = gameManager.GetPlayerPos();
+
+        float xDistance = CalculateXDIstance(playerPos);
+        float yDistance = CalculateYDistance(playerPos);
+
+        CheckPoint checkPointHit = other.GetComponent<CheckPoint>();
+
+        List<Vector2> availableDirections = checkPointHit.directions;
+
+        bool hasMoved = false;
+
+        if (Math.Abs(xDistance) > Math.Abs(yDistance)) {
+            if (playerPos.x > this.transform.position.x && availableDirections.Contains(Vector2.left) && movement.currentDirection != Vector2.right) {
+                movement.Move(Vector2.left);
+
+                hasMoved = true;
+            } else if (playerPos.x < this.transform.position.x && availableDirections.Contains(Vector2.right) && movement.currentDirection != Vector2.left) {
+                movement.Move(Vector2.right);
+
+                hasMoved = true;
             }
+        }
 
-            if (hasMoved == false && Math.Abs(xDistance) <= Math.Abs(yDistance)) {
-                if (playerPos.x > this.transform.position.x && movement.currentDirection != Vector2.left && availableDirections.Contains(Vector2.right)) {
-                    movement.Move(Vector2.right);
+        if (hasMoved == false) {
+            if (playerPos.y > this.transform.position.y && availableDirections.Contains(Vector2.down) && movement.currentDirection != Vector2.up) {
+                movement.Move(Vector2.down);
 
-                    hasMoved = true;
-                } else if (movement.currentDirection != Vector2.right && availableDirections.Contains(Vector2.left)) {
-                    movement.Move(Vector2.left);
+                hasMoved = true;
+            } else if (playerPos.y < this.transform.position.y && availableDirections.Contains(Vector2.up) && movement.currentDirection != Vector2.down) {
+                movement.Move(Vector2.up);
 
-                    hasMoved = true;
-                }
+                hasMoved = true;
             }
+        }
 
-            if (hasMoved == false && Math.Abs(yDistance) > Math.Abs(xDistance)) {
-                if (playerPos.y > this.transform.position.y && availableDirections.Contains(Vector2.down)) {
-                    movement.Move(Vector2.down);
-                    
-                    hasMoved = true;
-                } else if (playerPos.y < this.transform.position.y && availableDirections.Contains(Vector2.up)) {
-                    movement.Move(Vector2.up);
-                    
-                    hasMoved = true;
-                }
+        if (hasMoved == false && Math.Abs(xDistance) <= Math.Abs(yDistance)) {
+            if (playerPos.x > this.transform.position.x && availableDirections.Contains(Vector2.left) && movement.currentDirection != Vector2.right) {
+                movement.Move(Vector2.left);
+
+                hasMoved = true;
+            } else if (playerPos.x < this.transform.position.x && availableDirections.Contains(Vector2.right) && movement.currentDirection != Vector2.left) {
+                movement.Move(Vector2.right);
+
+                hasMoved = true;
             }
+        }
 
-            if (hasMoved == false) {
-                if (playerPos.x > this.transform.position.x && availableDirections.Contains(Vector2.left)) {
-                    movement.Move(Vector2.left);
-                    
-                    hasMoved = true;
-                } else if (playerPos.x < this.transform.position.x && availableDirections.Contains(Vector2.right)) {
-                    movement.Move(Vector2.right);
-                    
-                    hasMoved = true;
-                }
+        if (hasMoved == false && Math.Abs(yDistance) > Math.Abs(xDistance)) {
+            if (playerPos.y > this.transform.position.y && availableDirections.Contains(Vector2.up) && movement.currentDirection != Vector2.down) {
+                movement.Move(Vector2.up);
+                
+                hasMoved = true;
+            } else if (playerPos.y < this.transform.position.y && availableDirections.Contains(Vector2.down) && movement.currentDirection != Vector2.up) {
+                movement.Move(Vector2.down);
+                
+                hasMoved = true;
+            }
+        }
+
+        if (hasMoved == false) {
+            if (playerPos.x > this.transform.position.x && availableDirections.Contains(Vector2.right) && movement.currentDirection != Vector2.left) {
+                movement.Move(Vector2.right);
+                
+                hasMoved = true;
+            } else if (playerPos.x < this.transform.position.x && availableDirections.Contains(Vector2.left) && movement.currentDirection != Vector2.right) {
+                movement.Move(Vector2.left);
+                
+                hasMoved = true;
+            }
+        }
+    }
+
+    private void ReturnHome(Collider2D other) {
+        Vector3 homePos = homePoint.transform.position;
+
+        float xDistance = CalculateXDIstance(homePos);
+        float yDistance = CalculateYDistance(homePos);
+
+        CheckPoint checkPointHit = other.GetComponent<CheckPoint>();
+
+        List<Vector2> availableDirections = checkPointHit.directions;
+
+        bool hasMoved = false;
+
+        if (Math.Abs(xDistance) > Math.Abs(yDistance)) {
+            if (homePos.x > this.transform.position.x && availableDirections.Contains(Vector2.right) && movement.currentDirection != Vector2.left) {
+                movement.Move(Vector2.right);
+
+                hasMoved = true;
+            } else if (homePos.x < this.transform.position.x && availableDirections.Contains(Vector2.left) && movement.currentDirection != Vector2.right) {
+                movement.Move(Vector2.left);
+
+                hasMoved = true;
+            }
+        }
+
+        if (hasMoved == false) {
+            if (homePos.y > this.transform.position.y && availableDirections.Contains(Vector2.up) && movement.currentDirection != Vector2.down) {
+                movement.Move(Vector2.up);
+
+                hasMoved = true;
+            } else if (homePos.y < this.transform.position.y && availableDirections.Contains(Vector2.down) && movement.currentDirection != Vector2.up) {
+                movement.Move(Vector2.down);
+
+                hasMoved = true;
+            }
+        }
+
+        if (hasMoved == false && Math.Abs(xDistance) <= Math.Abs(yDistance)) {
+            if (homePos.x > this.transform.position.x && availableDirections.Contains(Vector2.right) && movement.currentDirection != Vector2.left) {
+                movement.Move(Vector2.right);
+
+                hasMoved = true;
+            } else if (homePos.x < this.transform.position.x && availableDirections.Contains(Vector2.left) && movement.currentDirection != Vector2.right) {
+                movement.Move(Vector2.left);
+
+                hasMoved = true;
+            }
+        }
+
+        if (hasMoved == false && Math.Abs(yDistance) > Math.Abs(xDistance)) {
+            if (homePos.y > this.transform.position.y && availableDirections.Contains(Vector2.down) && movement.currentDirection != Vector2.up) {
+                movement.Move(Vector2.down);
+                
+                hasMoved = true;
+            } else if (homePos.y < this.transform.position.y && availableDirections.Contains(Vector2.up) && movement.currentDirection != Vector2.down) {
+                movement.Move(Vector2.up);
+                
+                hasMoved = true;
+            }
+        }
+
+        if (hasMoved == false) {
+            if (homePos.x > this.transform.position.x && availableDirections.Contains(Vector2.left) && movement.currentDirection != Vector2.right) {
+                movement.Move(Vector2.left);
+                
+                hasMoved = true;
+            } else if (homePos.x < this.transform.position.x && availableDirections.Contains(Vector2.right) && movement.currentDirection != Vector2.left) {
+                movement.Move(Vector2.right);
+                
+                hasMoved = true;
+            }
+        }
+    }
+
+    private void ChasePlayer(Collider2D other) {
+        Vector3 playerPos = gameManager.GetPlayerPos();
+
+        float xDistance = CalculateXDIstance(playerPos);
+        float yDistance = CalculateYDistance(playerPos);
+
+        CheckPoint checkPointHit = other.GetComponent<CheckPoint>();
+
+        List<Vector2> availableDirections = checkPointHit.directions;
+
+        bool hasMoved = false;
+
+        if (Math.Abs(xDistance) > Math.Abs(yDistance)) {
+            if (playerPos.x > this.transform.position.x && availableDirections.Contains(Vector2.right) && movement.currentDirection != Vector2.left) {
+                movement.Move(Vector2.right);
+
+                hasMoved = true;
+            } else if (playerPos.x < this.transform.position.x && availableDirections.Contains(Vector2.left) && movement.currentDirection != Vector2.right) {
+                movement.Move(Vector2.left);
+
+                hasMoved = true;
+            }
+        }
+
+        if (hasMoved == false) {
+            if (playerPos.y > this.transform.position.y && availableDirections.Contains(Vector2.up) && movement.currentDirection != Vector2.down) {
+                movement.Move(Vector2.up);
+
+                hasMoved = true;
+            } else if (playerPos.y < this.transform.position.y && availableDirections.Contains(Vector2.down) && movement.currentDirection != Vector2.up) {
+                movement.Move(Vector2.down);
+
+                hasMoved = true;
+            }
+        }
+
+        if (hasMoved == false && Math.Abs(xDistance) <= Math.Abs(yDistance)) {
+            if (playerPos.x > this.transform.position.x && availableDirections.Contains(Vector2.right) && movement.currentDirection != Vector2.left) {
+                movement.Move(Vector2.right);
+
+                hasMoved = true;
+            } else if (playerPos.x < this.transform.position.x && availableDirections.Contains(Vector2.left) && movement.currentDirection != Vector2.right) {
+                movement.Move(Vector2.left);
+
+                hasMoved = true;
+            }
+        }
+
+        if (hasMoved == false && Math.Abs(yDistance) > Math.Abs(xDistance)) {
+            if (playerPos.y > this.transform.position.y && availableDirections.Contains(Vector2.down) && movement.currentDirection != Vector2.up) {
+                movement.Move(Vector2.down);
+                
+                hasMoved = true;
+            } else if (playerPos.y < this.transform.position.y && availableDirections.Contains(Vector2.up) && movement.currentDirection != Vector2.down) {
+                movement.Move(Vector2.up);
+                
+                hasMoved = true;
+            }
+        }
+
+        if (hasMoved == false) {
+            if (playerPos.x > this.transform.position.x && availableDirections.Contains(Vector2.left) && movement.currentDirection != Vector2.right) {
+                movement.Move(Vector2.left);
+                
+                hasMoved = true;
+            } else if (playerPos.x < this.transform.position.x && availableDirections.Contains(Vector2.right) && movement.currentDirection != Vector2.left) {
+                movement.Move(Vector2.right);
+                
+                hasMoved = true;
             }
         }
     }
