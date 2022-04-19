@@ -128,7 +128,7 @@ public class GameManager : MonoBehaviour {
         playerMovement.movementEnabled = true;
         enemyOneMovement.movementEnabled = true;
 
-        enemyOneMovement.Move(Vector2.down); //CHANGE TO LEFT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        enemyOneMovement.Move(Vector2.left);
 
         readyText.SetActive(false);
     }
