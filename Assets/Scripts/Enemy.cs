@@ -73,7 +73,6 @@ public class Enemy : MonoBehaviour {
             } else if (eaten && other.gameObject != homePoint) {
                 ReturnHome(other);
             } else if (eaten && other.gameObject == homePoint) {
-                print("I have arrived");
                 EnterHome();
             } else if (!vulnerable && !eaten && other.gameObject != homePoint) {
                 ChasePlayer(other);
@@ -156,6 +155,18 @@ public class Enemy : MonoBehaviour {
                 hasMoved = true;
             }
         }
+
+        if (hasMoved == false && Math.Abs(yDistance) <= Math.Abs(xDistance)) {
+            if (playerPos.y > this.transform.position.y && availableDirections.Contains(Vector2.up)) {// && movement.currentDirection != Vector2.down) {
+                movement.Move(Vector2.up);
+                
+                hasMoved = true;
+            } else if (playerPos.y < this.transform.position.y && availableDirections.Contains(Vector2.down)) {// && movement.currentDirection != Vector2.up) {
+                movement.Move(Vector2.down);
+                
+                hasMoved = true;
+            }
+        }
     }
 
     private void ReturnHome(Collider2D other) {
@@ -171,11 +182,11 @@ public class Enemy : MonoBehaviour {
         bool hasMoved = false;
 
         if (Math.Abs(xDistance) > Math.Abs(yDistance)) {
-            if (homePos.x > this.transform.position.x && availableDirections.Contains(Vector2.right)) {// && movement.currentDirection != Vector2.left) {
+            if (homePos.x > this.transform.position.x && availableDirections.Contains(Vector2.right) && movement.currentDirection != Vector2.left) {
                 movement.Move(Vector2.right);
 
                 hasMoved = true;
-            } else if (homePos.x < this.transform.position.x && availableDirections.Contains(Vector2.left)) {// && movement.currentDirection != Vector2.right) {
+            } else if (homePos.x < this.transform.position.x && availableDirections.Contains(Vector2.left) && movement.currentDirection != Vector2.right) {
                 movement.Move(Vector2.left);
 
                 hasMoved = true;
@@ -183,11 +194,11 @@ public class Enemy : MonoBehaviour {
         }
 
         if (hasMoved == false) {
-            if (homePos.y > this.transform.position.y && availableDirections.Contains(Vector2.up)) {// && movement.currentDirection != Vector2.down) {
+            if (homePos.y > this.transform.position.y && availableDirections.Contains(Vector2.up) && movement.currentDirection != Vector2.down) {
                 movement.Move(Vector2.up);
 
                 hasMoved = true;
-            } else if (homePos.y < this.transform.position.y && availableDirections.Contains(Vector2.down)) {// && movement.currentDirection != Vector2.up) {
+            } else if (homePos.y < this.transform.position.y && availableDirections.Contains(Vector2.down) && movement.currentDirection != Vector2.up) {
                 movement.Move(Vector2.down);
 
                 hasMoved = true;
@@ -195,11 +206,11 @@ public class Enemy : MonoBehaviour {
         }
 
         if (hasMoved == false && Math.Abs(xDistance) <= Math.Abs(yDistance)) {
-            if (homePos.x > this.transform.position.x && availableDirections.Contains(Vector2.right)) {// && movement.currentDirection != Vector2.left) {
+            if (homePos.x > this.transform.position.x && availableDirections.Contains(Vector2.right) && movement.currentDirection != Vector2.left) {
                 movement.Move(Vector2.right);
 
                 hasMoved = true;
-            } else if (homePos.x < this.transform.position.x && availableDirections.Contains(Vector2.left)) {// && movement.currentDirection != Vector2.right) {
+            } else if (homePos.x < this.transform.position.x && availableDirections.Contains(Vector2.left) && movement.currentDirection != Vector2.right) {
                 movement.Move(Vector2.left);
 
                 hasMoved = true;
@@ -229,6 +240,18 @@ public class Enemy : MonoBehaviour {
                 hasMoved = true;
             }
         }
+
+        if (hasMoved == false && Math.Abs(yDistance) <= Math.Abs(xDistance)) {
+            if (homePos.y > this.transform.position.y && availableDirections.Contains(Vector2.up)) {// && movement.currentDirection != Vector2.down) {
+                movement.Move(Vector2.up);
+                
+                hasMoved = true;
+            } else if (homePos.y < this.transform.position.y && availableDirections.Contains(Vector2.down)) {// && movement.currentDirection != Vector2.up) {
+                movement.Move(Vector2.down);
+                
+                hasMoved = true;
+            }
+        }
     }
 
     private void ChasePlayer(Collider2D other) {
@@ -244,11 +267,11 @@ public class Enemy : MonoBehaviour {
         bool hasMoved = false;
 
         if (Math.Abs(xDistance) > Math.Abs(yDistance)) {
-            if (playerPos.x > this.transform.position.x && availableDirections.Contains(Vector2.right)) {// && movement.currentDirection != Vector2.left) {
+            if (playerPos.x > this.transform.position.x && availableDirections.Contains(Vector2.right) && movement.currentDirection != Vector2.left) {
                 movement.Move(Vector2.right);
 
                 hasMoved = true;
-            } else if (playerPos.x < this.transform.position.x && availableDirections.Contains(Vector2.left)) {// && movement.currentDirection != Vector2.right) {
+            } else if (playerPos.x < this.transform.position.x && availableDirections.Contains(Vector2.left) && movement.currentDirection != Vector2.right) {
                 movement.Move(Vector2.left);
 
                 hasMoved = true;
@@ -256,11 +279,11 @@ public class Enemy : MonoBehaviour {
         }
 
         if (hasMoved == false) {
-            if (playerPos.y > this.transform.position.y && availableDirections.Contains(Vector2.up)) {// && movement.currentDirection != Vector2.down) {
+            if (playerPos.y > this.transform.position.y && availableDirections.Contains(Vector2.up) && movement.currentDirection != Vector2.down) {
                 movement.Move(Vector2.up);
 
                 hasMoved = true;
-            } else if (playerPos.y < this.transform.position.y && availableDirections.Contains(Vector2.down)) {// && movement.currentDirection != Vector2.up) {
+            } else if (playerPos.y < this.transform.position.y && availableDirections.Contains(Vector2.down) && movement.currentDirection != Vector2.up) {
                 movement.Move(Vector2.down);
 
                 hasMoved = true;
@@ -268,11 +291,11 @@ public class Enemy : MonoBehaviour {
         }
 
         if (hasMoved == false && Math.Abs(xDistance) <= Math.Abs(yDistance)) {
-            if (playerPos.x > this.transform.position.x && availableDirections.Contains(Vector2.right)) {// && movement.currentDirection != Vector2.left) {
+            if (playerPos.x > this.transform.position.x && availableDirections.Contains(Vector2.right) && movement.currentDirection != Vector2.left) {
                 movement.Move(Vector2.right);
 
                 hasMoved = true;
-            } else if (playerPos.x < this.transform.position.x && availableDirections.Contains(Vector2.left)) {// && movement.currentDirection != Vector2.right) {
+            } else if (playerPos.x < this.transform.position.x && availableDirections.Contains(Vector2.left) && movement.currentDirection != Vector2.right) {
                 movement.Move(Vector2.left);
 
                 hasMoved = true;
@@ -298,6 +321,18 @@ public class Enemy : MonoBehaviour {
                 hasMoved = true;
             } else if (playerPos.x < this.transform.position.x && availableDirections.Contains(Vector2.right)) {// && movement.currentDirection != Vector2.left) {
                 movement.Move(Vector2.right);
+                
+                hasMoved = true;
+            }
+        }
+
+        if (hasMoved == false && Math.Abs(yDistance) <= Math.Abs(xDistance)) {
+            if (playerPos.y > this.transform.position.y && availableDirections.Contains(Vector2.up)) {// && movement.currentDirection != Vector2.down) {
+                movement.Move(Vector2.up);
+                
+                hasMoved = true;
+            } else if (playerPos.y < this.transform.position.y && availableDirections.Contains(Vector2.down)) {// && movement.currentDirection != Vector2.up) {
+                movement.Move(Vector2.down);
                 
                 hasMoved = true;
             }
