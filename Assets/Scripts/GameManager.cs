@@ -206,10 +206,21 @@ public class GameManager : MonoBehaviour {
     }
 
     private void VulnerableEnemies() {
-        enemyOneAtr.SetVulnerable(true);
-        enemyTwoAtr.SetVulnerable(true);
-        enemyThreeAtr.SetVulnerable(true);
-        enemyFourAtr.SetVulnerable(true);
+        if (enemyOneAtr.eaten == false) {
+            enemyOneAtr.SetVulnerable(true);
+        }
+
+        if (enemyTwoAtr.eaten == false) {
+            enemyTwoAtr.SetVulnerable(true);
+        }
+
+        if (enemyThreeAtr.eaten == false) {
+            enemyThreeAtr.SetVulnerable(true);
+        }
+
+        if (enemyFourAtr.eaten == false) {
+            enemyFourAtr.SetVulnerable(true);
+        }
     }
 
     public void PlayerHit() {
