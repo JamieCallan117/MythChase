@@ -39,8 +39,6 @@ public class Enemy : MonoBehaviour {
         SetVulnerable(false);
 
         eaten = true;
-
-        //Need to disable collision with player after eaten
     }
 
     public void ResetPosition() {
@@ -59,6 +57,9 @@ public class Enemy : MonoBehaviour {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player")) {
             if (vulnerable == true) {
                 GetEaten();
+                OnCollisionEnter2D(other);
+            } else if (eaten == true) {
+                Physics2D.IgnoreCollision(other.gameObject.GetComponent<CircleCollider2D>(), GetComponent<CircleCollider2D>());
             } else {
                 gameManager.PlayerHit();
             }
