@@ -1134,7 +1134,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.01
 --- !u!4 &255247214
 Transform:
   m_ObjectHideFlags: 0
@@ -4441,7 +4441,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -4569,7 +4569,10 @@ MonoBehaviour:
   vulnerableSprites: []
   vulnerable: 0
   eaten: 0
+  inHome: 1
+  circleCollider: {fileID: 1240750069}
   homePoint: {fileID: 255247212}
+  inHomePoint: {fileID: 1327367759}
 --- !u!1 &1253953039
 GameObject:
   m_ObjectHideFlags: 0
@@ -4750,7 +4753,10 @@ MonoBehaviour:
   vulnerableSprites: []
   vulnerable: 0
   eaten: 0
+  inHome: 0
+  circleCollider: {fileID: 1253953041}
   homePoint: {fileID: 255247212}
+  inHomePoint: {fileID: 1327367759}
 --- !u!1 &1266147879
 GameObject:
   m_ObjectHideFlags: 0
@@ -4852,13 +4858,60 @@ RectTransform:
   - {fileID: 46902714}
   - {fileID: 644058838}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &1327367759
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1327367761}
+  - component: {fileID: 1327367760}
+  m_Layer: 0
+  m_Name: InHomePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!58 &1327367760
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1327367759}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
+--- !u!4 &1327367761
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1327367759}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1576186673
 GameObject:
   m_ObjectHideFlags: 0
@@ -10671,7 +10724,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -10799,7 +10852,10 @@ MonoBehaviour:
   vulnerableSprites: []
   vulnerable: 0
   eaten: 0
+  inHome: 1
+  circleCollider: {fileID: 1804379999}
   homePoint: {fileID: 255247212}
+  inHomePoint: {fileID: 1327367759}
 --- !u!1 &1884864701
 GameObject:
   m_ObjectHideFlags: 0
@@ -10852,7 +10908,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -10980,4 +11036,7 @@ MonoBehaviour:
   vulnerableSprites: []
   vulnerable: 0
   eaten: 0
+  inHome: 1
+  circleCollider: {fileID: 1884864703}
   homePoint: {fileID: 255247212}
+  inHomePoint: {fileID: 1327367759}

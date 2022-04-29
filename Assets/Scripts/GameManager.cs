@@ -124,11 +124,20 @@ public class GameManager : MonoBehaviour {
     private void startGame() {
         Movement playerMovement = player.GetComponent(typeof(Movement)) as Movement;
         Movement enemyOneMovement = enemyOne.GetComponent(typeof(Movement)) as Movement;
+        Movement enemyTwoMovement = enemyTwo.GetComponent(typeof(Movement)) as Movement;
+        Movement enemyThreeMovement = enemyThree.GetComponent(typeof(Movement)) as Movement;
+        Movement enemyFourMovement = enemyFour.GetComponent(typeof(Movement)) as Movement;
 
         playerMovement.movementEnabled = true;
         enemyOneMovement.movementEnabled = true;
+        enemyTwoMovement.movementEnabled = true;
+        enemyThreeMovement.movementEnabled = true;
+        enemyFourMovement.movementEnabled = true;
 
         enemyOneMovement.Move(Vector2.left);
+        enemyTwoMovement.Move(Vector2.right);
+        enemyThreeMovement.Move(Vector2.left); //Make random left or right
+        enemyFourMovement.Move(Vector2.left);
 
         readyText.SetActive(false);
     }
