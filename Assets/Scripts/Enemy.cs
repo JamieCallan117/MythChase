@@ -48,7 +48,15 @@ public class Enemy : MonoBehaviour {
                 enteringHome = false;
                 inHome = true;
                 aniSprites.isEnabled = true;
-                movement.Move(Vector2.left); //Make random
+
+                Random rand = new Random();
+                int randInt = rand.Next(0, 2);
+
+                if (randInt == 0) {
+                    movement.Move(Vector2.left);
+                } else {
+                    movement.Move(Vector2.right);
+                }
             }
         }
 
@@ -68,7 +76,16 @@ public class Enemy : MonoBehaviour {
 
             if (Vector3.Distance(transform.position, homePoint.transform.position) < 0.001f) {
                 circleCollider.enabled = true;
-                movement.Move(Vector2.left); //Make random or smth
+
+                Random rand = new Random();
+                int randInt = rand.Next(0, 2);
+
+                if (randInt == 0) {
+                    movement.Move(Vector2.left);
+                } else {
+                    movement.Move(Vector2.right);
+                }
+                
                 exitingHome = false;
                 inHome = false;
             }

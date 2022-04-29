@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using TMPro;
+using Random=System.Random;
 
 public class GameManager : MonoBehaviour {
     public GameObject player;
@@ -18,16 +19,19 @@ public class GameManager : MonoBehaviour {
     public GameObject powerUp;
     public GameObject scoreValue;
     public GameObject readyText;
+    public GameObject powerUpItem;
     private Enemy enemyOneAtr;
     private Enemy enemyTwoAtr;
     private Enemy enemyThreeAtr;
     private Enemy enemyFourAtr;
     private Player playerAtr;
+    private PowerUp powerUpAtr;
     private SpriteRenderer playerSprite;
     private SpriteRenderer enemyOneSprite;
     private SpriteRenderer enemyTwoSprite;
     private SpriteRenderer enemyThreeSprite;
     private SpriteRenderer enemyFourSprite;
+    private SpriteRenderer powerUpSprite;
     private Image lifeOneImage;
     private Image lifeTwoImage;
     private Image lifeThreeImage;
@@ -42,6 +46,7 @@ public class GameManager : MonoBehaviour {
     private int score;
     private int lives;
     private int powerUpID;
+    private bool powerUpOwned;
     private List<Pellet> pellets = new List<Pellet>();
     private Leaderboard leaderboard;
 
@@ -56,6 +61,7 @@ public class GameManager : MonoBehaviour {
         enemyTwoSprite = enemyTwo.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
         enemyThreeSprite = enemyThree.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
         enemyFourSprite = enemyFour.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
+        powerUpSprite = powerUpItem.GetComponent(typeof(SpriteRenderer)) as SpriteRenderer;
         lifeOneImage = lifeOne.GetComponent(typeof(Image)) as Image;
         lifeTwoImage = lifeTwo.GetComponent(typeof(Image)) as Image;
         lifeThreeImage = lifeThree.GetComponent(typeof(Image)) as Image;
@@ -65,8 +71,11 @@ public class GameManager : MonoBehaviour {
         enemyThreeAtr = enemyThree.GetComponent(typeof(Enemy)) as Enemy;
         enemyFourAtr = enemyFour.GetComponent(typeof(Enemy)) as Enemy;
         playerAtr = player.GetComponent(typeof(Player)) as Player;
+        powerUpAtr = powerUpItem.GetComponent(typeof(PowerUp)) as PowerUp;
         scoreText = scoreValue.GetComponent(typeof(TextMeshProUGUI)) as TextMeshProUGUI;
         audioSource = GetComponent<AudioSource>();
+
+        powerUpOwned = false;
 
         SaveFile();
         //LoadFile();
@@ -75,8 +84,8 @@ public class GameManager : MonoBehaviour {
     private void Start() {  
         SetScore(0);
         SetLives(3);
-        SetPowerUp(0);
-        LoadPlayerSprites();  
+        LoadPlayerSprites(); 
+        powerUp.SetActive(false);
 
         StartCoroutine(newRoundWait());
 
@@ -140,9 +149,18 @@ public class GameManager : MonoBehaviour {
         enemyThreeMovement.movementEnabled = true;
         enemyFourMovement.movementEnabled = true;
 
-        enemyOneMovement.Move(Vector2.left);
+        Random rand = new Random();
+        int randInt = rand.Next(0, 2);
+
+        if (randInt == 0) {
+            enemyOneMovement.Move(Vector2.left);
+            enemyThreeMovement.Move(Vector2.left);
+        } else {
+            enemyOneMovement.Move(Vector2.right);
+            enemyThreeMovement.Move(Vector2.right);
+        }
+
         enemyTwoMovement.Move(Vector2.right);
-        enemyThreeMovement.Move(Vector2.left); //Make random left or right
         enemyFourMovement.Move(Vector2.left);
 
         readyText.SetActive(false);
@@ -214,14 +232,12 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    private void SetPowerUp(int newPowerUpID) {
-        this.powerUpID = newPowerUpID;
+    public PowerUp PickUpPowerUp() {
+        powerUp.SetActive(true);
 
-        if (this.powerUpID > 0) {
-            powerUp.SetActive(true);
-        } else {
-            powerUp.SetActive(false);
-        }
+        powerUpOwned = true;
+
+        return powerUpAtr;
     }
 
     private void VulnerableEnemies() {
@@ -277,11 +293,14 @@ public class GameManager : MonoBehaviour {
                 playerSprites[3] = Resources.Load<Sprite>("Kiara_Normal_02");
 
                 playerAniSprites.sprites = playerSprites;
+                powerUpSprite.sprite = Resources.Load<Sprite>("Powerup_Kotori");
 
                 LoadEnemySprites(enemyOneSprite, enemyOneAniSprites, 1, enemyOneAtr);
                 LoadEnemySprites(enemyTwoSprite, enemyTwoAniSprites, 3, enemyTwoAtr);
                 LoadEnemySprites(enemyThreeSprite, enemyThreeAniSprites, 4, enemyThreeAtr);
                 LoadEnemySprites(enemyFourSprite, enemyFourAniSprites, 5, enemyFourAtr);
+
+                powerUpAtr.type = 2;
                 break;
             case 3:
                 playerSprite.sprite = Resources.Load<Sprite>("Ame_Normal_01");
@@ -296,11 +315,14 @@ public class GameManager : MonoBehaviour {
                 playerSprites[3] = Resources.Load<Sprite>("Ame_Normal_02");
 
                 playerAniSprites.sprites = playerSprites;
+                powerUpSprite.sprite = Resources.Load<Sprite>("Powerup_Bubba");
 
                 LoadEnemySprites(enemyOneSprite, enemyOneAniSprites, 1, enemyOneAtr);
                 LoadEnemySprites(enemyTwoSprite, enemyTwoAniSprites, 2, enemyTwoAtr);
                 LoadEnemySprites(enemyThreeSprite, enemyThreeAniSprites, 4, enemyThreeAtr);
                 LoadEnemySprites(enemyFourSprite, enemyFourAniSprites, 5, enemyFourAtr);
+
+                powerUpAtr.type = 3;
                 break;
             case 4:
                 playerSprite.sprite = Resources.Load<Sprite>("Calli_Normal_01");
@@ -315,11 +337,14 @@ public class GameManager : MonoBehaviour {
                 playerSprites[3] = Resources.Load<Sprite>("Calli_Normal_02");
 
                 playerAniSprites.sprites = playerSprites;
+                powerUpSprite.sprite = Resources.Load<Sprite>("Powerup_DeathSensei");
 
                 LoadEnemySprites(enemyOneSprite, enemyOneAniSprites, 1, enemyOneAtr);
                 LoadEnemySprites(enemyTwoSprite, enemyTwoAniSprites, 2, enemyTwoAtr);
                 LoadEnemySprites(enemyThreeSprite, enemyThreeAniSprites, 3, enemyThreeAtr);
                 LoadEnemySprites(enemyFourSprite, enemyFourAniSprites, 5, enemyFourAtr);
+
+                powerUpAtr.type = 4;
                 break;
             case 5:
                 playerSprite.sprite = Resources.Load<Sprite>("Gura_Normal_01");
@@ -334,11 +359,14 @@ public class GameManager : MonoBehaviour {
                 playerSprites[3] = Resources.Load<Sprite>("Gura_Normal_02");
 
                 playerAniSprites.sprites = playerSprites;
+                powerUpSprite.sprite = Resources.Load<Sprite>("Powerup_Bloop");
 
                 LoadEnemySprites(enemyOneSprite, enemyOneAniSprites, 1, enemyOneAtr);
                 LoadEnemySprites(enemyTwoSprite, enemyTwoAniSprites, 2, enemyTwoAtr);
                 LoadEnemySprites(enemyThreeSprite, enemyThreeAniSprites, 3, enemyThreeAtr);
                 LoadEnemySprites(enemyFourSprite, enemyFourAniSprites, 4, enemyFourAtr);
+
+                powerUpAtr.type = 5;
                 break;
             default:
                 playerSprite.sprite = Resources.Load<Sprite>("Ina_Normal_01");
@@ -353,11 +381,14 @@ public class GameManager : MonoBehaviour {
                 playerSprites[3] = Resources.Load<Sprite>("Ina_Normal_02");
 
                 playerAniSprites.sprites = playerSprites;
+                powerUpSprite.sprite = Resources.Load<Sprite>("Powerup_Takodachi");
 
                 LoadEnemySprites(enemyOneSprite, enemyOneAniSprites, 2, enemyOneAtr);
                 LoadEnemySprites(enemyTwoSprite, enemyTwoAniSprites, 3, enemyTwoAtr);
                 LoadEnemySprites(enemyThreeSprite, enemyThreeAniSprites, 4, enemyThreeAtr);
                 LoadEnemySprites(enemyFourSprite, enemyFourAniSprites, 5, enemyFourAtr);
+
+                powerUpAtr.type = 1;
                 break;
         }
     }

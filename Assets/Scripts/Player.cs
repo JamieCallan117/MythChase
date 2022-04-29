@@ -4,9 +4,13 @@ using UnityEngine;
 public class Player : MonoBehaviour {
     private Movement movement;
     private Vector3 startingPos;
+    public GameObject powerUpObj;
+    private GameManager gameManager;
+    private PowerUp powerUp;
 
     private void Awake() {
         movement = GetComponent<Movement>();
+        gameManager = FindObjectOfType<GameManager>();
         startingPos = this.transform.position;
     }
 
@@ -24,6 +28,16 @@ public class Player : MonoBehaviour {
             movement.Move(Vector2.left);
         } else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) {
             movement.Move(Vector2.right);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            powerUp.test();
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        if (other.gameObject == powerUpObj) {
+            powerUp = gameManager.PickUpPowerUp();
         }
     }
 }
