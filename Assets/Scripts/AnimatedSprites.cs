@@ -2,10 +2,10 @@ using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class AnimatedSprites : MonoBehaviour {
-    public SpriteRenderer spriteRenderer { get; private set; }
+    public SpriteRenderer spriteRenderer;
     public Sprite[] sprites;
     public float animationRate = 0.05f;
-    public int currentFrame { get; private set; }
+    public int currentFrame;
     public bool loop = true;
     public bool isEnabled = true;
 
@@ -18,7 +18,7 @@ public class AnimatedSprites : MonoBehaviour {
     }
 
     private void UpdateFrame() {
-        if (enabled) {
+        if (isEnabled) {
             this.currentFrame++;
 
             if (this.currentFrame >= this.sprites.Length && this.loop) {

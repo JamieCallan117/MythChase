@@ -121,6 +121,12 @@ public class GameManager : MonoBehaviour {
         StartCoroutine(newRoundWait());
     }
 
+    private IEnumerator releaseEnemyTimer(int time, Enemy enemy) {
+        yield return new WaitForSecondsRealtime(time);
+
+        enemy.Release();
+    }
+
     private void startGame() {
         Movement playerMovement = player.GetComponent(typeof(Movement)) as Movement;
         Movement enemyOneMovement = enemyOne.GetComponent(typeof(Movement)) as Movement;
@@ -140,6 +146,10 @@ public class GameManager : MonoBehaviour {
         enemyFourMovement.Move(Vector2.left);
 
         readyText.SetActive(false);
+
+        StartCoroutine(releaseEnemyTimer(5, enemyTwoAtr));
+        StartCoroutine(releaseEnemyTimer(10, enemyThreeAtr));
+        StartCoroutine(releaseEnemyTimer(15, enemyFourAtr));
     }
 
     private void NewRound() {
@@ -373,6 +383,7 @@ public class GameManager : MonoBehaviour {
                 aniSprites.sprites = enemySprites;
                 enemy.regularSprites = enemySprites;
                 enemy.vulnerableSprites = vulnerableSprites;
+                enemy.eatenSprite = Resources.Load<Sprite>("Ina_Eaten");
                 break;
             case 2:
                 sprite.sprite = Resources.Load<Sprite>("Kiara_Normal_01");
@@ -390,6 +401,7 @@ public class GameManager : MonoBehaviour {
                 aniSprites.sprites = enemySprites;
                 enemy.regularSprites = enemySprites;
                 enemy.vulnerableSprites = vulnerableSprites;
+                enemy.eatenSprite = Resources.Load<Sprite>("Kiara_Eaten");
                 break;
             case 3:
                 sprite.sprite = Resources.Load<Sprite>("Ame_Normal_01");
@@ -407,6 +419,7 @@ public class GameManager : MonoBehaviour {
                 aniSprites.sprites = enemySprites;
                 enemy.regularSprites = enemySprites;
                 enemy.vulnerableSprites = vulnerableSprites;
+                enemy.eatenSprite = Resources.Load<Sprite>("Ame_Eaten");
                 break;
             case 4:
                 sprite.sprite = Resources.Load<Sprite>("Calli_Normal_01");
@@ -424,6 +437,7 @@ public class GameManager : MonoBehaviour {
                 aniSprites.sprites = enemySprites;
                 enemy.regularSprites = enemySprites;
                 enemy.vulnerableSprites = vulnerableSprites;
+                enemy.eatenSprite = Resources.Load<Sprite>("Calli_Eaten");
                 break;
             case 5:
                 sprite.sprite = Resources.Load<Sprite>("Gura_Normal_01");
@@ -441,6 +455,7 @@ public class GameManager : MonoBehaviour {
                 aniSprites.sprites = enemySprites;
                 enemy.regularSprites = enemySprites;
                 enemy.vulnerableSprites = vulnerableSprites;
+                enemy.eatenSprite = Resources.Load<Sprite>("Gura_Eaten");
                 break;
         }
     }
