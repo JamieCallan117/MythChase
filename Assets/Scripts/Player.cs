@@ -30,8 +30,8 @@ public class Player : MonoBehaviour {
             movement.Move(Vector2.right);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            powerUp.test();
+        if (Input.GetKeyDown(KeyCode.Space) && gameManager.HasPowerUp()) {
+            powerUp.Activate();
         }
     }
 

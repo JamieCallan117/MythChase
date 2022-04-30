@@ -6,6 +6,12 @@ using UnityEngine.Tilemaps;
 public class CheckPoint : MonoBehaviour {
     public List<Vector2> directions = new List<Vector2>();
     public LayerMask obstacleLayer;
+    public GameManager gameManager;
+
+    public void Awake() {
+        gameManager = FindObjectOfType<GameManager>();
+        gameManager.AddTeleportPoint(this);
+    }
 
     public void Start() {
         if (ValidDirection(Vector2.up)) {

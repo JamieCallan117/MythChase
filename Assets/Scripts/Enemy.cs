@@ -13,8 +13,10 @@ public class Enemy : MonoBehaviour {
     public Sprite[] vulnerableSprites;
     private Movement movement;
     public bool vulnerable;
+    public bool powerUpVulnerable;
     public bool eaten;
     public bool inHome;
+    public bool scared;
     private bool enteringHome;
     private bool leavingHome;
     private bool exitingHome;
@@ -112,6 +114,8 @@ public class Enemy : MonoBehaviour {
 
     public void GetEaten() {
         SetVulnerable(false);
+        powerUpVulnerable = false;
+        scared = false;
 
         eaten = true;
 
@@ -129,9 +133,17 @@ public class Enemy : MonoBehaviour {
         this.transform.position = startingPos;
     }
 
+    public void ToggleIgnorePlayer(bool ignore, GameObject player) {
+        if (ignore) {
+            Physics2D.IgnoreCollision(player.GetComponent<CircleCollider2D>(), GetComponent<CircleCollider2D>());
+        } else {
+            Physics2D.IgnoreCollision(player.GetComponent<CircleCollider2D>(), GetComponent<CircleCollider2D>(), false);
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D other) {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player")) {
-            if (vulnerable == true) {
+            if (vulnerable == true || powerUpVulnerable == true) {
                 GetEaten();
                 OnCollisionEnter2D(other);
             } else if (eaten == true) {
@@ -148,7 +160,9 @@ public class Enemy : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.layer == LayerMask.NameToLayer("CheckPoints")) {
-            if (vulnerable && other.gameObject != homePoint) {
+            if (scared && !eaten && other.gameObject != homePoint) {
+                RunAway(other);
+            } else if (vulnerable && other.gameObject != homePoint) {
                 RunAway(other);
             } else if (eaten && other.gameObject != homePoint) {
                 ReturnHome(other);

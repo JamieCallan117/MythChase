@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour {
     private int powerUpID;
     private bool powerUpOwned;
     private List<Pellet> pellets = new List<Pellet>();
+    private List<CheckPoint> telePoints = new List<CheckPoint>();
     private Leaderboard leaderboard;
 
     private void Awake() {
@@ -238,6 +239,113 @@ public class GameManager : MonoBehaviour {
         powerUpOwned = true;
 
         return powerUpAtr;
+    }
+
+    public bool HasPowerUp() {
+        return powerUpOwned;
+    }
+
+    public void AddTeleportPoint(CheckPoint newPoint) {
+        telePoints.Add(newPoint);
+    }
+
+    public void UsePowerUp(int type) {
+        powerUp.SetActive(false);
+
+        powerUpOwned = false;
+
+        switch(type) {
+            case 1:
+                Random rand = new Random();
+                int randInt = rand.Next(0, telePoints.Count);
+                Movement playerMovement = player.GetComponent(typeof(Movement)) as Movement;
+
+                player.transform.position = telePoints[randInt].transform.position;
+                playerMovement.currentDirection = (Vector2.zero);
+                playerMovement.nextDirection = (Vector2.zero);
+                break;
+            case 2:
+                enemyOneAtr.ToggleIgnorePlayer(true, player);
+                enemyTwoAtr.ToggleIgnorePlayer(true, player);
+                enemyThreeAtr.ToggleIgnorePlayer(true, player);
+                enemyFourAtr.ToggleIgnorePlayer(true, player);
+
+                StartCoroutine(EndInvincibility());
+                break;
+            case 3:
+                Movement enemyOneMovement = enemyOne.GetComponent(typeof(Movement)) as Movement;
+                Movement enemyTwoMovement = enemyTwo.GetComponent(typeof(Movement)) as Movement;
+                Movement enemyThreeMovement = enemyThree.GetComponent(typeof(Movement)) as Movement;
+                Movement enemyFourMovement = enemyFour.GetComponent(typeof(Movement)) as Movement;
+
+                enemyOneMovement.movementEnabled = false;
+                enemyTwoMovement.movementEnabled = false;
+                enemyThreeMovement.movementEnabled = false;
+                enemyFourMovement.movementEnabled = false;
+
+                StartCoroutine(ResumeTime());
+                break;
+            case 4:
+                enemyOneAtr.powerUpVulnerable = true;
+                enemyTwoAtr.powerUpVulnerable = true;
+                enemyThreeAtr.powerUpVulnerable = true;
+                enemyFourAtr.powerUpVulnerable = true;
+
+                StartCoroutine(EndVulnerableEnemies());
+                break;
+            case 5:
+                enemyOneAtr.scared = true;
+                enemyTwoAtr.scared = true;
+                enemyThreeAtr.scared = true;
+                enemyFourAtr.scared = true;
+
+                StartCoroutine(UnscareEnemies());
+                break;
+            default:
+                print("Oh shit");
+                break;
+        }
+    }
+
+    private IEnumerator EndInvincibility() {
+        yield return new WaitForSecondsRealtime(10);
+
+        enemyOneAtr.ToggleIgnorePlayer(false, player);
+        enemyTwoAtr.ToggleIgnorePlayer(false, player);
+        enemyThreeAtr.ToggleIgnorePlayer(false, player);
+        enemyFourAtr.ToggleIgnorePlayer(false, player);
+    }
+
+    private IEnumerator ResumeTime() {
+        yield return new WaitForSecondsRealtime(10);
+
+        Movement enemyOneMovement = enemyOne.GetComponent(typeof(Movement)) as Movement;
+        Movement enemyTwoMovement = enemyTwo.GetComponent(typeof(Movement)) as Movement;
+        Movement enemyThreeMovement = enemyThree.GetComponent(typeof(Movement)) as Movement;
+        Movement enemyFourMovement = enemyFour.GetComponent(typeof(Movement)) as Movement;
+
+        enemyOneMovement.movementEnabled = true;
+        enemyTwoMovement.movementEnabled = true;
+        enemyThreeMovement.movementEnabled = true;
+        enemyFourMovement.movementEnabled = true;
+    }
+
+    private IEnumerator EndVulnerableEnemies() {
+        yield return new WaitForSecondsRealtime(10);
+
+        enemyOneAtr.powerUpVulnerable = false;
+        enemyTwoAtr.powerUpVulnerable = false;
+        enemyThreeAtr.powerUpVulnerable = false;
+        enemyFourAtr.powerUpVulnerable = false;
+    }
+
+    private IEnumerator UnscareEnemies() {
+        yield return new WaitForSecondsRealtime(10);
+
+        enemyOneAtr.scared = false;
+        enemyTwoAtr.scared = false;
+        enemyThreeAtr.scared = false;
+        enemyFourAtr.scared = false;
     }
 
     private void VulnerableEnemies() {
