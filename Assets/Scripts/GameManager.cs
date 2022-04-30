@@ -107,11 +107,6 @@ public class GameManager : MonoBehaviour {
         }
 
         if (foundEnabledPellet == false) {
-            playerAniSprites.isEnabled = false;
-            enemyOneAniSprites.isEnabled = false;
-            enemyTwoAniSprites.isEnabled = false;
-            enemyThreeAniSprites.isEnabled = false;
-            enemyFourAniSprites.isEnabled = false;
             NewRound();
         }
     }
@@ -153,6 +148,38 @@ public class GameManager : MonoBehaviour {
         enemyFourAtr.Release();
     }
 
+    public void ReleaseEnemy(Enemy enemyToRelease) {
+        if (enemyToRelease == enemyOneAtr) {
+            Invoke("ReleaseEnemyOne", 5.0f);
+        } else if (enemyToRelease == enemyTwoAtr) {
+            Invoke("ReleaseEnemyTwo", 5.0f);
+        } else if (enemyToRelease == enemyThreeAtr) {
+            Invoke("ReleaseEnemyThree", 5.0f);
+        } else if (enemyToRelease == enemyFourAtr) {
+            Invoke("ReleaseEnemyFour", 5.0f);
+        }
+    }
+
+    private void ReleaseEnemyOne() {
+        enemyOneAtr.Release();
+        enemyOneAtr.ToggleIgnorePlayer(false, player);
+    }
+
+    private void ReleaseEnemyTwo() {
+        enemyTwoAtr.Release();
+        enemyTwoAtr.ToggleIgnorePlayer(false, player);
+    }
+
+    private void ReleaseEnemyThree() {
+        enemyThreeAtr.Release();
+        enemyThreeAtr.ToggleIgnorePlayer(false, player);
+    }
+
+    private void ReleaseEnemyFour() {
+        enemyFourAtr.Release();
+        enemyFourAtr.ToggleIgnorePlayer(false, player);
+    }
+
     private void startGame() {
         Movement playerMovement = player.GetComponent(typeof(Movement)) as Movement;
         Movement enemyOneMovement = enemyOne.GetComponent(typeof(Movement)) as Movement;
@@ -165,6 +192,12 @@ public class GameManager : MonoBehaviour {
         enemyTwoMovement.movementEnabled = true;
         enemyThreeMovement.movementEnabled = true;
         enemyFourMovement.movementEnabled = true;
+
+        playerMovement.speed += 0.1f;
+        enemyOneMovement.speed += 0.1f;
+        enemyTwoMovement.speed += 0.1f;
+        enemyThreeMovement.speed += 0.1f;
+        enemyFourMovement.speed += 0.1f;
 
         Random rand = new Random();
         int randInt = rand.Next(0, 2);
@@ -204,17 +237,21 @@ public class GameManager : MonoBehaviour {
 
         readyText.SetActive(true);
 
-        enemyOneAtr.ResetState();
+        enemyOneAtr.ResetEnemy();
         enemyOneAtr.inHome = false;
+        enemyOneAtr.ToggleIgnorePlayer(false, player);
 
-        enemyTwoAtr.ResetState();
+        enemyTwoAtr.ResetEnemy();
         enemyTwoAtr.inHome = true;
+        enemyTwoAtr.ToggleIgnorePlayer(false, player);
 
-        enemyThreeAtr.ResetState();
+        enemyThreeAtr.ResetEnemy();
         enemyThreeAtr.inHome = true;
+        enemyThreeAtr.ToggleIgnorePlayer(false, player);
 
-        enemyFourAtr.ResetState();
+        enemyFourAtr.ResetEnemy();
         enemyFourAtr.inHome = true;
+        enemyFourAtr.ToggleIgnorePlayer(false, player);
 
         player.transform.position = new Vector3(0, -3.5f, -5.0f);
         enemyOne.transform.position = new Vector3(0, 2.5f, -5.0f);
@@ -233,6 +270,7 @@ public class GameManager : MonoBehaviour {
         CancelInvoke("ResumeTime");
         CancelInvoke("EndVulnerableEnemies");
         CancelInvoke("UnscareEnemies");
+        CancelInvoke("SpawnPowerUp");
 
         StartCoroutine(roundEndWait());
     }
@@ -422,17 +460,21 @@ public class GameManager : MonoBehaviour {
         enemyThreeMovement.movementEnabled = false;
         enemyFourMovement.movementEnabled = false;
 
-        enemyOneAtr.ResetState();
+        enemyOneAtr.ResetEnemy();
         enemyOneAtr.inHome = false;
+        enemyOneAtr.ToggleIgnorePlayer(false, player);
 
-        enemyTwoAtr.ResetState();
+        enemyTwoAtr.ResetEnemy();
         enemyTwoAtr.inHome = true;
+        enemyTwoAtr.ToggleIgnorePlayer(false, player);
 
-        enemyThreeAtr.ResetState();
+        enemyThreeAtr.ResetEnemy();
         enemyThreeAtr.inHome = true;
+        enemyThreeAtr.ToggleIgnorePlayer(false, player);
 
-        enemyFourAtr.ResetState();
+        enemyFourAtr.ResetEnemy();
         enemyFourAtr.inHome = true;
+        enemyFourAtr.ToggleIgnorePlayer(false, player);
 
         player.transform.position = new Vector3(0, -3.5f, -5.0f);
         enemyOne.transform.position = new Vector3(0, 2.5f, -5.0f);

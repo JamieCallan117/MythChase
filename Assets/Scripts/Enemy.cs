@@ -4,7 +4,6 @@ using System;
 using UnityEngine;
 using Random=System.Random;
 
-
 [RequireComponent(typeof(AnimatedSprites))]
 public class Enemy : MonoBehaviour {
     private AnimatedSprites aniSprites;
@@ -23,7 +22,6 @@ public class Enemy : MonoBehaviour {
     private GameManager gameManager;
     public CircleCollider2D circleCollider;
     public Sprite eatenSprite;
-
     public GameObject homePoint;
     public GameObject inHomePoint;
 
@@ -51,7 +49,9 @@ public class Enemy : MonoBehaviour {
                 eaten = false;
                 enteringHome = false;
                 inHome = true;
-                aniSprites.isEnabled = true;
+                aniSprites.enable(true);
+
+                aniSprites.sprites = regularSprites;
 
                 Random rand = new Random();
                 int randInt = rand.Next(0, 2);
@@ -61,6 +61,8 @@ public class Enemy : MonoBehaviour {
                 } else {
                     movement.Move(Vector2.right);
                 }
+
+                gameManager.ReleaseEnemy(this);
             }
         }
 
@@ -96,7 +98,7 @@ public class Enemy : MonoBehaviour {
         }
     }
 
-    public void ResetState() {
+    public void ResetEnemy() {
         scared = false;
         powerUpVulnerable = false;
         vulnerable = false;
@@ -104,23 +106,27 @@ public class Enemy : MonoBehaviour {
         enteringHome = false;
         leavingHome = false;
         exitingHome = false;
+        aniSprites.enable(true);
+        aniSprites.sprites = regularSprites;
     }
 
     public void SetVulnerable(bool vulnerable) {
+        if (this.vulnerable == true) {
+            CancelInvoke("UndoVulnerability");
+        }
+
         this.vulnerable = vulnerable;
 
-        if (this.vulnerable == true) {
+        if (vulnerable == true) {
             aniSprites.sprites = vulnerableSprites;
+
+            Invoke("UndoVulnerability", 10.0f);
         } else {
             aniSprites.sprites = regularSprites;
         }
-
-        StartCoroutine(UndoVulnerability());
     }
 
-    private IEnumerator UndoVulnerability() {
-        yield return new WaitForSecondsRealtime(10);
-
+    private void UndoVulnerability() {
         SetVulnerable(false);
     }
 
