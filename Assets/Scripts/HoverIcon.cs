@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class HoverIcon : MonoBehaviour {
     private GameObject playArrow;
@@ -12,6 +13,8 @@ public class HoverIcon : MonoBehaviour {
     private GameObject ameArrow;
     private GameObject calliArrow;
     private GameObject guraArrow;
+    private GameObject textBox;
+    private TextMeshProUGUI characterText;
 
     public void Awake() {
         playArrow = GameObject.Find("PlayArrow");
@@ -24,6 +27,11 @@ public class HoverIcon : MonoBehaviour {
         ameArrow = GameObject.Find("AmeArrow");
         calliArrow = GameObject.Find("CalliArrow");
         guraArrow = GameObject.Find("GuraArrow");
+        textBox = GameObject.Find("CharacterText");
+
+        if (textBox != null) {
+            characterText = textBox.GetComponent(typeof(TextMeshProUGUI)) as TextMeshProUGUI;
+        }  
     }
 
     public void Start() {
@@ -90,6 +98,8 @@ public class HoverIcon : MonoBehaviour {
         ameArrow.SetActive(false);
         calliArrow.SetActive(false);
         guraArrow.SetActive(false);
+
+        characterText.text = "Ina'nis - Can summon the power of the void to teleport to a random junction on the map.";
     }
 
     public void hoverKiara() {
@@ -98,6 +108,8 @@ public class HoverIcon : MonoBehaviour {
         ameArrow.SetActive(false);
         calliArrow.SetActive(false);
         guraArrow.SetActive(false);
+
+        characterText.text = "Kiara - Uses her phoenix powers to become invulnerable for a short period of time.";
     }
 
     public void hoverAme() {
@@ -106,6 +118,8 @@ public class HoverIcon : MonoBehaviour {
         ameArrow.SetActive(true);
         calliArrow.SetActive(false);
         guraArrow.SetActive(false);
+
+        characterText.text = "Amelia - Freezes time around her to allow for a quick escape.";
     }
 
     public void hoverCalli() {
@@ -114,6 +128,8 @@ public class HoverIcon : MonoBehaviour {
         ameArrow.SetActive(false);
         calliArrow.SetActive(true);
         guraArrow.SetActive(false);
+
+        characterText.text = "Calliope - Unleashes her powers to harvest the souls of anyone she comes into contact with.";
     }
 
     public void hoverGura() {
@@ -122,5 +138,7 @@ public class HoverIcon : MonoBehaviour {
         ameArrow.SetActive(false);
         calliArrow.SetActive(false);
         guraArrow.SetActive(true);
+
+        characterText.text = "Gura - Becomes the feared Apex predator and scares away any who dare to approach her.";
     }
 }

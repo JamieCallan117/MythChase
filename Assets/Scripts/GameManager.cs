@@ -87,6 +87,7 @@ public class GameManager : MonoBehaviour {
         SetLives(3);
         LoadPlayerSprites(); 
         powerUp.SetActive(false);
+        powerUpItem.SetActive(false);
 
         StartCoroutine(newRoundWait());
 
@@ -106,13 +107,22 @@ public class GameManager : MonoBehaviour {
         }
 
         if (foundEnabledPellet == false) {
-                playerAniSprites.isEnabled = false;
-                enemyOneAniSprites.isEnabled = false;
-                enemyTwoAniSprites.isEnabled = false;
-                enemyThreeAniSprites.isEnabled = false;
-                enemyFourAniSprites.isEnabled = false;
-                NewRound();
-            }
+            playerAniSprites.isEnabled = false;
+            enemyOneAniSprites.isEnabled = false;
+            enemyTwoAniSprites.isEnabled = false;
+            enemyThreeAniSprites.isEnabled = false;
+            enemyFourAniSprites.isEnabled = false;
+            NewRound();
+        }
+    }
+
+    private void SpawnPowerUp() {
+        Random rand = new Random();
+        int randInt = rand.Next(0, 3);
+
+        if (randInt == 2 && powerUpOwned == false) {
+            powerUpItem.SetActive(true);
+        }
     }
 
     private IEnumerator newRoundWait() {
@@ -131,10 +141,16 @@ public class GameManager : MonoBehaviour {
         StartCoroutine(newRoundWait());
     }
 
-    private IEnumerator releaseEnemyTimer(int time, Enemy enemy) {
-        yield return new WaitForSecondsRealtime(time);
+    private void ReleaseEnemyTwoStart() {
+        enemyTwoAtr.Release();
+    }
 
-        enemy.Release();
+    private void ReleaseEnemyThreeStart() {
+        enemyThreeAtr.Release();
+    }
+
+    private void ReleaseEnemyFourStart() {
+        enemyFourAtr.Release();
     }
 
     private void startGame() {
@@ -166,23 +182,57 @@ public class GameManager : MonoBehaviour {
 
         readyText.SetActive(false);
 
-        StartCoroutine(releaseEnemyTimer(5, enemyTwoAtr));
-        StartCoroutine(releaseEnemyTimer(10, enemyThreeAtr));
-        StartCoroutine(releaseEnemyTimer(15, enemyFourAtr));
+        Invoke("ReleaseEnemyTwoStart", 5.0f);
+        Invoke("ReleaseEnemyThreeStart", 10.0f);
+        Invoke("ReleaseEnemyFourStart", 15.0f);
+
+        InvokeRepeating("SpawnPowerUp", 0.0f, 10.0f);
     }
 
     private void NewRound() {
         Movement playerMovement = player.GetComponent(typeof(Movement)) as Movement;
+        Movement enemyOneMovement = enemyOne.GetComponent(typeof(Movement)) as Movement;
+        Movement enemyTwoMovement = enemyTwo.GetComponent(typeof(Movement)) as Movement;
+        Movement enemyThreeMovement = enemyThree.GetComponent(typeof(Movement)) as Movement;
+        Movement enemyFourMovement = enemyFour.GetComponent(typeof(Movement)) as Movement;
 
         playerMovement.movementEnabled = false;
+        enemyOneMovement.movementEnabled = false;
+        enemyTwoMovement.movementEnabled = false;
+        enemyThreeMovement.movementEnabled = false;
+        enemyFourMovement.movementEnabled = false;
 
         readyText.SetActive(true);
+
+        enemyOneAtr.ResetState();
+        enemyOneAtr.inHome = false;
+
+        enemyTwoAtr.ResetState();
+        enemyTwoAtr.inHome = true;
+
+        enemyThreeAtr.ResetState();
+        enemyThreeAtr.inHome = true;
+
+        enemyFourAtr.ResetState();
+        enemyFourAtr.inHome = true;
 
         player.transform.position = new Vector3(0, -3.5f, -5.0f);
         enemyOne.transform.position = new Vector3(0, 2.5f, -5.0f);
         enemyTwo.transform.position = new Vector3(-2, -0.5f, -5.0f);
         enemyThree.transform.position = new Vector3(0, -0.5f, -5.0f);
         enemyFour.transform.position = new Vector3(2, -0.5f, -5.0f);
+
+        CancelInvoke("ReleaseEnemyTwoStart");
+        CancelInvoke("ReleaseEnemyThreeStart");
+        CancelInvoke("ReleaseEnemyFourStart");
+        CancelInvoke("ReleaseEnemyOne");
+        CancelInvoke("ReleaseEnemyTwo");
+        CancelInvoke("ReleaseEnemyThree");
+        CancelInvoke("ReleaseEnemyFour");
+        CancelInvoke("EndInvincibility");
+        CancelInvoke("ResumeTime");
+        CancelInvoke("EndVulnerableEnemies");
+        CancelInvoke("UnscareEnemies");
 
         StartCoroutine(roundEndWait());
     }
@@ -235,6 +285,7 @@ public class GameManager : MonoBehaviour {
 
     public PowerUp PickUpPowerUp() {
         powerUp.SetActive(true);
+        powerUpItem.SetActive(false);
 
         powerUpOwned = true;
 
@@ -270,7 +321,7 @@ public class GameManager : MonoBehaviour {
                 enemyThreeAtr.ToggleIgnorePlayer(true, player);
                 enemyFourAtr.ToggleIgnorePlayer(true, player);
 
-                StartCoroutine(EndInvincibility());
+                Invoke("EndInvincibility", 10.0f);
                 break;
             case 3:
                 Movement enemyOneMovement = enemyOne.GetComponent(typeof(Movement)) as Movement;
@@ -283,7 +334,7 @@ public class GameManager : MonoBehaviour {
                 enemyThreeMovement.movementEnabled = false;
                 enemyFourMovement.movementEnabled = false;
 
-                StartCoroutine(ResumeTime());
+                Invoke("ResumeTime", 10.0f);
                 break;
             case 4:
                 enemyOneAtr.powerUpVulnerable = true;
@@ -291,7 +342,7 @@ public class GameManager : MonoBehaviour {
                 enemyThreeAtr.powerUpVulnerable = true;
                 enemyFourAtr.powerUpVulnerable = true;
 
-                StartCoroutine(EndVulnerableEnemies());
+                Invoke("EndVulnerableEnemies", 10.0f);
                 break;
             case 5:
                 enemyOneAtr.scared = true;
@@ -299,7 +350,7 @@ public class GameManager : MonoBehaviour {
                 enemyThreeAtr.scared = true;
                 enemyFourAtr.scared = true;
 
-                StartCoroutine(UnscareEnemies());
+                Invoke("UnscareEnemies", 10.0f);
                 break;
             default:
                 print("Oh shit");
@@ -307,18 +358,14 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    private IEnumerator EndInvincibility() {
-        yield return new WaitForSecondsRealtime(10);
-
+    private void EndInvincibility() {
         enemyOneAtr.ToggleIgnorePlayer(false, player);
         enemyTwoAtr.ToggleIgnorePlayer(false, player);
         enemyThreeAtr.ToggleIgnorePlayer(false, player);
         enemyFourAtr.ToggleIgnorePlayer(false, player);
     }
 
-    private IEnumerator ResumeTime() {
-        yield return new WaitForSecondsRealtime(10);
-
+    private void ResumeTime() {
         Movement enemyOneMovement = enemyOne.GetComponent(typeof(Movement)) as Movement;
         Movement enemyTwoMovement = enemyTwo.GetComponent(typeof(Movement)) as Movement;
         Movement enemyThreeMovement = enemyThree.GetComponent(typeof(Movement)) as Movement;
@@ -330,18 +377,14 @@ public class GameManager : MonoBehaviour {
         enemyFourMovement.movementEnabled = true;
     }
 
-    private IEnumerator EndVulnerableEnemies() {
-        yield return new WaitForSecondsRealtime(10);
-
+    private void EndVulnerableEnemies() {
         enemyOneAtr.powerUpVulnerable = false;
         enemyTwoAtr.powerUpVulnerable = false;
         enemyThreeAtr.powerUpVulnerable = false;
         enemyFourAtr.powerUpVulnerable = false;
     }
 
-    private IEnumerator UnscareEnemies() {
-        yield return new WaitForSecondsRealtime(10);
-
+    private void UnscareEnemies() {
         enemyOneAtr.scared = false;
         enemyTwoAtr.scared = false;
         enemyThreeAtr.scared = false;
@@ -368,16 +411,52 @@ public class GameManager : MonoBehaviour {
 
     public void PlayerHit() {
         Movement playerMovement = player.GetComponent(typeof(Movement)) as Movement;
+        Movement enemyOneMovement = enemyOne.GetComponent(typeof(Movement)) as Movement;
+        Movement enemyTwoMovement = enemyTwo.GetComponent(typeof(Movement)) as Movement;
+        Movement enemyThreeMovement = enemyThree.GetComponent(typeof(Movement)) as Movement;
+        Movement enemyFourMovement = enemyFour.GetComponent(typeof(Movement)) as Movement;
 
         playerMovement.movementEnabled = false;
+        enemyOneMovement.movementEnabled = false;
+        enemyTwoMovement.movementEnabled = false;
+        enemyThreeMovement.movementEnabled = false;
+        enemyFourMovement.movementEnabled = false;
 
-        playerAtr.ResetPosition();
-        enemyOneAtr.ResetPosition();
-        enemyTwoAtr.ResetPosition();
-        enemyThreeAtr.ResetPosition();
-        enemyFourAtr.ResetPosition();
+        enemyOneAtr.ResetState();
+        enemyOneAtr.inHome = false;
+
+        enemyTwoAtr.ResetState();
+        enemyTwoAtr.inHome = true;
+
+        enemyThreeAtr.ResetState();
+        enemyThreeAtr.inHome = true;
+
+        enemyFourAtr.ResetState();
+        enemyFourAtr.inHome = true;
+
+        player.transform.position = new Vector3(0, -3.5f, -5.0f);
+        enemyOne.transform.position = new Vector3(0, 2.5f, -5.0f);
+        enemyTwo.transform.position = new Vector3(-2, -0.5f, -5.0f);
+        enemyThree.transform.position = new Vector3(0, -0.5f, -5.0f);
+        enemyFour.transform.position = new Vector3(2, -0.5f, -5.0f);
+
+        readyText.SetActive(true);
 
         SetLives(this.lives - 1);
+
+        CancelInvoke("ReleaseEnemyTwoStart");
+        CancelInvoke("ReleaseEnemyThreeStart");
+        CancelInvoke("ReleaseEnemyFourStart");
+        CancelInvoke("ReleaseEnemyOne");
+        CancelInvoke("ReleaseEnemyTwo");
+        CancelInvoke("ReleaseEnemyThree");
+        CancelInvoke("ReleaseEnemyFour");
+        CancelInvoke("EndInvincibility");
+        CancelInvoke("ResumeTime");
+        CancelInvoke("EndVulnerableEnemies");
+        CancelInvoke("UnscareEnemies");
+
+        StartCoroutine(newRoundWait());
     }
 
     public Vector3 GetPlayerPos() {

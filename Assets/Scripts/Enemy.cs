@@ -32,6 +32,8 @@ public class Enemy : MonoBehaviour {
         movement = GetComponent<Movement>();
         gameManager = FindObjectOfType<GameManager>();
         startingPos = this.transform.position;
+        scared = false;
+        powerUpVulnerable = false;
         vulnerable = false;
         eaten = false;
         enteringHome = false;
@@ -92,6 +94,16 @@ public class Enemy : MonoBehaviour {
                 inHome = false;
             }
         }
+    }
+
+    public void ResetState() {
+        scared = false;
+        powerUpVulnerable = false;
+        vulnerable = false;
+        eaten = false;
+        enteringHome = false;
+        leavingHome = false;
+        exitingHome = false;
     }
 
     public void SetVulnerable(bool vulnerable) {
