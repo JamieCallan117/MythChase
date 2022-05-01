@@ -106,6 +106,7 @@ public class Enemy : MonoBehaviour {
         enteringHome = false;
         leavingHome = false;
         exitingHome = false;
+        circleCollider.enabled = true;
         aniSprites.enable(true);
         aniSprites.sprites = regularSprites;
     }

@@ -46,6 +46,10 @@ public class SceneChange : MonoBehaviour {
         }
     }
 
+    public void leaderboards() {
+        moveToScene(6);
+    }
+
     public void quitGame() {
         Application.Quit();
     }

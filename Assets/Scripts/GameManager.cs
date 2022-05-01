@@ -18,8 +18,12 @@ public class GameManager : MonoBehaviour {
     public GameObject lifeThree;
     public GameObject powerUp;
     public GameObject scoreValue;
+    public GameObject highScoreValue;
     public GameObject readyText;
     public GameObject powerUpItem;
+    public GameObject gameOverPanel;
+    public GameObject usernameObj;
+    public GameObject finalScore;
     private Enemy enemyOneAtr;
     private Enemy enemyTwoAtr;
     private Enemy enemyThreeAtr;
@@ -37,6 +41,9 @@ public class GameManager : MonoBehaviour {
     private Image lifeThreeImage;
     private Image powerUpImage;
     private TextMeshProUGUI scoreText;
+    private TextMeshProUGUI highScoreText;
+    private TextMeshProUGUI finalScoreText;
+    private TMP_InputField usernameField;
     private AnimatedSprites playerAniSprites;
     private AnimatedSprites enemyOneAniSprites;
     private AnimatedSprites enemyTwoAniSprites;
@@ -44,12 +51,15 @@ public class GameManager : MonoBehaviour {
     private AnimatedSprites enemyFourAniSprites;
     private AudioSource audioSource;
     private int score;
+    private int highScore;
     private int lives;
     private int powerUpID;
     private bool powerUpOwned;
+    private bool hasHighScore;
     private List<Pellet> pellets = new List<Pellet>();
     private List<CheckPoint> telePoints = new List<CheckPoint>();
     private Leaderboard leaderboard;
+    public SceneChange sceneChange;
 
     private void Awake() {
         playerAniSprites = player.GetComponent(typeof(AnimatedSprites)) as AnimatedSprites;
@@ -74,12 +84,19 @@ public class GameManager : MonoBehaviour {
         playerAtr = player.GetComponent(typeof(Player)) as Player;
         powerUpAtr = powerUpItem.GetComponent(typeof(PowerUp)) as PowerUp;
         scoreText = scoreValue.GetComponent(typeof(TextMeshProUGUI)) as TextMeshProUGUI;
+        highScoreText = highScoreValue.GetComponent(typeof(TextMeshProUGUI)) as TextMeshProUGUI;
+        finalScoreText = finalScore.GetComponent(typeof(TextMeshProUGUI)) as TextMeshProUGUI;
+        usernameField = usernameObj.GetComponent(typeof(TMP_InputField)) as TMP_InputField;
         audioSource = GetComponent<AudioSource>();
 
-        powerUpOwned = false;
+        gameOverPanel.SetActive(false);
 
-        SaveFile();
-        //LoadFile();
+        powerUpOwned = false;
+        hasHighScore = false;
+
+        LoadFile();
+
+        GetHighScore();
     }
 
     private void Start() {  
@@ -96,6 +113,14 @@ public class GameManager : MonoBehaviour {
 
     private void Update() {
         scoreText.text = score.ToString();
+
+        if (hasHighScore == false && score > highScore) {
+            hasHighScore = true;
+        }
+
+        if (hasHighScore) {
+            highScoreText.text = score.ToString();
+        }
 
         bool foundEnabledPellet = false;
 
@@ -121,6 +146,7 @@ public class GameManager : MonoBehaviour {
     }
 
     private IEnumerator newRoundWait() {
+        readyText.SetActive(true);
         yield return new WaitForSecondsRealtime(5);
 
         startGame();
@@ -235,6 +261,17 @@ public class GameManager : MonoBehaviour {
         enemyThreeMovement.movementEnabled = false;
         enemyFourMovement.movementEnabled = false;
 
+        playerMovement.currentDirection = Vector2.zero;
+        playerMovement.nextDirection = Vector2.zero;
+        enemyOneMovement.currentDirection = Vector2.zero;
+        enemyOneMovement.nextDirection = Vector2.zero;
+        enemyTwoMovement.currentDirection = Vector2.zero;
+        enemyTwoMovement.nextDirection = Vector2.zero;
+        enemyThreeMovement.currentDirection = Vector2.zero;
+        enemyThreeMovement.nextDirection = Vector2.zero;
+        enemyFourMovement.currentDirection = Vector2.zero;
+        enemyFourMovement.nextDirection = Vector2.zero;
+
         readyText.SetActive(true);
 
         enemyOneAtr.ResetEnemy();
@@ -302,21 +339,29 @@ public class GameManager : MonoBehaviour {
                 lifeOne.SetActive(true);
                 lifeTwo.SetActive(false);
                 lifeThree.SetActive(false);
+
+                StartCoroutine(newRoundWait());
                 break;
             case 2:
                 lifeOne.SetActive(true);
                 lifeTwo.SetActive(true);
                 lifeThree.SetActive(false);
+
+                StartCoroutine(newRoundWait());
                 break;
             case 3:
                 lifeOne.SetActive(true);
                 lifeTwo.SetActive(true);
                 lifeThree.SetActive(true);
+
+                StartCoroutine(newRoundWait());
                 break;
             default:
                 lifeOne.SetActive(false);
                 lifeTwo.SetActive(false);
                 lifeThree.SetActive(false);
+
+                GameOver();
                 break;
         }
     }
@@ -460,6 +505,17 @@ public class GameManager : MonoBehaviour {
         enemyThreeMovement.movementEnabled = false;
         enemyFourMovement.movementEnabled = false;
 
+        playerMovement.currentDirection = Vector2.zero;
+        playerMovement.nextDirection = Vector2.zero;
+        enemyOneMovement.currentDirection = Vector2.zero;
+        enemyOneMovement.nextDirection = Vector2.zero;
+        enemyTwoMovement.currentDirection = Vector2.zero;
+        enemyTwoMovement.nextDirection = Vector2.zero;
+        enemyThreeMovement.currentDirection = Vector2.zero;
+        enemyThreeMovement.nextDirection = Vector2.zero;
+        enemyFourMovement.currentDirection = Vector2.zero;
+        enemyFourMovement.nextDirection = Vector2.zero;
+
         enemyOneAtr.ResetEnemy();
         enemyOneAtr.inHome = false;
         enemyOneAtr.ToggleIgnorePlayer(false, player);
@@ -482,10 +538,6 @@ public class GameManager : MonoBehaviour {
         enemyThree.transform.position = new Vector3(0, -0.5f, -5.0f);
         enemyFour.transform.position = new Vector3(2, -0.5f, -5.0f);
 
-        readyText.SetActive(true);
-
-        SetLives(this.lives - 1);
-
         CancelInvoke("ReleaseEnemyTwoStart");
         CancelInvoke("ReleaseEnemyThreeStart");
         CancelInvoke("ReleaseEnemyFourStart");
@@ -498,11 +550,24 @@ public class GameManager : MonoBehaviour {
         CancelInvoke("EndVulnerableEnemies");
         CancelInvoke("UnscareEnemies");
 
-        StartCoroutine(newRoundWait());
+        SetLives(this.lives - 1);
     }
 
     public Vector3 GetPlayerPos() {
         return player.transform.position;
+    }
+
+    private void GameOver() {
+        player.SetActive(false);
+        enemyOne.SetActive(false);
+        enemyTwo.SetActive(false);
+        enemyThree.SetActive(false);
+        enemyFour.SetActive(false);
+        powerUpItem.SetActive(false);
+        CancelInvoke("SpawnPowerUp");
+        gameOverPanel.SetActive(true);
+
+        finalScoreText.text = "Score: " + score.ToString();
     }
 
     private void LoadPlayerSprites() {
@@ -720,6 +785,41 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public void SaveScore() {
+        string username = usernameField.text;
+        
+        if (leaderboard == null) {
+            leaderboard = new Leaderboard();
+        }
+
+        if (leaderboard.leaderboard[username] == null) {
+            leaderboard.addScore(username, score);
+        } else {
+            leaderboard.updateScore(username, score);
+        }
+
+        SaveFile();
+        sceneChange.moveToScene(0);
+    }
+
+    private void GetHighScore() {
+        int highestScore = 0;
+
+        if (leaderboard != null) {
+            foreach (int lbScore in leaderboard.leaderboard.Values) {
+                if (lbScore > highestScore) {
+                    highestScore = lbScore;
+                }
+            }
+        } else {
+            hasHighScore = true;
+        }
+
+        highScore = highestScore;
+
+        highScoreText.text = highScore.ToString();
+    }
+
     private void SaveFile() {
         string path = Application.persistentDataPath + "/leaderboard" + PlayerStats.level + ".dat";
         FileStream file;
@@ -729,16 +829,30 @@ public class GameManager : MonoBehaviour {
         } else {
             file = File.Create(path);
         }
+
+        BinaryFormatter bf = new BinaryFormatter();
+        bf.Serialize(file, leaderboard);
+
+        file.Close();
     }
 
     private void LoadFile() {
         string path = Application.persistentDataPath + "/leaderboard" + PlayerStats.level + ".dat";
-        FileStream file = File.OpenRead(path);
+        FileStream file;
 
-        BinaryFormatter bf = new BinaryFormatter();
-        Leaderboard lb = (Leaderboard) bf.Deserialize(file);
-        file.Close();
+        if (File.Exists(path)) {
+            file = File.OpenRead(path);
 
-        leaderboard = lb;
+            if (file.Length > 0) {
+                BinaryFormatter bf = new BinaryFormatter();
+                Leaderboard lb = (Leaderboard) bf.Deserialize(file);
+
+                leaderboard = lb;
+
+                file.Close();
+            }
+        } else {
+            leaderboard = null;
+        }
     }
 }
