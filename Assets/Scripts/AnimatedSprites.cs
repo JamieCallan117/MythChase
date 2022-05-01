@@ -14,7 +14,15 @@ public class AnimatedSprites : MonoBehaviour {
     }
 
     private void Start() {
-        InvokeRepeating(nameof(UpdateFrame), this.animationRate, this.animationRate);
+        InvokeRepeating("UpdateFrame", 0.0f, this.animationRate);
+    }
+
+    public void UpdateAnimationRate(float newRate) {
+        CancelInvoke("UpdateFrame");
+
+        animationRate = newRate;
+
+        InvokeRepeating("UpdateFrame", 0.0f, this.animationRate);
     }
 
     private void UpdateFrame() {

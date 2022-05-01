@@ -168,6 +168,7 @@ public class Enemy : MonoBehaviour {
             } else if (eaten == true) {
                 Physics2D.IgnoreCollision(other.gameObject.GetComponent<CircleCollider2D>(), GetComponent<CircleCollider2D>());
             } else {
+                circleCollider.enabled = false;
                 gameManager.PlayerHit();
             }
         } else if (other.gameObject.layer == LayerMask.NameToLayer("Walls")) {

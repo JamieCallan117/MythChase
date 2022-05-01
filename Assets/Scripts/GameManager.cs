@@ -89,8 +89,6 @@ public class GameManager : MonoBehaviour {
         usernameField = usernameObj.GetComponent(typeof(TMP_InputField)) as TMP_InputField;
         audioSource = GetComponent<AudioSource>();
 
-        gameOverPanel.SetActive(false);
-
         powerUpOwned = false;
         hasHighScore = false;
 
@@ -156,7 +154,25 @@ public class GameManager : MonoBehaviour {
         for (int i = 0; i < pellets.Count; i++) {
             pellets[i].gameObject.SetActive(true);
         }
-        
+
+        Movement playerMovement = player.GetComponent(typeof(Movement)) as Movement;
+        Movement enemyOneMovement = enemyOne.GetComponent(typeof(Movement)) as Movement;
+        Movement enemyTwoMovement = enemyTwo.GetComponent(typeof(Movement)) as Movement;
+        Movement enemyThreeMovement = enemyThree.GetComponent(typeof(Movement)) as Movement;
+        Movement enemyFourMovement = enemyFour.GetComponent(typeof(Movement)) as Movement;
+
+        playerMovement.movementEnabled = true;
+        enemyOneMovement.movementEnabled = true;
+        enemyTwoMovement.movementEnabled = true;
+        enemyThreeMovement.movementEnabled = true;
+        enemyFourMovement.movementEnabled = true;
+
+        playerMovement.speed += 0.1f;
+        enemyOneMovement.speed += 0.1f;
+        enemyTwoMovement.speed += 0.1f;
+        enemyThreeMovement.speed += 0.1f;
+        enemyFourMovement.speed += 0.1f;
+
         yield return new WaitForSecondsRealtime(2);
 
         StartCoroutine(newRoundWait());
@@ -218,12 +234,6 @@ public class GameManager : MonoBehaviour {
         enemyTwoMovement.movementEnabled = true;
         enemyThreeMovement.movementEnabled = true;
         enemyFourMovement.movementEnabled = true;
-
-        playerMovement.speed += 0.1f;
-        enemyOneMovement.speed += 0.1f;
-        enemyTwoMovement.speed += 0.1f;
-        enemyThreeMovement.speed += 0.1f;
-        enemyFourMovement.speed += 0.1f;
 
         Random rand = new Random();
         int randInt = rand.Next(0, 2);
@@ -436,7 +446,7 @@ public class GameManager : MonoBehaviour {
                 Invoke("UnscareEnemies", 10.0f);
                 break;
             default:
-                print("Oh shit");
+                sceneChange.moveToScene(0);
                 break;
         }
     }
@@ -516,6 +526,40 @@ public class GameManager : MonoBehaviour {
         enemyFourMovement.currentDirection = Vector2.zero;
         enemyFourMovement.nextDirection = Vector2.zero;
 
+        enemyOne.SetActive(false);
+        enemyTwo.SetActive(false);
+        enemyThree.SetActive(false);
+        enemyFour.SetActive(false);
+
+        CancelInvoke("ReleaseEnemyTwoStart");
+        CancelInvoke("ReleaseEnemyThreeStart");
+        CancelInvoke("ReleaseEnemyFourStart");
+        CancelInvoke("ReleaseEnemyOne");
+        CancelInvoke("ReleaseEnemyTwo");
+        CancelInvoke("ReleaseEnemyThree");
+        CancelInvoke("ReleaseEnemyFour");
+        CancelInvoke("EndInvincibility");
+        CancelInvoke("ResumeTime");
+        CancelInvoke("EndVulnerableEnemies");
+        CancelInvoke("UnscareEnemies");
+
+        playerAtr.aniSprites.enable(false);
+
+        playerAtr.KillPlayer();
+
+        Invoke("ResumePlay", 3.5f);
+    }
+
+    private void ResumePlay() {
+        enemyOne.SetActive(true);
+        enemyTwo.SetActive(true);
+        enemyThree.SetActive(true);
+        enemyFour.SetActive(true);
+
+        playerAtr.aniSprites.loop = true;
+        playerAtr.aniSprites.UpdateAnimationRate(0.05f);
+        playerAtr.aniSprites.sprites = playerAtr.regularSprites;
+
         enemyOneAtr.ResetEnemy();
         enemyOneAtr.inHome = false;
         enemyOneAtr.ToggleIgnorePlayer(false, player);
@@ -537,18 +581,6 @@ public class GameManager : MonoBehaviour {
         enemyTwo.transform.position = new Vector3(-2, -0.5f, -5.0f);
         enemyThree.transform.position = new Vector3(0, -0.5f, -5.0f);
         enemyFour.transform.position = new Vector3(2, -0.5f, -5.0f);
-
-        CancelInvoke("ReleaseEnemyTwoStart");
-        CancelInvoke("ReleaseEnemyThreeStart");
-        CancelInvoke("ReleaseEnemyFourStart");
-        CancelInvoke("ReleaseEnemyOne");
-        CancelInvoke("ReleaseEnemyTwo");
-        CancelInvoke("ReleaseEnemyThree");
-        CancelInvoke("ReleaseEnemyFour");
-        CancelInvoke("EndInvincibility");
-        CancelInvoke("ResumeTime");
-        CancelInvoke("EndVulnerableEnemies");
-        CancelInvoke("UnscareEnemies");
 
         SetLives(this.lives - 1);
     }
@@ -572,6 +604,7 @@ public class GameManager : MonoBehaviour {
 
     private void LoadPlayerSprites() {
         Sprite[] playerSprites = new Sprite[4];
+        Sprite[] deathSprites = new Sprite[5];
 
         switch(PlayerStats.character) {
             case 2:
@@ -586,7 +619,15 @@ public class GameManager : MonoBehaviour {
                 playerSprites[2] = Resources.Load<Sprite>("Kiara_Normal_03");
                 playerSprites[3] = Resources.Load<Sprite>("Kiara_Normal_02");
 
+                deathSprites[0] = Resources.Load<Sprite>("Kiara_Death_01");
+                deathSprites[1] = Resources.Load<Sprite>("Kiara_Death_02");
+                deathSprites[2] = Resources.Load<Sprite>("Kiara_Death_03");
+                deathSprites[3] = Resources.Load<Sprite>("Kiara_Death_04");
+                deathSprites[4] = Resources.Load<Sprite>("Kiara_Death_05");
+
                 playerAniSprites.sprites = playerSprites;
+                playerAtr.regularSprites = playerSprites;
+                playerAtr.deathSprites = deathSprites;
                 powerUpSprite.sprite = Resources.Load<Sprite>("Powerup_Kotori");
 
                 LoadEnemySprites(enemyOneSprite, enemyOneAniSprites, 1, enemyOneAtr);
@@ -608,7 +649,15 @@ public class GameManager : MonoBehaviour {
                 playerSprites[2] = Resources.Load<Sprite>("Ame_Normal_03");
                 playerSprites[3] = Resources.Load<Sprite>("Ame_Normal_02");
 
+                deathSprites[0] = Resources.Load<Sprite>("Ame_Death_01");
+                deathSprites[1] = Resources.Load<Sprite>("Ame_Death_02");
+                deathSprites[2] = Resources.Load<Sprite>("Ame_Death_03");
+                deathSprites[3] = Resources.Load<Sprite>("Ame_Death_04");
+                deathSprites[4] = Resources.Load<Sprite>("Ame_Death_05");
+
                 playerAniSprites.sprites = playerSprites;
+                playerAtr.regularSprites = playerSprites;
+                playerAtr.deathSprites = deathSprites;
                 powerUpSprite.sprite = Resources.Load<Sprite>("Powerup_Bubba");
 
                 LoadEnemySprites(enemyOneSprite, enemyOneAniSprites, 1, enemyOneAtr);
@@ -630,7 +679,15 @@ public class GameManager : MonoBehaviour {
                 playerSprites[2] = Resources.Load<Sprite>("Calli_Normal_03");
                 playerSprites[3] = Resources.Load<Sprite>("Calli_Normal_02");
 
+                deathSprites[0] = Resources.Load<Sprite>("Calli_Death_01");
+                deathSprites[1] = Resources.Load<Sprite>("Calli_Death_02");
+                deathSprites[2] = Resources.Load<Sprite>("Calli_Death_03");
+                deathSprites[3] = Resources.Load<Sprite>("Calli_Death_04");
+                deathSprites[4] = Resources.Load<Sprite>("Calli_Death_05");
+
                 playerAniSprites.sprites = playerSprites;
+                playerAtr.regularSprites = playerSprites;
+                playerAtr.deathSprites = deathSprites;
                 powerUpSprite.sprite = Resources.Load<Sprite>("Powerup_DeathSensei");
 
                 LoadEnemySprites(enemyOneSprite, enemyOneAniSprites, 1, enemyOneAtr);
@@ -652,7 +709,15 @@ public class GameManager : MonoBehaviour {
                 playerSprites[2] = Resources.Load<Sprite>("Gura_Normal_03");
                 playerSprites[3] = Resources.Load<Sprite>("Gura_Normal_02");
 
+                deathSprites[0] = Resources.Load<Sprite>("Gura_Death_01");
+                deathSprites[1] = Resources.Load<Sprite>("Gura_Death_02");
+                deathSprites[2] = Resources.Load<Sprite>("Gura_Death_03");
+                deathSprites[3] = Resources.Load<Sprite>("Gura_Death_04");
+                deathSprites[4] = Resources.Load<Sprite>("Gura_Death_05");
+
                 playerAniSprites.sprites = playerSprites;
+                playerAtr.regularSprites = playerSprites;
+                playerAtr.deathSprites = deathSprites;
                 powerUpSprite.sprite = Resources.Load<Sprite>("Powerup_Bloop");
 
                 LoadEnemySprites(enemyOneSprite, enemyOneAniSprites, 1, enemyOneAtr);
@@ -674,7 +739,15 @@ public class GameManager : MonoBehaviour {
                 playerSprites[2] = Resources.Load<Sprite>("Ina_Normal_03");
                 playerSprites[3] = Resources.Load<Sprite>("Ina_Normal_02");
 
+                deathSprites[0] = Resources.Load<Sprite>("Ina_Death_01");
+                deathSprites[1] = Resources.Load<Sprite>("Ina_Death_02");
+                deathSprites[2] = Resources.Load<Sprite>("Ina_Death_03");
+                deathSprites[3] = Resources.Load<Sprite>("Ina_Death_04");
+                deathSprites[4] = Resources.Load<Sprite>("Ina_Death_05");
+
                 playerAniSprites.sprites = playerSprites;
+                playerAtr.regularSprites = playerSprites;
+                playerAtr.deathSprites = deathSprites;
                 powerUpSprite.sprite = Resources.Load<Sprite>("Powerup_Takodachi");
 
                 LoadEnemySprites(enemyOneSprite, enemyOneAniSprites, 2, enemyOneAtr);
