@@ -2,7 +2,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 
-public class HoverIcon : MonoBehaviour {
+public class HoverIcon : MonoBehaviour
+{
     private GameObject playArrow;
     private GameObject leaderboardsArrow;
     private GameObject achievementsArrow;
@@ -18,7 +19,8 @@ public class HoverIcon : MonoBehaviour {
     private GameObject textBox;
     private TextMeshProUGUI characterText;
 
-    public void Awake() {
+    void Awake()
+    {
         playArrow = GameObject.Find("PlayArrow");
         leaderboardsArrow = GameObject.Find("LeaderboardsArrow");
         achievementsArrow = GameObject.Find("AchievementsArrow");
@@ -33,96 +35,115 @@ public class HoverIcon : MonoBehaviour {
         guraArrow = GameObject.Find("GuraArrow");
         textBox = GameObject.Find("CharacterText");
 
-        if (textBox != null) {
+        if (textBox != null)
+        {
             characterText = textBox.GetComponent(typeof(TextMeshProUGUI)) as TextMeshProUGUI;
         }  
     }
 
-    public void Start() {
-        if (leaderboardsArrow != null) {
+    void Start()
+    {
+        if (leaderboardsArrow != null)
+        {
             leaderboardsArrow.SetActive(false);
         }
 
-        if (achievementsArrow != null) {
+        if (achievementsArrow != null)
+        {
             achievementsArrow.SetActive(false);
         }
 
-        if (quitArrow != null) {
+        if (quitArrow != null)
+        {
             quitArrow.SetActive(false);
         }
 
-        if (levelTwoArrow != null) {
+        if (levelTwoArrow != null)
+        {
             levelTwoArrow.SetActive(false);
         }
 
-        if (levelThreeArrow != null) {
+        if (levelThreeArrow != null)
+        {
             levelThreeArrow.SetActive(false);
         }
 
-        if (kiaraArrow != null) {
+        if (kiaraArrow != null)
+        {
             kiaraArrow.SetActive(false);
         }
 
-        if (ameArrow != null) {
+        if (ameArrow != null)
+        {
             ameArrow.SetActive(false);
         }
 
-        if (calliArrow != null) {
+        if (calliArrow != null)
+        {
             calliArrow.SetActive(false);
         }
 
-        if (guraArrow != null) {
+        if (guraArrow != null)
+        {
             guraArrow.SetActive(false);
         }
     }
 
-    public void hoverPlay() {
+    public void hoverPlay()
+    {
         playArrow.SetActive(true);
         leaderboardsArrow.SetActive(false);
         achievementsArrow.SetActive(false);
         quitArrow.SetActive(false);
     }
 
-    public void hoverLeaderboards() {
+    public void hoverLeaderboards()
+    {
         playArrow.SetActive(false);
         leaderboardsArrow.SetActive(true);
         achievementsArrow.SetActive(false);
         quitArrow.SetActive(false);
     }
 
-    public void hoverAchievements() {
+    public void hoverAchievements()
+    {
         playArrow.SetActive(false);
         leaderboardsArrow.SetActive(false);
         achievementsArrow.SetActive(true);
         quitArrow.SetActive(false);
     }
 
-    public void hoverQuit() {
+    public void hoverQuit()
+    {
         playArrow.SetActive(false);
         leaderboardsArrow.SetActive(false);
         achievementsArrow.SetActive(false);
         quitArrow.SetActive(true);
     }
 
-    public void hoverLevelOne() {
+    public void hoverLevelOne()
+    {
         levelOneArrow.SetActive(true);
         levelTwoArrow.SetActive(false);
         levelThreeArrow.SetActive(false);
     }
 
-    public void hoverLevelTwo() {
+    public void hoverLevelTwo()
+    {
         levelOneArrow.SetActive(false);
         levelTwoArrow.SetActive(true);
         levelThreeArrow.SetActive(false);
     }
 
-    public void hoverLevelThree() {
+    public void hoverLevelThree()
+    {
         levelOneArrow.SetActive(false);
         levelTwoArrow.SetActive(false);
         levelThreeArrow.SetActive(true);
     }
 
-    public void hoverIna() {
+    public void hoverIna()
+    {
         inaArrow.SetActive(true);
         kiaraArrow.SetActive(false);
         ameArrow.SetActive(false);
@@ -132,7 +153,8 @@ public class HoverIcon : MonoBehaviour {
         characterText.text = "Ina'nis - Can summon the power of the void to teleport to a random junction on the map.";
     }
 
-    public void hoverKiara() {
+    public void hoverKiara()
+    {
         inaArrow.SetActive(false);
         kiaraArrow.SetActive(true);
         ameArrow.SetActive(false);
@@ -142,7 +164,8 @@ public class HoverIcon : MonoBehaviour {
         characterText.text = "Kiara - Uses her phoenix powers to become invulnerable for a short period of time.";
     }
 
-    public void hoverAme() {
+    public void hoverAme()
+    {
         inaArrow.SetActive(false);
         kiaraArrow.SetActive(false);
         ameArrow.SetActive(true);
@@ -152,7 +175,8 @@ public class HoverIcon : MonoBehaviour {
         characterText.text = "Amelia - Freezes time around her to allow for a quick escape.";
     }
 
-    public void hoverCalli() {
+    public void hoverCalli()
+    {
         inaArrow.SetActive(false);
         kiaraArrow.SetActive(false);
         ameArrow.SetActive(false);
@@ -162,7 +186,8 @@ public class HoverIcon : MonoBehaviour {
         characterText.text = "Calliope - Unleashes her powers to harvest the souls of anyone she comes into contact with.";
     }
 
-    public void hoverGura() {
+    public void hoverGura()
+    {
         inaArrow.SetActive(false);
         kiaraArrow.SetActive(false);
         ameArrow.SetActive(false);

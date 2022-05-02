@@ -5157,7 +5157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8a08614d8494ec4187c74f27c8380f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aniSprites: {fileID: 0}
+  aniSprites: {fileID: 988709908}
   powerUpObj: {fileID: 1868623943}
   regularSprites: []
   deathSprites: []
@@ -5519,7 +5519,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 700458744}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: DontSaveScore
+        m_MethodName: ExitWithoutSave
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -7,23 +7,24 @@ using System.Runtime.Serialization.Formatters.Binary;
 using TMPro;
 using Random=System.Random;
 
-public class GameManager : MonoBehaviour {
-    public GameObject player;
-    public GameObject enemyOne;
-    public GameObject enemyTwo;
-    public GameObject enemyThree;
-    public GameObject enemyFour;
-    public GameObject lifeOne;
-    public GameObject lifeTwo;
-    public GameObject lifeThree;
-    public GameObject powerUp;
-    public GameObject scoreValue;
-    public GameObject highScoreValue;
-    public GameObject readyText;
-    public GameObject powerUpItem;
-    public GameObject gameOverPanel;
-    public GameObject usernameObj;
-    public GameObject finalScore;
+public class GameManager : MonoBehaviour
+{
+    [SerializeField] private GameObject player;
+    [SerializeField] private GameObject enemyOne;
+    [SerializeField] private GameObject enemyTwo;
+    [SerializeField] private GameObject enemyThree;
+    [SerializeField] private GameObject enemyFour;
+    [SerializeField] private GameObject lifeOne;
+    [SerializeField] private GameObject lifeTwo;
+    [SerializeField] private GameObject lifeThree;
+    [SerializeField] private GameObject powerUp;
+    [SerializeField] private GameObject scoreValue;
+    [SerializeField] private GameObject highScoreValue;
+    [SerializeField] private GameObject readyText;
+    [SerializeField] private GameObject powerUpItem;
+    [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private GameObject usernameObj;
+    [SerializeField] private GameObject finalScore;
     private Enemy enemyOneAtr;
     private Enemy enemyTwoAtr;
     private Enemy enemyThreeAtr;
@@ -61,9 +62,10 @@ public class GameManager : MonoBehaviour {
     private List<CheckPoint> telePoints = new List<CheckPoint>();
     private Leaderboard leaderboard;
     private Achievement achievements;
-    public SceneChange sceneChange;
+    [SerializeField] private SceneChange sceneChange;
 
-    private void Awake() {
+    void Awake()
+    {
         playerAniSprites = player.GetComponent(typeof(AnimatedSprites)) as AnimatedSprites;
         enemyOneAniSprites = enemyOne.GetComponent(typeof(AnimatedSprites)) as AnimatedSprites;
         enemyTwoAniSprites = enemyTwo.GetComponent(typeof(AnimatedSprites)) as AnimatedSprites;
@@ -102,7 +104,8 @@ public class GameManager : MonoBehaviour {
         GetHighScore();
     }
 
-    private void Start() {  
+    void Start()
+    {  
         SetScore(0);
         SetLives(3);
         LoadPlayerSprites(); 
@@ -114,55 +117,56 @@ public class GameManager : MonoBehaviour {
         audioSource.Play();
     }
 
-    private void Update() {
+    void Update()
+    {
         scoreText.text = score.ToString();
 
-        if (hasHighScore == false && score > highScore) {
+        if (hasHighScore == false && score > highScore)
+        {
             hasHighScore = true;
         }
 
-        if (hasHighScore) {
+        if (hasHighScore)
+        {
             highScoreText.text = score.ToString();
         }
 
         bool foundEnabledPellet = false;
 
-        for (int i = 0; i < pellets.Count; i++) {
-            if (pellets[i].gameObject.activeInHierarchy == true && foundEnabledPellet == false) {
+        for (int i = 0; i < pellets.Count; i++)
+        {
+            if (pellets[i].gameObject.activeInHierarchy == true && foundEnabledPellet == false)
+            {
                 foundEnabledPellet = true;
                 break;
             }
         }
 
-        if (foundEnabledPellet == false) {
+        if (foundEnabledPellet == false)
+        {
             NewRound();
         }
 
-        if ((score - scoreLives) >= 1000 && lives < 3 && lives != 0) {
+        if ((score - scoreLives) >= 1000 && lives < 3 && lives != 0)
+        {
             SetLives(lives + 1);
 
             scoreLives = score;
         }
     }
 
-    private void SpawnPowerUp() {
-        Random rand = new Random();
-        int randInt = rand.Next(0, 5);
-
-        if (randInt == 0 && powerUpOwned == false) {
-            powerUpItem.SetActive(true);
-        }
-    }
-
-    private IEnumerator newRoundWait() {
+    private IEnumerator newRoundWait()
+    {
         readyText.SetActive(true);
         yield return new WaitForSecondsRealtime(5);
 
         startGame();
     }
 
-    private IEnumerator roundEndWait() {
-        for (int i = 0; i < pellets.Count; i++) {
+    private IEnumerator roundEndWait()
+    {
+        for (int i = 0; i < pellets.Count; i++)
+        {
             pellets[i].gameObject.SetActive(true);
         }
 
@@ -180,7 +184,8 @@ public class GameManager : MonoBehaviour {
 
         int roundsCompleted;
 
-        switch(PlayerStats.character) {
+        switch(PlayerStats.character)
+        {
             case 2:
                 roundsCompleted = (int) achievements.achievements["Kiara_Ten_Rounds"];
                 achievements.updateAchievement("Kiara_Ten_Rounds", roundsCompleted + 1);
@@ -214,55 +219,8 @@ public class GameManager : MonoBehaviour {
         StartCoroutine(newRoundWait());
     }
 
-    public void EnemyEaten() {
-        score += 250;
-    }
-
-    private void ReleaseEnemyTwoStart() {
-        enemyTwoAtr.Release();
-    }
-
-    private void ReleaseEnemyThreeStart() {
-        enemyThreeAtr.Release();
-    }
-
-    private void ReleaseEnemyFourStart() {
-        enemyFourAtr.Release();
-    }
-
-    public void ReleaseEnemy(Enemy enemyToRelease) {
-        if (enemyToRelease == enemyOneAtr) {
-            Invoke("ReleaseEnemyOne", 5.0f);
-        } else if (enemyToRelease == enemyTwoAtr) {
-            Invoke("ReleaseEnemyTwo", 5.0f);
-        } else if (enemyToRelease == enemyThreeAtr) {
-            Invoke("ReleaseEnemyThree", 5.0f);
-        } else if (enemyToRelease == enemyFourAtr) {
-            Invoke("ReleaseEnemyFour", 5.0f);
-        }
-    }
-
-    private void ReleaseEnemyOne() {
-        enemyOneAtr.Release();
-        enemyOneAtr.ToggleIgnorePlayer(false, player);
-    }
-
-    private void ReleaseEnemyTwo() {
-        enemyTwoAtr.Release();
-        enemyTwoAtr.ToggleIgnorePlayer(false, player);
-    }
-
-    private void ReleaseEnemyThree() {
-        enemyThreeAtr.Release();
-        enemyThreeAtr.ToggleIgnorePlayer(false, player);
-    }
-
-    private void ReleaseEnemyFour() {
-        enemyFourAtr.Release();
-        enemyFourAtr.ToggleIgnorePlayer(false, player);
-    }
-
-    private void startGame() {
+    private void startGame()
+    {
         Movement playerMovement = player.GetComponent(typeof(Movement)) as Movement;
         Movement enemyOneMovement = enemyOne.GetComponent(typeof(Movement)) as Movement;
         Movement enemyTwoMovement = enemyTwo.GetComponent(typeof(Movement)) as Movement;
@@ -278,10 +236,13 @@ public class GameManager : MonoBehaviour {
         Random rand = new Random();
         int randInt = rand.Next(0, 2);
 
-        if (randInt == 0) {
+        if (randInt == 0)
+        {
             enemyOneMovement.Move(Vector2.left);
             enemyThreeMovement.Move(Vector2.left);
-        } else {
+        }
+        else
+        {
             enemyOneMovement.Move(Vector2.right);
             enemyThreeMovement.Move(Vector2.right);
         }
@@ -298,93 +259,22 @@ public class GameManager : MonoBehaviour {
         InvokeRepeating("SpawnPowerUp", 0.0f, 10.0f);
     }
 
-    private void NewRound() {
-        Movement playerMovement = player.GetComponent(typeof(Movement)) as Movement;
-        Movement enemyOneMovement = enemyOne.GetComponent(typeof(Movement)) as Movement;
-        Movement enemyTwoMovement = enemyTwo.GetComponent(typeof(Movement)) as Movement;
-        Movement enemyThreeMovement = enemyThree.GetComponent(typeof(Movement)) as Movement;
-        Movement enemyFourMovement = enemyFour.GetComponent(typeof(Movement)) as Movement;
-
-        playerMovement.movementEnabled = false;
-        enemyOneMovement.movementEnabled = false;
-        enemyTwoMovement.movementEnabled = false;
-        enemyThreeMovement.movementEnabled = false;
-        enemyFourMovement.movementEnabled = false;
-
-        playerMovement.currentDirection = Vector2.zero;
-        playerMovement.nextDirection = Vector2.zero;
-        enemyOneMovement.currentDirection = Vector2.zero;
-        enemyOneMovement.nextDirection = Vector2.zero;
-        enemyTwoMovement.currentDirection = Vector2.zero;
-        enemyTwoMovement.nextDirection = Vector2.zero;
-        enemyThreeMovement.currentDirection = Vector2.zero;
-        enemyThreeMovement.nextDirection = Vector2.zero;
-        enemyFourMovement.currentDirection = Vector2.zero;
-        enemyFourMovement.nextDirection = Vector2.zero;
-
-        readyText.SetActive(true);
-
-        enemyOneAtr.ResetEnemy();
-        enemyOneAtr.inHome = false;
-        enemyOneAtr.ToggleIgnorePlayer(false, player);
-
-        enemyTwoAtr.ResetEnemy();
-        enemyTwoAtr.inHome = true;
-        enemyTwoAtr.ToggleIgnorePlayer(false, player);
-
-        enemyThreeAtr.ResetEnemy();
-        enemyThreeAtr.inHome = true;
-        enemyThreeAtr.ToggleIgnorePlayer(false, player);
-
-        enemyFourAtr.ResetEnemy();
-        enemyFourAtr.inHome = true;
-        enemyFourAtr.ToggleIgnorePlayer(false, player);
-
-        player.transform.position = new Vector3(0, -3.5f, -5.0f);
-        enemyOne.transform.position = new Vector3(0, 2.5f, -5.0f);
-        enemyTwo.transform.position = new Vector3(-2, -0.5f, -5.0f);
-        enemyThree.transform.position = new Vector3(0, -0.5f, -5.0f);
-        enemyFour.transform.position = new Vector3(2, -0.5f, -5.0f);
-
-        CancelInvoke("ReleaseEnemyTwoStart");
-        CancelInvoke("ReleaseEnemyThreeStart");
-        CancelInvoke("ReleaseEnemyFourStart");
-        CancelInvoke("ReleaseEnemyOne");
-        CancelInvoke("ReleaseEnemyTwo");
-        CancelInvoke("ReleaseEnemyThree");
-        CancelInvoke("ReleaseEnemyFour");
-        CancelInvoke("EndInvincibility");
-        CancelInvoke("ResumeTime");
-        CancelInvoke("EndVulnerableEnemies");
-        CancelInvoke("UnscareEnemies");
-        CancelInvoke("SpawnPowerUp");
-
-        StartCoroutine(roundEndWait());
-    }
-
-    public void EatPellet(Pellet pellet) {
-        pellet.gameObject.SetActive(false);
-        SetScore(score + pellet.points);
-    }
-
-    public void EatLargePellet(LargePellet pellet) {
-        EatPellet(pellet);
-
-        VulnerableEnemies();
-    }
-
-    public void AddPellet(Pellet pellet) {
+    public void AddPellet(Pellet pellet)
+    {
         pellets.Add(pellet);
     }
 
-    private void SetScore(int newScore) {
+    private void SetScore(int newScore)
+    {
         this.score = newScore;
     }
 
-    private void SetLives(int newLives) {
+    private void SetLives(int newLives)
+    {
         lives = newLives;
 
-        switch (lives) {
+        switch (lives)
+        {
             case 1:
                 lifeOne.SetActive(true);
                 lifeTwo.SetActive(false);
@@ -413,7 +303,101 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public PowerUp PickUpPowerUp() {
+    private void SpawnPowerUp()
+    {
+        Random rand = new Random();
+        int randInt = rand.Next(0, 5);
+
+        if (randInt == 0 && powerUpOwned == false)
+        {
+            powerUpItem.SetActive(true);
+        }
+    }
+
+    private void ReleaseEnemyTwoStart()
+    {
+        enemyTwoAtr.Release();
+    }
+
+    private void ReleaseEnemyThreeStart()
+    {
+        enemyThreeAtr.Release();
+    }
+
+    private void ReleaseEnemyFourStart()
+    {
+        enemyFourAtr.Release();
+    }
+
+    public void ReleaseEnemy(Enemy enemyToRelease)
+    {
+        if (enemyToRelease == enemyOneAtr)
+        {
+            Invoke("ReleaseEnemyOne", 5.0f);
+        } else if (enemyToRelease == enemyTwoAtr)
+        {
+            Invoke("ReleaseEnemyTwo", 5.0f);
+        } else if (enemyToRelease == enemyThreeAtr)
+        {
+            Invoke("ReleaseEnemyThree", 5.0f);
+        } else if (enemyToRelease == enemyFourAtr)
+        {
+            Invoke("ReleaseEnemyFour", 5.0f);
+        }
+    }
+
+    private void ReleaseEnemyOne()
+    {
+        enemyOneAtr.Release();
+        enemyOneAtr.ToggleIgnorePlayer(false, player);
+    }
+
+    private void ReleaseEnemyTwo()
+    {
+        enemyTwoAtr.Release();
+        enemyTwoAtr.ToggleIgnorePlayer(false, player);
+    }
+
+    private void ReleaseEnemyThree()
+    {
+        enemyThreeAtr.Release();
+        enemyThreeAtr.ToggleIgnorePlayer(false, player);
+    }
+
+    private void ReleaseEnemyFour()
+    {
+        enemyFourAtr.Release();
+        enemyFourAtr.ToggleIgnorePlayer(false, player);
+    }
+
+    public void EnemyEaten()
+    {
+        score += 250;
+    }
+
+    public void EatPellet(Pellet pellet)
+    {
+        pellet.gameObject.SetActive(false);
+        SetScore(score + pellet.points);
+    }
+
+    public void EatLargePellet(LargePellet pellet)
+    {
+        EatPellet(pellet);
+
+        VulnerableEnemies();
+    }
+
+    private void VulnerableEnemies()
+    {
+        enemyOneAtr.SetVulnerable(true);
+        enemyTwoAtr.SetVulnerable(true);
+        enemyThreeAtr.SetVulnerable(true);
+        enemyFourAtr.SetVulnerable(true);
+    }
+
+    public PowerUp PickUpPowerUp()
+    {
         powerUp.SetActive(true);
         powerUpItem.SetActive(false);
 
@@ -422,15 +406,13 @@ public class GameManager : MonoBehaviour {
         return powerUpAtr;
     }
 
-    public bool HasPowerUp() {
+    public bool HasPowerUp()
+    {
         return powerUpOwned;
     }
 
-    public void AddTeleportPoint(CheckPoint newPoint) {
-        telePoints.Add(newPoint);
-    }
-
-    public void UsePowerUp(int type) {
+    public void UsePowerUp(int type)
+    {
         powerUp.SetActive(false);
 
         powerUpOwned = false;
@@ -441,7 +423,8 @@ public class GameManager : MonoBehaviour {
         achievements.updateAchievement("Use_PowerUp_Ten", powerUpsUsed + 1);
         achievements.updateAchievement("Use_PowerUp_OneHundred", powerUpsUsed + 1);
 
-        switch(type) {
+        switch(type)
+        {
             case 1:
                 Random rand = new Random();
                 int randInt = rand.Next(0, telePoints.Count);
@@ -494,14 +477,23 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    private void EndInvincibility() {
+    public void AddTeleportPoint(CheckPoint newPoint)
+    {
+        telePoints.Add(newPoint);
+    }
+
+    
+
+    private void EndInvincibility()
+    {
         enemyOneAtr.ToggleIgnorePlayer(false, player);
         enemyTwoAtr.ToggleIgnorePlayer(false, player);
         enemyThreeAtr.ToggleIgnorePlayer(false, player);
         enemyFourAtr.ToggleIgnorePlayer(false, player);
     }
 
-    private void ResumeTime() {
+    private void ResumeTime()
+    {
         Movement enemyOneMovement = enemyOne.GetComponent(typeof(Movement)) as Movement;
         Movement enemyTwoMovement = enemyTwo.GetComponent(typeof(Movement)) as Movement;
         Movement enemyThreeMovement = enemyThree.GetComponent(typeof(Movement)) as Movement;
@@ -513,39 +505,24 @@ public class GameManager : MonoBehaviour {
         enemyFourMovement.movementEnabled = true;
     }
 
-    private void EndVulnerableEnemies() {
+    private void EndVulnerableEnemies()
+    {
         enemyOneAtr.powerUpVulnerable = false;
         enemyTwoAtr.powerUpVulnerable = false;
         enemyThreeAtr.powerUpVulnerable = false;
         enemyFourAtr.powerUpVulnerable = false;
     }
 
-    private void UnscareEnemies() {
+    private void UnscareEnemies()
+    {
         enemyOneAtr.scared = false;
         enemyTwoAtr.scared = false;
         enemyThreeAtr.scared = false;
         enemyFourAtr.scared = false;
     }
 
-    private void VulnerableEnemies() {
-        if (enemyOneAtr.eaten == false) {
-            enemyOneAtr.SetVulnerable(true);
-        }
-
-        if (enemyTwoAtr.eaten == false) {
-            enemyTwoAtr.SetVulnerable(true);
-        }
-
-        if (enemyThreeAtr.eaten == false) {
-            enemyThreeAtr.SetVulnerable(true);
-        }
-
-        if (enemyFourAtr.eaten == false) {
-            enemyFourAtr.SetVulnerable(true);
-        }
-    }
-
-    public void PlayerHit() {
+    public void PlayerHit()
+    {
         Movement playerMovement = player.GetComponent(typeof(Movement)) as Movement;
         Movement enemyOneMovement = enemyOne.GetComponent(typeof(Movement)) as Movement;
         Movement enemyTwoMovement = enemyTwo.GetComponent(typeof(Movement)) as Movement;
@@ -594,7 +571,8 @@ public class GameManager : MonoBehaviour {
         Invoke("ResumePlay", 3.5f);
     }
 
-    private void ResumePlay() {
+    private void ResumePlay()
+    {
         enemyOne.SetActive(true);
         enemyTwo.SetActive(true);
         enemyThree.SetActive(true);
@@ -620,7 +598,7 @@ public class GameManager : MonoBehaviour {
         enemyFourAtr.inHome = true;
         enemyFourAtr.ToggleIgnorePlayer(false, player);
 
-        player.transform.position = new Vector3(0, -3.5f, -5.0f);
+        playerAtr.ResetPosition();
         enemyOne.transform.position = new Vector3(0, 2.5f, -5.0f);
         enemyTwo.transform.position = new Vector3(-2, -0.5f, -5.0f);
         enemyThree.transform.position = new Vector3(0, -0.5f, -5.0f);
@@ -631,11 +609,72 @@ public class GameManager : MonoBehaviour {
         StartCoroutine(newRoundWait());
     }
 
-    public Vector3 GetPlayerPos() {
-        return player.transform.position;
+    private void NewRound() {
+        Movement playerMovement = player.GetComponent(typeof(Movement)) as Movement;
+        Movement enemyOneMovement = enemyOne.GetComponent(typeof(Movement)) as Movement;
+        Movement enemyTwoMovement = enemyTwo.GetComponent(typeof(Movement)) as Movement;
+        Movement enemyThreeMovement = enemyThree.GetComponent(typeof(Movement)) as Movement;
+        Movement enemyFourMovement = enemyFour.GetComponent(typeof(Movement)) as Movement;
+
+        playerMovement.movementEnabled = false;
+        enemyOneMovement.movementEnabled = false;
+        enemyTwoMovement.movementEnabled = false;
+        enemyThreeMovement.movementEnabled = false;
+        enemyFourMovement.movementEnabled = false;
+
+        playerMovement.currentDirection = Vector2.zero;
+        playerMovement.nextDirection = Vector2.zero;
+        enemyOneMovement.currentDirection = Vector2.zero;
+        enemyOneMovement.nextDirection = Vector2.zero;
+        enemyTwoMovement.currentDirection = Vector2.zero;
+        enemyTwoMovement.nextDirection = Vector2.zero;
+        enemyThreeMovement.currentDirection = Vector2.zero;
+        enemyThreeMovement.nextDirection = Vector2.zero;
+        enemyFourMovement.currentDirection = Vector2.zero;
+        enemyFourMovement.nextDirection = Vector2.zero;
+
+        readyText.SetActive(true);
+
+        enemyOneAtr.ResetEnemy();
+        enemyOneAtr.inHome = false;
+        enemyOneAtr.ToggleIgnorePlayer(false, player);
+
+        enemyTwoAtr.ResetEnemy();
+        enemyTwoAtr.inHome = true;
+        enemyTwoAtr.ToggleIgnorePlayer(false, player);
+
+        enemyThreeAtr.ResetEnemy();
+        enemyThreeAtr.inHome = true;
+        enemyThreeAtr.ToggleIgnorePlayer(false, player);
+
+        enemyFourAtr.ResetEnemy();
+        enemyFourAtr.inHome = true;
+        enemyFourAtr.ToggleIgnorePlayer(false, player);
+
+        playerAtr.ResetPosition();
+        enemyOne.transform.position = new Vector3(0, 2.5f, -5.0f);
+        enemyTwo.transform.position = new Vector3(-2, -0.5f, -5.0f);
+        enemyThree.transform.position = new Vector3(0, -0.5f, -5.0f);
+        enemyFour.transform.position = new Vector3(2, -0.5f, -5.0f);
+
+        CancelInvoke("ReleaseEnemyTwoStart");
+        CancelInvoke("ReleaseEnemyThreeStart");
+        CancelInvoke("ReleaseEnemyFourStart");
+        CancelInvoke("ReleaseEnemyOne");
+        CancelInvoke("ReleaseEnemyTwo");
+        CancelInvoke("ReleaseEnemyThree");
+        CancelInvoke("ReleaseEnemyFour");
+        CancelInvoke("EndInvincibility");
+        CancelInvoke("ResumeTime");
+        CancelInvoke("EndVulnerableEnemies");
+        CancelInvoke("UnscareEnemies");
+        CancelInvoke("SpawnPowerUp");
+
+        StartCoroutine(roundEndWait());
     }
 
-    private void GameOver() {
+    private void GameOver()
+    {
         player.SetActive(false);
         enemyOne.SetActive(false);
         enemyTwo.SetActive(false);
@@ -648,11 +687,178 @@ public class GameManager : MonoBehaviour {
         finalScoreText.text = "Score: " + score.ToString();
     }
 
-    private void LoadPlayerSprites() {
+    public Vector3 GetPlayerPos()
+    {
+        return player.transform.position;
+    }
+
+    public void SaveScore()
+    {
+        string username = usernameField.text;
+        
+        if (leaderboard == null)
+        {
+            leaderboard = new Leaderboard();
+        }
+
+        if (leaderboard.leaderboard[username] == null)
+        {
+            leaderboard.addScore(username, score);
+        }
+        else
+        {
+            leaderboard.updateScore(username, score);
+        }
+
+        SaveFile();
+        SaveAchievements();
+        sceneChange.moveToScene(0);
+    }
+
+    public void ExitWithoutSave()
+    {
+        SaveAchievements();
+        sceneChange.moveToScene(0);
+    }
+
+    private void GetHighScore()
+    {
+        int highestScore = 0;
+
+        if (leaderboard != null)
+        {
+            foreach (int lbScore in leaderboard.leaderboard.Values)
+            {
+                if (lbScore > highestScore)
+                {
+                    highestScore = lbScore;
+                }
+            }
+        }
+        else
+        {
+            hasHighScore = true;
+        }
+
+        highScore = highestScore;
+
+        highScoreText.text = highScore.ToString();
+    }
+
+    private void SaveFile()
+    {
+        string path = Application.persistentDataPath + "/leaderboard" + PlayerStats.level + ".dat";
+        FileStream file;
+
+        if (File.Exists(path))
+        {
+            file = File.OpenWrite(path);
+        }
+        else
+        {
+            file = File.Create(path);
+        }
+
+        BinaryFormatter bf = new BinaryFormatter();
+        bf.Serialize(file, leaderboard);
+
+        file.Close();
+    }
+
+    private void LoadFile()
+    {
+        string path = Application.persistentDataPath + "/leaderboard" + PlayerStats.level + ".dat";
+        FileStream file;
+
+        if (File.Exists(path))
+        {
+            file = File.OpenRead(path);
+
+            if (file.Length > 0)
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                leaderboard = (Leaderboard) bf.Deserialize(file);
+
+                file.Close();
+            }
+        }
+        else
+        {
+            leaderboard = null;
+        }
+    }
+
+    private void SaveAchievements()
+    {
+        string path = Application.persistentDataPath + "/achievements.dat";
+        FileStream file;
+
+        if (File.Exists(path))
+        {
+            file = File.OpenWrite(path);
+        }
+        else
+        {
+            file = File.Create(path);
+        }
+
+        BinaryFormatter bf = new BinaryFormatter();
+        bf.Serialize(file, achievements);
+
+        file.Close();
+    }
+
+    private void LoadAchievements()
+    {
+        string path = Application.persistentDataPath + "/achievements.dat";
+        FileStream file;
+
+        if (File.Exists(path))
+        {
+            file = File.OpenRead(path);
+
+            if (file.Length > 0)
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                achievements = (Achievement) bf.Deserialize(file);
+
+                file.Close();
+            }
+        }
+        else
+        {
+            achievements = new Achievement();
+
+            CreateAchievements();
+        }
+    }
+
+    private void CreateAchievements()
+    {
+        achievements.createAchievement("Ina_Ten_Rounds", 0);
+        achievements.createAchievement("Ina_OneHundred_Rounds", 0);
+        achievements.createAchievement("Kiara_Ten_Rounds", 0);
+        achievements.createAchievement("Kiara_OneHundred_Rounds", 0);
+        achievements.createAchievement("Ame_Ten_Rounds", 0);
+        achievements.createAchievement("Ame_OneHundred_Rounds", 0);
+        achievements.createAchievement("Calli_Ten_Rounds", 0);
+        achievements.createAchievement("Calli_OneHundred_Rounds", 0);
+        achievements.createAchievement("Gura_Ten_Rounds", 0);
+        achievements.createAchievement("Gura_OneHundred_Rounds", 0);
+        achievements.createAchievement("Use_PowerUp_One", 0);
+        achievements.createAchievement("Use_PowerUp_Ten", 0);
+        achievements.createAchievement("Use_PowerUp_OneHundred", 0);
+
+        SaveAchievements();
+    }
+
+    private void LoadPlayerSprites()
+    {
         Sprite[] playerSprites = new Sprite[4];
         Sprite[] deathSprites = new Sprite[5];
 
-        switch(PlayerStats.character) {
+        switch(PlayerStats.character)
+        {
             case 2:
                 playerSprite.sprite = Resources.Load<Sprite>("Kiara_Normal_01");
                 lifeOneImage.sprite = Resources.Load<Sprite>("Kiara_Normal_01");
@@ -806,11 +1012,13 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    private void LoadEnemySprites(SpriteRenderer sprite, AnimatedSprites aniSprites, int character, Enemy enemy) {
+    private void LoadEnemySprites(SpriteRenderer sprite, AnimatedSprites aniSprites, int character, Enemy enemy)
+    {
         Sprite[] enemySprites = new Sprite[4];
         Sprite[] vulnerableSprites = new Sprite[4];
 
-        switch(character) {
+        switch(character)
+        {
             case 1:
                 sprite.sprite = Resources.Load<Sprite>("Ina_Normal_01");
 
@@ -902,138 +1110,5 @@ public class GameManager : MonoBehaviour {
                 enemy.eatenSprite = Resources.Load<Sprite>("Gura_Eaten");
                 break;
         }
-    }
-
-    public void SaveScore() {
-        string username = usernameField.text;
-        
-        if (leaderboard == null) {
-            leaderboard = new Leaderboard();
-        }
-
-        if (leaderboard.leaderboard[username] == null) {
-            leaderboard.addScore(username, score);
-        } else {
-            leaderboard.updateScore(username, score);
-        }
-
-        SaveFile();
-        SaveAchievements();
-        sceneChange.moveToScene(0);
-    }
-
-    public void DontSaveScore() {
-        SaveAchievements();
-        sceneChange.moveToScene(0);
-    }
-
-    private void GetHighScore() {
-        int highestScore = 0;
-
-        if (leaderboard != null) {
-            foreach (int lbScore in leaderboard.leaderboard.Values) {
-                if (lbScore > highestScore) {
-                    highestScore = lbScore;
-                }
-            }
-        } else {
-            hasHighScore = true;
-        }
-
-        highScore = highestScore;
-
-        highScoreText.text = highScore.ToString();
-    }
-
-    private void SaveFile() {
-        string path = Application.persistentDataPath + "/leaderboard" + PlayerStats.level + ".dat";
-        FileStream file;
-
-        if (File.Exists(path)) {
-            file = File.OpenWrite(path);
-        } else {
-            file = File.Create(path);
-        }
-
-        BinaryFormatter bf = new BinaryFormatter();
-        bf.Serialize(file, leaderboard);
-
-        file.Close();
-    }
-
-    private void LoadFile() {
-        string path = Application.persistentDataPath + "/leaderboard" + PlayerStats.level + ".dat";
-        FileStream file;
-
-        if (File.Exists(path)) {
-            file = File.OpenRead(path);
-
-            if (file.Length > 0) {
-                BinaryFormatter bf = new BinaryFormatter();
-                Leaderboard lb = (Leaderboard) bf.Deserialize(file);
-
-                leaderboard = lb;
-
-                file.Close();
-            }
-        } else {
-            leaderboard = null;
-        }
-    }
-
-    private void SaveAchievements() {
-        string path = Application.persistentDataPath + "/achievements.dat";
-        FileStream file;
-
-        if (File.Exists(path)) {
-            file = File.OpenWrite(path);
-        } else {
-            file = File.Create(path);
-        }
-
-        BinaryFormatter bf = new BinaryFormatter();
-        bf.Serialize(file, achievements);
-
-        file.Close();
-    }
-
-    private void LoadAchievements() {
-        string path = Application.persistentDataPath + "/achievements.dat";
-        FileStream file;
-
-        if (File.Exists(path)) {
-            file = File.OpenRead(path);
-
-            if (file.Length > 0) {
-                BinaryFormatter bf = new BinaryFormatter();
-                Achievement ach = (Achievement) bf.Deserialize(file);
-
-                achievements = ach;
-
-                file.Close();
-            }
-        } else {
-            achievements = new Achievement();
-
-            CreateAchievements();
-        }
-    }
-
-    private void CreateAchievements() {
-        achievements.createAchievement("Ina_Ten_Rounds", 0);
-        achievements.createAchievement("Ina_OneHundred_Rounds", 0);
-        achievements.createAchievement("Kiara_Ten_Rounds", 0);
-        achievements.createAchievement("Kiara_OneHundred_Rounds", 0);
-        achievements.createAchievement("Ame_Ten_Rounds", 0);
-        achievements.createAchievement("Ame_OneHundred_Rounds", 0);
-        achievements.createAchievement("Calli_Ten_Rounds", 0);
-        achievements.createAchievement("Calli_OneHundred_Rounds", 0);
-        achievements.createAchievement("Gura_Ten_Rounds", 0);
-        achievements.createAchievement("Gura_OneHundred_Rounds", 0);
-        achievements.createAchievement("Use_PowerUp_One", 0);
-        achievements.createAchievement("Use_PowerUp_Ten", 0);
-        achievements.createAchievement("Use_PowerUp_OneHundred", 0);
-
-        SaveAchievements();
     }
 }

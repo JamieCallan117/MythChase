@@ -6,27 +6,29 @@ using System.Runtime.Serialization.Formatters.Binary;
 using TMPro;
 using UnityEngine.UI;
 
-public class Achievements : MonoBehaviour {
-    public GameObject achievementOneObj;
-    public GameObject achievementTwoObj;
-    public GameObject achievementThreeObj;
-    public GameObject achievementFourObj;
-    public GameObject achievementFiveObj;
-    public GameObject achievementSixObj;
-    public GameObject achievementSevenObj;
-    public GameObject achievementEightObj;
-    public GameObject achievementNineObj;
-    public GameObject achievementTenObj;
-    public GameObject achievementElevenObj;
-    public GameObject achievementTwelveObj;
-    public GameObject achievementThirteenObj;
-    public GameObject achievementText;
-    public Sprite lockedSprite;
-    public Sprite unlockedSprite;
+public class Achievements : MonoBehaviour
+{
+    [SerializeField] private GameObject achievementOneObj;
+    [SerializeField] private GameObject achievementTwoObj;
+    [SerializeField] private GameObject achievementThreeObj;
+    [SerializeField] private GameObject achievementFourObj;
+    [SerializeField] private GameObject achievementFiveObj;
+    [SerializeField] private GameObject achievementSixObj;
+    [SerializeField] private GameObject achievementSevenObj;
+    [SerializeField] private GameObject achievementEightObj;
+    [SerializeField] private GameObject achievementNineObj;
+    [SerializeField] private GameObject achievementTenObj;
+    [SerializeField] private GameObject achievementElevenObj;
+    [SerializeField] private GameObject achievementTwelveObj;
+    [SerializeField] private GameObject achievementThirteenObj;
+    [SerializeField] private GameObject achievementText;
+    [SerializeField] private Sprite lockedSprite;
+    [SerializeField] private Sprite unlockedSprite;
     private TextMeshProUGUI achievementDesc;
     private Achievement achievements;
 
-    private void Start() {
+    void Start()
+    {
         achievementDesc = achievementText.GetComponent(typeof(TextMeshProUGUI)) as TextMeshProUGUI;
 
         LoadAchievements();
@@ -34,62 +36,78 @@ public class Achievements : MonoBehaviour {
         UpdateAchievements();
     }
 
-    private void UpdateAchievements() {
-        if ((int) achievements.achievements["Ina_Ten_Rounds"] >= 10) {
+    private void UpdateAchievements()
+    {
+        if ((int) achievements.achievements["Ina_Ten_Rounds"] >= 10)
+        {
             achievementOneObj.GetComponent<Image>().sprite = unlockedSprite;
         }
 
-        if ((int) achievements.achievements["Ina_OneHundred_Rounds"] >= 100) {
+        if ((int) achievements.achievements["Ina_OneHundred_Rounds"] >= 100)
+        {
             achievementTwoObj.GetComponent<Image>().sprite = unlockedSprite;
         }
 
-        if ((int) achievements.achievements["Kiara_Ten_Rounds"] >= 10) {
+        if ((int) achievements.achievements["Kiara_Ten_Rounds"] >= 10)
+        {
             achievementThreeObj.GetComponent<Image>().sprite = unlockedSprite;
         }
 
-        if ((int) achievements.achievements["Kiara_OneHundred_Rounds"] >= 100) {
+        if ((int) achievements.achievements["Kiara_OneHundred_Rounds"] >= 100)
+        {
             achievementFourObj.GetComponent<Image>().sprite = unlockedSprite;
         }
 
-        if ((int) achievements.achievements["Ame_Ten_Rounds"] >= 10) {
+        if ((int) achievements.achievements["Ame_Ten_Rounds"] >= 10)
+        {
             achievementFiveObj.GetComponent<Image>().sprite = unlockedSprite;
         }
 
-        if ((int) achievements.achievements["Ame_OneHundred_Rounds"] >= 100) {
+        if ((int) achievements.achievements["Ame_OneHundred_Rounds"] >= 100)
+        {
             achievementSixObj.GetComponent<Image>().sprite = unlockedSprite;
         }
 
-        if ((int) achievements.achievements["Calli_Ten_Rounds"] >= 10) {
+        if ((int) achievements.achievements["Calli_Ten_Rounds"] >= 10)
+        {
             achievementSevenObj.GetComponent<Image>().sprite = unlockedSprite;
         }
 
-        if ((int) achievements.achievements["Calli_OneHundred_Rounds"] >= 100) {
+        if ((int) achievements.achievements["Calli_OneHundred_Rounds"] >= 100)
+        {
             achievementEightObj.GetComponent<Image>().sprite = unlockedSprite;
         }
 
-        if ((int) achievements.achievements["Gura_Ten_Rounds"] >= 10) {
+        if ((int) achievements.achievements["Gura_Ten_Rounds"] >= 10)
+        {
             achievementNineObj.GetComponent<Image>().sprite = unlockedSprite;
         }
 
-        if ((int) achievements.achievements["Gura_OneHundred_Rounds"] >= 100) {
+        if ((int) achievements.achievements["Gura_OneHundred_Rounds"] >= 100)
+        {
             achievementTenObj.GetComponent<Image>().sprite = unlockedSprite;
         }
 
-        if ((int) achievements.achievements["Use_PowerUp_One"] >= 1) {
+        if ((int) achievements.achievements["Use_PowerUp_One"] >= 1)
+        {
             achievementElevenObj.GetComponent<Image>().sprite = unlockedSprite;
         }
 
-        if ((int) achievements.achievements["Use_PowerUp_Ten"] >= 10) {
+        if ((int) achievements.achievements["Use_PowerUp_Ten"] >= 10)
+        {
             achievementTwelveObj.GetComponent<Image>().sprite = unlockedSprite;
         }
 
-        if ((int) achievements.achievements["Use_PowerUp_OneHundred"] >= 100) {
+        if ((int) achievements.achievements["Use_PowerUp_OneHundred"] >= 100)
+        {
             achievementThirteenObj.GetComponent<Image>().sprite = unlockedSprite;
         }
     }
 
-    public void SelectAchievement(int selected) {
-        switch (selected) {
+    public void SelectAchievement(int selected)
+    {
+        switch (selected)
+        {
             case 2:
                 achievementDesc.text = "The Priestess - Complete 100 rounds as Ninomae Ina'nis - " + achievements.achievements["Ina_OneHundred_Rounds"].ToString() + "/100.";
                 achievementOneObj.GetComponent<Outline>().enabled = false;
@@ -185,13 +203,17 @@ public class Achievements : MonoBehaviour {
         }
     }
 
-    private void SaveAchievements() {
+    private void SaveAchievements()
+    {
         string path = Application.persistentDataPath + "/achievements.dat";
         FileStream file;
 
-        if (File.Exists(path)) {
+        if (File.Exists(path))
+        {
             file = File.OpenWrite(path);
-        } else {
+        }
+        else
+        {
             file = File.Create(path);
         }
 
@@ -201,29 +223,34 @@ public class Achievements : MonoBehaviour {
         file.Close();
     }
 
-    private void LoadAchievements() {
+    private void LoadAchievements()
+    {
         string path = Application.persistentDataPath + "/achievements.dat";
         FileStream file;
 
-        if (File.Exists(path)) {
+        if (File.Exists(path))
+        {
             file = File.OpenRead(path);
 
-            if (file.Length > 0) {
+            if (file.Length > 0)
+            {
                 BinaryFormatter bf = new BinaryFormatter();
-                Achievement ach = (Achievement) bf.Deserialize(file);
 
-                achievements = ach;
+                achievements = (Achievement) bf.Deserialize(file);
 
                 file.Close();
             }
-        } else {
+        }
+        else
+        {
             achievements = new Achievement();
 
             CreateAchievements();
         }
     }
 
-    private void CreateAchievements() {
+    private void CreateAchievements()
+    {
         achievements.createAchievement("Ina_Ten_Rounds", 0);
         achievements.createAchievement("Ina_OneHundred_Rounds", 0);
         achievements.createAchievement("Kiara_Ten_Rounds", 0);

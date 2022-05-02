@@ -1,20 +1,25 @@
 using UnityEngine;
 
-public class Pellet : MonoBehaviour {
+public class Pellet : MonoBehaviour
+{
     public int points = 10;
-    public GameManager gameManager;
+    protected GameManager gameManager;
 
-    public void Awake() {
+    void Awake()
+    {
         gameManager = FindObjectOfType<GameManager>();
         gameManager.AddPellet(this);
     }
 
-    protected virtual void EatPellet() {
+    protected virtual void EatPellet()
+    {
         gameManager.EatPellet(this);
     }
 
-    private void OnTriggerEnter2D(Collider2D other) {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Player")) {
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
+        {
             EatPellet();
         }
     }

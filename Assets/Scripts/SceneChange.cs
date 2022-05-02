@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneChange : MonoBehaviour {
-    public void moveToScene(int sceneID) {
+public class SceneChange : MonoBehaviour
+{
+    public void moveToScene(int sceneID)
+    {
         SceneManager.LoadScene(sceneID);
     }
 
-    public void selectLevel(int level) {
+    public void selectLevel(int level)
+    {
         PlayerStats.level = level;
 
-        switch (level) {
+        switch (level)
+        {
             case 1:
             case 2:
             case 3:
@@ -22,17 +26,22 @@ public class SceneChange : MonoBehaviour {
                 break;
         }
 
-        if (level >= 1 && level <= 3) {
-            moveToScene(2); //Character select scene
-        } else {
-            moveToScene(0); //Main menu
+        if (level >= 1 && level <= 3)
+        {
+            moveToScene(2);
+        }
+        else
+        {
+            moveToScene(0);
         }
     }
 
-    public void selectCharacter(int character) {
+    public void selectCharacter(int character)
+    {
         PlayerStats.character = character;
 
-        switch (PlayerStats.level) {
+        switch (PlayerStats.level)
+        {
             case 1:
                 moveToScene(3);
                 break;
@@ -48,15 +57,18 @@ public class SceneChange : MonoBehaviour {
         }
     }
 
-    public void leaderboards() {
+    public void leaderboards()
+    {
         moveToScene(6);
     }
 
-    public void achievements() {
+    public void achievements()
+    {
         moveToScene(7);
     }
 
-    public void quitGame() {
+    public void quitGame()
+    {
         Application.Quit();
     }
 }
