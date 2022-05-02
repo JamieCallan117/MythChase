@@ -54,6 +54,7 @@ public class GameManager : MonoBehaviour {
     private int highScore;
     private int lives;
     private int powerUpID;
+    private int scoreLives;
     private bool powerUpOwned;
     private bool hasHighScore;
     private List<Pellet> pellets = new List<Pellet>();
@@ -92,6 +93,8 @@ public class GameManager : MonoBehaviour {
 
         powerUpOwned = false;
         hasHighScore = false;
+
+        scoreLives = 0;
 
         LoadFile();
         LoadAchievements();
@@ -133,6 +136,12 @@ public class GameManager : MonoBehaviour {
 
         if (foundEnabledPellet == false) {
             NewRound();
+        }
+
+        if ((score - scoreLives) >= 1000 && lives < 3 && lives != 0) {
+            SetLives(lives + 1);
+
+            scoreLives = score;
         }
     }
 
@@ -203,6 +212,10 @@ public class GameManager : MonoBehaviour {
         yield return new WaitForSecondsRealtime(2);
 
         StartCoroutine(newRoundWait());
+    }
+
+    public void EnemyEaten() {
+        score += 250;
     }
 
     private void ReleaseEnemyTwoStart() {
@@ -369,29 +382,26 @@ public class GameManager : MonoBehaviour {
     }
 
     private void SetLives(int newLives) {
-        this.lives = newLives;
+        lives = newLives;
 
-        switch (this.lives) {
+        switch (lives) {
             case 1:
                 lifeOne.SetActive(true);
                 lifeTwo.SetActive(false);
                 lifeThree.SetActive(false);
 
-                StartCoroutine(newRoundWait());
                 break;
             case 2:
                 lifeOne.SetActive(true);
                 lifeTwo.SetActive(true);
                 lifeThree.SetActive(false);
 
-                StartCoroutine(newRoundWait());
                 break;
             case 3:
                 lifeOne.SetActive(true);
                 lifeTwo.SetActive(true);
                 lifeThree.SetActive(true);
 
-                StartCoroutine(newRoundWait());
                 break;
             default:
                 lifeOne.SetActive(false);
@@ -617,6 +627,8 @@ public class GameManager : MonoBehaviour {
         enemyFour.transform.position = new Vector3(2, -0.5f, -5.0f);
 
         SetLives(this.lives - 1);
+
+        StartCoroutine(newRoundWait());
     }
 
     public Vector3 GetPlayerPos() {

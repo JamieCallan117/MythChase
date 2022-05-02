@@ -140,6 +140,8 @@ public class Enemy : MonoBehaviour {
 
         aniSprites.enable(false);
         aniSprites.spriteRenderer.sprite = eatenSprite;
+
+        gameManager.EnemyEaten();
     }
 
     public void Release() {
