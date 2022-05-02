@@ -1107,6 +1107,7 @@ GameObject:
   - component: {fileID: 682895791}
   - component: {fileID: 682895795}
   - component: {fileID: 682895794}
+  - component: {fileID: 682895796}
   m_Layer: 5
   m_Name: LevelTwoButton
   m_TagString: Untagged
@@ -1176,7 +1177,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 682895792}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 682895796}
+        m_TargetAssemblyTypeName: SceneChange, Assembly-CSharp
+        m_MethodName: selectLevel
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &682895792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1254,6 +1267,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 617a298c2873eea449be665f299759aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &682895796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 682895789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0bc98d7e5ef97f4c93f49bf3c7b3d48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &735022891

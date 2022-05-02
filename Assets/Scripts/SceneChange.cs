@@ -13,6 +13,8 @@ public class SceneChange : MonoBehaviour {
 
         switch (level) {
             case 1:
+            case 2:
+            case 3:
                 moveToScene(2);
                 break;
             default:

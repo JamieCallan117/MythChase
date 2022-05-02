@@ -427,8 +427,6 @@ public class GameManager : MonoBehaviour {
 
         int powerUpsUsed = (int) achievements.achievements["Use_PowerUp_One"];
 
-        print("Power ups used: " + powerUpsUsed);
-
         achievements.updateAchievement("Use_PowerUp_One", powerUpsUsed + 1);
         achievements.updateAchievement("Use_PowerUp_Ten", powerUpsUsed + 1);
         achievements.updateAchievement("Use_PowerUp_OneHundred", powerUpsUsed + 1);
