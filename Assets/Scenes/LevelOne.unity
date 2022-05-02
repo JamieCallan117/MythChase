@@ -5446,7 +5446,6 @@ GameObject:
   - component: {fileID: 1083938597}
   - component: {fileID: 1083938596}
   - component: {fileID: 1083938595}
-  - component: {fileID: 1083938598}
   m_Layer: 5
   m_Name: Cancel
   m_TagString: Untagged
@@ -5518,10 +5517,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1083938598}
-        m_TargetAssemblyTypeName: SceneChange, Assembly-CSharp
-        m_MethodName: moveToScene
-        m_Mode: 3
+      - m_Target: {fileID: 700458744}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: DontSaveScore
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5568,18 +5567,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1083938593}
   m_CullTransparentMesh: 1
---- !u!114 &1083938598
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1083938593}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0bc98d7e5ef97f4c93f49bf3c7b3d48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1240750067
 GameObject:
   m_ObjectHideFlags: 0

@@ -21,6 +21,11 @@ public class Movement : MonoBehaviour {
             yLower = -16.4f;
             xLeft = -0.5f;
             xRight = 0.5f;
+        } else {
+            yUpper = 13.4f;
+            yLower = -16.4f;
+            xLeft = -13.4f;
+            xRight = 13.4f;
         }
     }
 
@@ -45,6 +50,16 @@ public class Movement : MonoBehaviour {
                 transform.position = new Vector3(xLeft, (yLower + 0.1f), -5.0f);
             } else if (transform.position.y <= yLower) {
                 transform.position = new Vector3(xRight, (yUpper - 0.1f), -5.0f);
+            }
+        } else {
+            if (transform.position.y >= yUpper) {
+                transform.position = new Vector3(transform.position.x, (yLower + 0.1f), -5.0f);
+            } else if (transform.position.y <= yLower) {
+                transform.position = new Vector3(transform.position.x, (yUpper - 0.1f), -5.0f);
+            } else if (transform.position.x >= xRight) {
+                transform.position = new Vector3((xLeft + 0.1f), transform.position.y, -5.0f);
+            } else if (transform.position.x <= xLeft) {
+                transform.position = new Vector3((xRight - 0.1f), transform.position.y, -5.0f);
             }
         }
     

@@ -5,6 +5,7 @@ using TMPro;
 public class HoverIcon : MonoBehaviour {
     private GameObject playArrow;
     private GameObject leaderboardsArrow;
+    private GameObject achievementsArrow;
     private GameObject quitArrow;
     private GameObject levelOneArrow;
     private GameObject levelTwoArrow;
@@ -20,6 +21,7 @@ public class HoverIcon : MonoBehaviour {
     public void Awake() {
         playArrow = GameObject.Find("PlayArrow");
         leaderboardsArrow = GameObject.Find("LeaderboardsArrow");
+        achievementsArrow = GameObject.Find("AchievementsArrow");
         quitArrow = GameObject.Find("QuitArrow");
         levelOneArrow = GameObject.Find("LevelOneArrow");
         levelTwoArrow = GameObject.Find("LevelTwoArrow");
@@ -39,6 +41,10 @@ public class HoverIcon : MonoBehaviour {
     public void Start() {
         if (leaderboardsArrow != null) {
             leaderboardsArrow.SetActive(false);
+        }
+
+        if (achievementsArrow != null) {
+            achievementsArrow.SetActive(false);
         }
 
         if (quitArrow != null) {
@@ -73,18 +79,28 @@ public class HoverIcon : MonoBehaviour {
     public void hoverPlay() {
         playArrow.SetActive(true);
         leaderboardsArrow.SetActive(false);
+        achievementsArrow.SetActive(false);
         quitArrow.SetActive(false);
     }
 
     public void hoverLeaderboards() {
         playArrow.SetActive(false);
         leaderboardsArrow.SetActive(true);
+        achievementsArrow.SetActive(false);
+        quitArrow.SetActive(false);
+    }
+
+    public void hoverAchievements() {
+        playArrow.SetActive(false);
+        leaderboardsArrow.SetActive(false);
+        achievementsArrow.SetActive(true);
         quitArrow.SetActive(false);
     }
 
     public void hoverQuit() {
         playArrow.SetActive(false);
         leaderboardsArrow.SetActive(false);
+        achievementsArrow.SetActive(false);
         quitArrow.SetActive(true);
     }
 

@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour {
     private List<Pellet> pellets = new List<Pellet>();
     private List<CheckPoint> telePoints = new List<CheckPoint>();
     private Leaderboard leaderboard;
+    private Achievement achievements;
     public SceneChange sceneChange;
 
     private void Awake() {
@@ -93,6 +94,7 @@ public class GameManager : MonoBehaviour {
         hasHighScore = false;
 
         LoadFile();
+        LoadAchievements();
 
         GetHighScore();
     }
@@ -136,9 +138,9 @@ public class GameManager : MonoBehaviour {
 
     private void SpawnPowerUp() {
         Random rand = new Random();
-        int randInt = rand.Next(0, 3);
+        int randInt = rand.Next(0, 5);
 
-        if (randInt == 2 && powerUpOwned == false) {
+        if (randInt == 0 && powerUpOwned == false) {
             powerUpItem.SetActive(true);
         }
     }
@@ -161,17 +163,42 @@ public class GameManager : MonoBehaviour {
         Movement enemyThreeMovement = enemyThree.GetComponent(typeof(Movement)) as Movement;
         Movement enemyFourMovement = enemyFour.GetComponent(typeof(Movement)) as Movement;
 
-        playerMovement.movementEnabled = true;
-        enemyOneMovement.movementEnabled = true;
-        enemyTwoMovement.movementEnabled = true;
-        enemyThreeMovement.movementEnabled = true;
-        enemyFourMovement.movementEnabled = true;
-
         playerMovement.speed += 0.1f;
         enemyOneMovement.speed += 0.1f;
         enemyTwoMovement.speed += 0.1f;
         enemyThreeMovement.speed += 0.1f;
         enemyFourMovement.speed += 0.1f;
+
+        int roundsCompleted;
+
+        switch(PlayerStats.character) {
+            case 2:
+                roundsCompleted = (int) achievements.achievements["Kiara_Ten_Rounds"];
+                achievements.updateAchievement("Kiara_Ten_Rounds", roundsCompleted + 1);
+                achievements.updateAchievement("Kiara_OneHundred_Rounds", roundsCompleted + 1);
+                break;
+            case 3:
+                roundsCompleted = (int) achievements.achievements["Ame_Ten_Rounds"];
+                achievements.updateAchievement("Ame_Ten_Rounds", roundsCompleted + 1);
+                achievements.updateAchievement("Ame_OneHundred_Rounds", roundsCompleted + 1);
+                break;
+            case 4:
+                roundsCompleted = (int) achievements.achievements["Calli_Ten_Rounds"];
+                achievements.updateAchievement("Calli_Ten_Rounds", roundsCompleted + 1);
+                achievements.updateAchievement("Calli_OneHundred_Rounds", roundsCompleted + 1);
+                break;
+            case 5:
+                roundsCompleted = (int) achievements.achievements["Gura_Ten_Rounds"];
+                achievements.updateAchievement("Gura_Ten_Rounds", roundsCompleted + 1);
+                achievements.updateAchievement("Gura_OneHundred_Rounds",  + roundsCompleted + 1);
+                break;
+            default:
+                roundsCompleted = (int) achievements.achievements["Ina_Ten_Rounds"];
+                achievements.updateAchievement("Ina_Ten_Rounds", roundsCompleted + 1);
+                achievements.updateAchievement("Ina_OneHundred_Rounds", roundsCompleted + 1);
+
+                break;
+        }
 
         yield return new WaitForSecondsRealtime(2);
 
@@ -398,6 +425,14 @@ public class GameManager : MonoBehaviour {
 
         powerUpOwned = false;
 
+        int powerUpsUsed = (int) achievements.achievements["Use_PowerUp_One"];
+
+        print("Power ups used: " + powerUpsUsed);
+
+        achievements.updateAchievement("Use_PowerUp_One", powerUpsUsed + 1);
+        achievements.updateAchievement("Use_PowerUp_Ten", powerUpsUsed + 1);
+        achievements.updateAchievement("Use_PowerUp_OneHundred", powerUpsUsed + 1);
+
         switch(type) {
             case 1:
                 Random rand = new Random();
@@ -542,6 +577,7 @@ public class GameManager : MonoBehaviour {
         CancelInvoke("ResumeTime");
         CancelInvoke("EndVulnerableEnemies");
         CancelInvoke("UnscareEnemies");
+        CancelInvoke("SpawnPowerUp");
 
         playerAtr.aniSprites.enable(false);
 
@@ -872,6 +908,12 @@ public class GameManager : MonoBehaviour {
         }
 
         SaveFile();
+        SaveAchievements();
+        sceneChange.moveToScene(0);
+    }
+
+    public void DontSaveScore() {
+        SaveAchievements();
         sceneChange.moveToScene(0);
     }
 
@@ -927,5 +969,61 @@ public class GameManager : MonoBehaviour {
         } else {
             leaderboard = null;
         }
+    }
+
+    private void SaveAchievements() {
+        string path = Application.persistentDataPath + "/achievements.dat";
+        FileStream file;
+
+        if (File.Exists(path)) {
+            file = File.OpenWrite(path);
+        } else {
+            file = File.Create(path);
+        }
+
+        BinaryFormatter bf = new BinaryFormatter();
+        bf.Serialize(file, achievements);
+
+        file.Close();
+    }
+
+    private void LoadAchievements() {
+        string path = Application.persistentDataPath + "/achievements.dat";
+        FileStream file;
+
+        if (File.Exists(path)) {
+            file = File.OpenRead(path);
+
+            if (file.Length > 0) {
+                BinaryFormatter bf = new BinaryFormatter();
+                Achievement ach = (Achievement) bf.Deserialize(file);
+
+                achievements = ach;
+
+                file.Close();
+            }
+        } else {
+            achievements = new Achievement();
+
+            CreateAchievements();
+        }
+    }
+
+    private void CreateAchievements() {
+        achievements.createAchievement("Ina_Ten_Rounds", 0);
+        achievements.createAchievement("Ina_OneHundred_Rounds", 0);
+        achievements.createAchievement("Kiara_Ten_Rounds", 0);
+        achievements.createAchievement("Kiara_OneHundred_Rounds", 0);
+        achievements.createAchievement("Ame_Ten_Rounds", 0);
+        achievements.createAchievement("Ame_OneHundred_Rounds", 0);
+        achievements.createAchievement("Calli_Ten_Rounds", 0);
+        achievements.createAchievement("Calli_OneHundred_Rounds", 0);
+        achievements.createAchievement("Gura_Ten_Rounds", 0);
+        achievements.createAchievement("Gura_OneHundred_Rounds", 0);
+        achievements.createAchievement("Use_PowerUp_One", 0);
+        achievements.createAchievement("Use_PowerUp_Ten", 0);
+        achievements.createAchievement("Use_PowerUp_OneHundred", 0);
+
+        SaveAchievements();
     }
 }

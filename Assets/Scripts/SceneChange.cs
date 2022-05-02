@@ -50,6 +50,10 @@ public class SceneChange : MonoBehaviour {
         moveToScene(6);
     }
 
+    public void achievements() {
+        moveToScene(7);
+    }
+
     public void quitGame() {
         Application.Quit();
     }
