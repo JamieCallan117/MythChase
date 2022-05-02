@@ -3,12 +3,12 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Movement : MonoBehaviour
 {
-    public bool movementEnabled = false;
-    public float speed = 8f;
+    private bool movementEnabled = false;
+    private float speed = 8.0f;
     [SerializeField] private LayerMask obstacleLayer;
     private Rigidbody2D rigidbody2d;
-    public Vector2 currentDirection;
-    public Vector2 nextDirection;
+    private Vector2 currentDirection;
+    private Vector2 nextDirection;
     private float yUpper = 0.0f;
     private float yLower = 0.0f;
     private float xLeft = 0.0f;
@@ -84,6 +84,21 @@ public class Movement : MonoBehaviour
     
     }
 
+    public void ToggleMovement(bool enabled)
+    {
+        movementEnabled = enabled;
+    }
+
+    public void HaltMovement()
+    {
+        currentDirection = Vector2.zero;
+        nextDirection = Vector2.zero;
+    }
+
+    public void TeleportObject(Vector3 newPos) {
+        transform.position = newPos;
+    }
+
     public void Move(Vector2 direction)
     {
         if (ValidMove(direction))
@@ -95,6 +110,25 @@ public class Movement : MonoBehaviour
         {
             nextDirection = direction;
         }
+    }
+
+    public void IncreaseSpeed() {
+        speed += 0.1f;
+    }
+
+    public void SetSpeed(float newSpeed)
+    {
+        speed = newSpeed;
+    }
+
+    public float GetSpeed()
+    {
+        return speed;
+    }
+
+    public Vector2 GetCurrentDirection()
+    {
+        return currentDirection;
     }
 
     private bool ValidMove(Vector2 direction)

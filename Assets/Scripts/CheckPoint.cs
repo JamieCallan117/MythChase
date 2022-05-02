@@ -5,7 +5,7 @@ using UnityEngine.Tilemaps;
 
 public class CheckPoint : MonoBehaviour
 {
-    public List<Vector2> directions = new List<Vector2>();
+    private List<Vector2> directions = new List<Vector2>();
     [SerializeField] private LayerMask obstacleLayer;
     private GameManager gameManager;
 
@@ -36,6 +36,10 @@ public class CheckPoint : MonoBehaviour
         {
             directions.Add(Vector2.left);
         }
+    }
+
+    public List<Vector2> GetAvailableDirections() {
+        return directions;
     }
 
     private bool ValidDirection(Vector2 direction)

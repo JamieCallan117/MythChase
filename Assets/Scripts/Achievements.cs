@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -21,6 +19,19 @@ public class Achievements : MonoBehaviour
     [SerializeField] private GameObject achievementElevenObj;
     [SerializeField] private GameObject achievementTwelveObj;
     [SerializeField] private GameObject achievementThirteenObj;
+    private AchievementStar achievementOne;
+    private AchievementStar achievementTwo;
+    private AchievementStar achievementThree;
+    private AchievementStar achievementFour;
+    private AchievementStar achievementFive;
+    private AchievementStar achievementSix;
+    private AchievementStar achievementSeven;
+    private AchievementStar achievementEight;
+    private AchievementStar achievementNine;
+    private AchievementStar achievementTen;
+    private AchievementStar achievementEleven;
+    private AchievementStar achievementTwelve;
+    private AchievementStar achievementThirteen;
     [SerializeField] private GameObject achievementText;
     [SerializeField] private Sprite lockedSprite;
     [SerializeField] private Sprite unlockedSprite;
@@ -29,6 +40,19 @@ public class Achievements : MonoBehaviour
 
     void Start()
     {
+        achievementOne = achievementOneObj.GetComponent(typeof(AchievementStar)) as AchievementStar;
+        achievementTwo = achievementTwoObj.GetComponent(typeof(AchievementStar)) as AchievementStar;
+        achievementThree = achievementThreeObj.GetComponent(typeof(AchievementStar)) as AchievementStar;
+        achievementFour = achievementFourObj.GetComponent(typeof(AchievementStar)) as AchievementStar;
+        achievementFive = achievementFiveObj.GetComponent(typeof(AchievementStar)) as AchievementStar;
+        achievementSix = achievementSixObj.GetComponent(typeof(AchievementStar)) as AchievementStar;
+        achievementSeven = achievementSevenObj.GetComponent(typeof(AchievementStar)) as AchievementStar;
+        achievementEight = achievementEightObj.GetComponent(typeof(AchievementStar)) as AchievementStar;
+        achievementNine = achievementNineObj.GetComponent(typeof(AchievementStar)) as AchievementStar;
+        achievementTen = achievementTenObj.GetComponent(typeof(AchievementStar)) as AchievementStar;
+        achievementEleven = achievementElevenObj.GetComponent(typeof(AchievementStar)) as AchievementStar;
+        achievementTwelve = achievementTwelveObj.GetComponent(typeof(AchievementStar)) as AchievementStar;
+        achievementThirteen = achievementThirteenObj.GetComponent(typeof(AchievementStar)) as AchievementStar;
         achievementDesc = achievementText.GetComponent(typeof(TextMeshProUGUI)) as TextMeshProUGUI;
 
         LoadAchievements();
@@ -38,69 +62,69 @@ public class Achievements : MonoBehaviour
 
     private void UpdateAchievements()
     {
-        if ((int) achievements.achievements["Ina_Ten_Rounds"] >= 10)
+        if (achievements.GetAchievement("Ina_Ten_Rounds") >= 10)
         {
-            achievementOneObj.GetComponent<Image>().sprite = unlockedSprite;
+            achievementOne.UnlockAchievement();
         }
 
-        if ((int) achievements.achievements["Ina_OneHundred_Rounds"] >= 100)
+        if (achievements.GetAchievement("Ina_OneHundred_Rounds") >= 100)
         {
-            achievementTwoObj.GetComponent<Image>().sprite = unlockedSprite;
+            achievementTwo.UnlockAchievement();
         }
 
-        if ((int) achievements.achievements["Kiara_Ten_Rounds"] >= 10)
+        if (achievements.GetAchievement("Kiara_Ten_Rounds") >= 10)
         {
-            achievementThreeObj.GetComponent<Image>().sprite = unlockedSprite;
+            achievementThree.UnlockAchievement();
         }
 
-        if ((int) achievements.achievements["Kiara_OneHundred_Rounds"] >= 100)
+        if (achievements.GetAchievement("Kiara_OneHundred_Rounds") >= 100)
         {
-            achievementFourObj.GetComponent<Image>().sprite = unlockedSprite;
+            achievementFour.UnlockAchievement();
         }
 
-        if ((int) achievements.achievements["Ame_Ten_Rounds"] >= 10)
+        if (achievements.GetAchievement("Ame_Ten_Rounds") >= 10)
         {
-            achievementFiveObj.GetComponent<Image>().sprite = unlockedSprite;
+            achievementFive.UnlockAchievement();
         }
 
-        if ((int) achievements.achievements["Ame_OneHundred_Rounds"] >= 100)
+        if (achievements.GetAchievement("Ame_OneHundred_Rounds") >= 100)
         {
-            achievementSixObj.GetComponent<Image>().sprite = unlockedSprite;
+            achievementSix.UnlockAchievement();
         }
 
-        if ((int) achievements.achievements["Calli_Ten_Rounds"] >= 10)
+        if (achievements.GetAchievement("Calli_Ten_Rounds") >= 10)
         {
-            achievementSevenObj.GetComponent<Image>().sprite = unlockedSprite;
+            achievementSeven.UnlockAchievement();
         }
 
-        if ((int) achievements.achievements["Calli_OneHundred_Rounds"] >= 100)
+        if (achievements.GetAchievement("Calli_OneHundred_Rounds") >= 100)
         {
-            achievementEightObj.GetComponent<Image>().sprite = unlockedSprite;
+            achievementEight.UnlockAchievement();
         }
 
-        if ((int) achievements.achievements["Gura_Ten_Rounds"] >= 10)
+        if (achievements.GetAchievement("Gura_Ten_Rounds") >= 10)
         {
-            achievementNineObj.GetComponent<Image>().sprite = unlockedSprite;
+            achievementNine.UnlockAchievement();
         }
 
-        if ((int) achievements.achievements["Gura_OneHundred_Rounds"] >= 100)
+        if (achievements.GetAchievement("Gura_OneHundred_Rounds") >= 100)
         {
-            achievementTenObj.GetComponent<Image>().sprite = unlockedSprite;
+            achievementTen.UnlockAchievement();
         }
 
-        if ((int) achievements.achievements["Use_PowerUp_One"] >= 1)
+        if (achievements.GetAchievement("Use_PowerUp_One") >= 1)
         {
-            achievementElevenObj.GetComponent<Image>().sprite = unlockedSprite;
+            achievementEleven.UnlockAchievement();
         }
 
-        if ((int) achievements.achievements["Use_PowerUp_Ten"] >= 10)
+        if (achievements.GetAchievement("Use_PowerUp_Ten") >= 10)
         {
-            achievementTwelveObj.GetComponent<Image>().sprite = unlockedSprite;
+            achievementTwelve.UnlockAchievement();
         }
 
-        if ((int) achievements.achievements["Use_PowerUp_OneHundred"] >= 100)
+        if (achievements.GetAchievement("Use_PowerUp_OneHundred") >= 100)
         {
-            achievementThirteenObj.GetComponent<Image>().sprite = unlockedSprite;
+            achievementThirteen.UnlockAchievement();
         }
     }
 
@@ -109,41 +133,41 @@ public class Achievements : MonoBehaviour
         switch (selected)
         {
             case 2:
-                achievementDesc.text = "The Priestess - Complete 100 rounds as Ninomae Ina'nis - " + achievements.achievements["Ina_OneHundred_Rounds"].ToString() + "/100.";
+                achievementDesc.text = "The Priestess - Complete 100 rounds as Ninomae Ina'nis - " + achievements.GetAchievement("Ina_OneHundred_Rounds").ToString() + "/100.";
                 achievementOneObj.GetComponent<Outline>().enabled = false;
                 achievementTwoObj.GetComponent<Outline>().enabled = true;
                 achievementThreeObj.GetComponent<Outline>().enabled = false;
                 achievementSevenObj.GetComponent<Outline>().enabled = false;
                 break;
             case 3:
-                achievementDesc.text = "Kikkeriki! - Complete 10 rounds as Takanashi Kiara - " + achievements.achievements["Kiara_Ten_Rounds"].ToString() + "/10.";
+                achievementDesc.text = "Kikkeriki! - Complete 10 rounds as Takanashi Kiara - " + achievements.GetAchievement("Kiara_Ten_Rounds").ToString() + "/10.";
                 achievementTwoObj.GetComponent<Outline>().enabled = false;
                 achievementThreeObj.GetComponent<Outline>().enabled = true;
                 achievementFourObj.GetComponent<Outline>().enabled = false;
                 achievementEightObj.GetComponent<Outline>().enabled = false;
                 break;
             case 4:
-                achievementDesc.text = "The Phoenix - Complete 100 rounds as Takanashi Kiara - " + achievements.achievements["Kiara_OneHundred_Rounds"].ToString() + "/100.";
+                achievementDesc.text = "The Phoenix - Complete 100 rounds as Takanashi Kiara - " + achievements.GetAchievement("Kiara_OneHundred_Rounds").ToString() + "/100.";
                 achievementThreeObj.GetComponent<Outline>().enabled = false;
                 achievementFourObj.GetComponent<Outline>().enabled = true;
                 achievementFiveObj.GetComponent<Outline>().enabled = false;
                 achievementNineObj.GetComponent<Outline>().enabled = false;
                 break;
             case 5:
-                achievementDesc.text = "Hic! - Complete 10 rounds as Amelia Watson - " + achievements.achievements["Ame_Ten_Rounds"].ToString() + "/10.";
+                achievementDesc.text = "Hic! - Complete 10 rounds as Amelia Watson - " + achievements.GetAchievement("Ame_Ten_Rounds").ToString() + "/10.";
                 achievementFourObj.GetComponent<Outline>().enabled = false;
                 achievementFiveObj.GetComponent<Outline>().enabled = true;
                 achievementTenObj.GetComponent<Outline>().enabled = false;
                 break;
             case 6:
-                achievementDesc.text = "The Detective - Complete 100 rounds as Amelia Watson - " + achievements.achievements["Ame_OneHundred_Rounds"].ToString() + "/100.";
+                achievementDesc.text = "The Detective - Complete 100 rounds as Amelia Watson - " + achievements.GetAchievement("Ame_OneHundred_Rounds").ToString() + "/100.";
                 achievementOneObj.GetComponent<Outline>().enabled = false;
                 achievementSixObj.GetComponent<Outline>().enabled = true;
                 achievementSevenObj.GetComponent<Outline>().enabled = false;
                 achievementElevenObj.GetComponent<Outline>().enabled = false;
                 break;
             case 7:
-                achievementDesc.text = "Guh! - Complete 10 rounds as Mori Calliope - " + achievements.achievements["Calli_Ten_Rounds"].ToString() + "/10.";
+                achievementDesc.text = "Guh! - Complete 10 rounds as Mori Calliope - " + achievements.GetAchievement("Calli_Ten_Rounds").ToString() + "/10.";
                 achievementTwoObj.GetComponent<Outline>().enabled = false;
                 achievementSixObj.GetComponent<Outline>().enabled = false;
                 achievementSevenObj.GetComponent<Outline>().enabled = true;
@@ -151,7 +175,7 @@ public class Achievements : MonoBehaviour
                 achievementElevenObj.GetComponent<Outline>().enabled = false;
                 break;
             case 8:
-                achievementDesc.text = "The Reaper - Complete 100 rounds as Mori Calliope - " + achievements.achievements["Calli_OneHundred_Rounds"].ToString() + "/100.";
+                achievementDesc.text = "The Reaper - Complete 100 rounds as Mori Calliope - " + achievements.GetAchievement("Calli_OneHundred_Rounds").ToString() + "/100.";
                 achievementThreeObj.GetComponent<Outline>().enabled = false;
                 achievementSevenObj.GetComponent<Outline>().enabled = false;
                 achievementEightObj.GetComponent<Outline>().enabled = true;
@@ -159,7 +183,7 @@ public class Achievements : MonoBehaviour
                 achievementTwelveObj.GetComponent<Outline>().enabled = false;
                 break;
             case 9:
-                achievementDesc.text = "a! - Complete 10 rounds as Gawr Gura - " + achievements.achievements["Gura_Ten_Rounds"].ToString() + "/10.";
+                achievementDesc.text = "a! - Complete 10 rounds as Gawr Gura - " + achievements.GetAchievement("Gura_Ten_Rounds").ToString() + "/10.";
                 achievementFourObj.GetComponent<Outline>().enabled = false;
                 achievementEightObj.GetComponent<Outline>().enabled = false;
                 achievementNineObj.GetComponent<Outline>().enabled = true;
@@ -167,35 +191,35 @@ public class Achievements : MonoBehaviour
                 achievementThirteenObj.GetComponent<Outline>().enabled = false;
                 break;
             case 10:
-                achievementDesc.text = "The Shark - Complete 100 rounds as Gawr Gura - " + achievements.achievements["Gura_OneHundred_Rounds"].ToString() + "/100.";
+                achievementDesc.text = "The Shark - Complete 100 rounds as Gawr Gura - " + achievements.GetAchievement("Gura_OneHundred_Rounds").ToString() + "/100.";
                 achievementFiveObj.GetComponent<Outline>().enabled = false;
                 achievementNineObj.GetComponent<Outline>().enabled = false;
                 achievementTenObj.GetComponent<Outline>().enabled = true;
                 achievementThirteenObj.GetComponent<Outline>().enabled = false;
                 break;
             case 11:
-                achievementDesc.text = "Project: Hope - Use 1 Power Up! - " + achievements.achievements["Use_PowerUp_One"].ToString() + "/1.";
+                achievementDesc.text = "Project: Hope - Use 1 Power Up! - " + achievements.GetAchievement("Use_PowerUp_One").ToString() + "/1.";
                 achievementSixObj.GetComponent<Outline>().enabled = false;
                 achievementSevenObj.GetComponent<Outline>().enabled = false;
                 achievementElevenObj.GetComponent<Outline>().enabled = true;
                 achievementTwelveObj.GetComponent<Outline>().enabled = false;
                 break;
             case 12:
-                achievementDesc.text = "The Council - Use 10 Power Ups! - " + achievements.achievements["Use_PowerUp_Ten"].ToString() + "/10.";
+                achievementDesc.text = "The Council - Use 10 Power Ups! - " + achievements.GetAchievement("Use_PowerUp_Ten").ToString() + "/10.";
                 achievementEightObj.GetComponent<Outline>().enabled = false;
                 achievementElevenObj.GetComponent<Outline>().enabled = false;
                 achievementTwelveObj.GetComponent<Outline>().enabled = true;
                 achievementThirteenObj.GetComponent<Outline>().enabled = false;
                 break;
             case 13:
-                achievementDesc.text = "The Ancient Ones - Use 100 Power Ups! - " + achievements.achievements["Use_PowerUp_OneHundred"].ToString() + "/100.";
+                achievementDesc.text = "The Ancient Ones - Use 100 Power Ups! - " + achievements.GetAchievement("Use_PowerUp_OneHundred").ToString() + "/100.";
                 achievementNineObj.GetComponent<Outline>().enabled = false;
                 achievementTenObj.GetComponent<Outline>().enabled = false;
                 achievementTwelveObj.GetComponent<Outline>().enabled = false;
                 achievementThirteenObj.GetComponent<Outline>().enabled = true;
                 break;
             default:
-                achievementDesc.text = "Wah! - Complete 10 rounds as Ninomae Ina'nis - " + achievements.achievements["Ina_Ten_Rounds"].ToString() + "/10.";
+                achievementDesc.text = "Wah! - Complete 10 rounds as Ninomae Ina'nis - " + achievements.GetAchievement("Ina_Ten_Rounds").ToString() + "/10.";
                 achievementOneObj.GetComponent<Outline>().enabled = true;
                 achievementTwoObj.GetComponent<Outline>().enabled = false;
                 achievementSixObj.GetComponent<Outline>().enabled = false;

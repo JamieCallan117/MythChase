@@ -1,13 +1,14 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(SpriteRenderer))]
 public class AnimatedSprites : MonoBehaviour
 {
-    public SpriteRenderer spriteRenderer;
+    private SpriteRenderer spriteRenderer;
     public Sprite[] sprites;
     private float animationRate = 0.05f;
-    public int currentFrame;
-    public bool loop = true;
+    private int currentFrame;
+    private bool loop = true;
     private bool isEnabled = true;
 
     void Awake()
@@ -20,35 +21,65 @@ public class AnimatedSprites : MonoBehaviour
         InvokeRepeating("UpdateFrame", 0.0f, this.animationRate);
     }
 
+    public void KillPlayer(Sprite[] spritesToUse)
+    {
+        enable(false);
+        loop = false;
+        currentFrame = 0;
+        sprites = spritesToUse;
+
+        UpdateAnimationRate(0.5f);
+
+        enable(true);
+    }
+
+    public void RevivePlayer(Sprite[] spritesToUse)
+    {
+        loop = true;
+        currentFrame = 0;
+        sprites = spritesToUse;
+
+        UpdateAnimationRate(0.05f);
+    }
+
+    public void SetSprites(Sprite[] spritesToUse)
+    {
+        sprites = spritesToUse;
+    }
+
+    public void SetSprite(Sprite spriteToUse) {
+        spriteRenderer.sprite = spriteToUse;
+    }
+
     public void UpdateAnimationRate(float newRate)
     {
         CancelInvoke("UpdateFrame");
 
         animationRate = newRate;
 
-        InvokeRepeating("UpdateFrame", 0.0f, this.animationRate);
+        InvokeRepeating("UpdateFrame", 0.0f, animationRate);
     }
 
     private void UpdateFrame()
     {
         if (isEnabled)
         {
-            this.currentFrame++;
+            currentFrame++;
 
-            if (this.currentFrame >= this.sprites.Length && this.loop)
+            if (currentFrame >= sprites.Length && loop)
             {
-                this.currentFrame = 0;
+                currentFrame = 0;
             }
 
-            if (this.currentFrame >= 0 && this.currentFrame < this.sprites.Length)
+            if (currentFrame >= 0 && currentFrame < sprites.Length)
             {
-                this.spriteRenderer.sprite = this.sprites[currentFrame];
+                spriteRenderer.sprite = sprites[currentFrame];
             }
         }
     }
 
     public void enable(bool enable)
     {
-        this.isEnabled = enable;
+        isEnabled = enable;
     }
 }

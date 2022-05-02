@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class PowerUp : MonoBehaviour
 {
-    public int type;
+    private int type;
     private GameManager gameManager;
 
     void Awake()
     {
         gameManager = FindObjectOfType<GameManager>();
+    }
+
+    public void SetType(int typeToBe)
+    {
+        type = typeToBe;
     }
 
     public void Activate()

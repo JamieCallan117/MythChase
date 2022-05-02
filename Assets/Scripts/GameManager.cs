@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
     private AnimatedSprites enemyTwoAniSprites;
     private AnimatedSprites enemyThreeAniSprites;
     private AnimatedSprites enemyFourAniSprites;
-    private AudioSource audioSource;
+    [SerializeField] private PlayAudio playAudio;
     private int score;
     private int highScore;
     private int lives;
@@ -91,7 +91,6 @@ public class GameManager : MonoBehaviour
         highScoreText = highScoreValue.GetComponent(typeof(TextMeshProUGUI)) as TextMeshProUGUI;
         finalScoreText = finalScore.GetComponent(typeof(TextMeshProUGUI)) as TextMeshProUGUI;
         usernameField = usernameObj.GetComponent(typeof(TMP_InputField)) as TMP_InputField;
-        audioSource = GetComponent<AudioSource>();
 
         powerUpOwned = false;
         hasHighScore = false;
@@ -112,9 +111,15 @@ public class GameManager : MonoBehaviour
         powerUp.SetActive(false);
         powerUpItem.SetActive(false);
 
+        playerAtr.SetSpeed(8.0f);
+        enemyOneAtr.SetSpeed(7.0f);
+        enemyTwoAtr.SetSpeed(7.0f);
+        enemyThreeAtr.SetSpeed(7.0f);
+        enemyFourAtr.SetSpeed(7.0f);
+
         StartCoroutine(newRoundWait());
 
-        audioSource.Play();
+        playAudio.PlayIntroMusic();
     }
 
     void Update()
@@ -170,44 +175,38 @@ public class GameManager : MonoBehaviour
             pellets[i].gameObject.SetActive(true);
         }
 
-        Movement playerMovement = player.GetComponent(typeof(Movement)) as Movement;
-        Movement enemyOneMovement = enemyOne.GetComponent(typeof(Movement)) as Movement;
-        Movement enemyTwoMovement = enemyTwo.GetComponent(typeof(Movement)) as Movement;
-        Movement enemyThreeMovement = enemyThree.GetComponent(typeof(Movement)) as Movement;
-        Movement enemyFourMovement = enemyFour.GetComponent(typeof(Movement)) as Movement;
-
-        playerMovement.speed += 0.1f;
-        enemyOneMovement.speed += 0.1f;
-        enemyTwoMovement.speed += 0.1f;
-        enemyThreeMovement.speed += 0.1f;
-        enemyFourMovement.speed += 0.1f;
+        playerAtr.IncreaseSpeed();
+        enemyOneAtr.IncreaseSpeed();
+        enemyTwoAtr.IncreaseSpeed();
+        enemyThreeAtr.IncreaseSpeed();
+        enemyFourAtr.IncreaseSpeed();
 
         int roundsCompleted;
 
         switch(PlayerStats.character)
         {
             case 2:
-                roundsCompleted = (int) achievements.achievements["Kiara_Ten_Rounds"];
+                roundsCompleted = achievements.GetAchievement("Kiara_Ten_Rounds");
                 achievements.updateAchievement("Kiara_Ten_Rounds", roundsCompleted + 1);
                 achievements.updateAchievement("Kiara_OneHundred_Rounds", roundsCompleted + 1);
                 break;
             case 3:
-                roundsCompleted = (int) achievements.achievements["Ame_Ten_Rounds"];
+                roundsCompleted = achievements.GetAchievement("Ame_Ten_Rounds");
                 achievements.updateAchievement("Ame_Ten_Rounds", roundsCompleted + 1);
                 achievements.updateAchievement("Ame_OneHundred_Rounds", roundsCompleted + 1);
                 break;
             case 4:
-                roundsCompleted = (int) achievements.achievements["Calli_Ten_Rounds"];
+                roundsCompleted = achievements.GetAchievement("Calli_Ten_Rounds");
                 achievements.updateAchievement("Calli_Ten_Rounds", roundsCompleted + 1);
                 achievements.updateAchievement("Calli_OneHundred_Rounds", roundsCompleted + 1);
                 break;
             case 5:
-                roundsCompleted = (int) achievements.achievements["Gura_Ten_Rounds"];
+                roundsCompleted = achievements.GetAchievement("Gura_Ten_Rounds");
                 achievements.updateAchievement("Gura_Ten_Rounds", roundsCompleted + 1);
                 achievements.updateAchievement("Gura_OneHundred_Rounds",  + roundsCompleted + 1);
                 break;
             default:
-                roundsCompleted = (int) achievements.achievements["Ina_Ten_Rounds"];
+                roundsCompleted = achievements.GetAchievement("Ina_Ten_Rounds");
                 achievements.updateAchievement("Ina_Ten_Rounds", roundsCompleted + 1);
                 achievements.updateAchievement("Ina_OneHundred_Rounds", roundsCompleted + 1);
 
@@ -221,34 +220,33 @@ public class GameManager : MonoBehaviour
 
     private void startGame()
     {
-        Movement playerMovement = player.GetComponent(typeof(Movement)) as Movement;
-        Movement enemyOneMovement = enemyOne.GetComponent(typeof(Movement)) as Movement;
-        Movement enemyTwoMovement = enemyTwo.GetComponent(typeof(Movement)) as Movement;
-        Movement enemyThreeMovement = enemyThree.GetComponent(typeof(Movement)) as Movement;
-        Movement enemyFourMovement = enemyFour.GetComponent(typeof(Movement)) as Movement;
+        playerAtr.ToggleMovement(true);
+        enemyOneAtr.ToggleMovement(true);
+        enemyTwoAtr.ToggleMovement(true);
+        enemyThreeAtr.ToggleMovement(true);
+        enemyFourAtr.ToggleMovement(true);
 
-        playerMovement.movementEnabled = true;
-        enemyOneMovement.movementEnabled = true;
-        enemyTwoMovement.movementEnabled = true;
-        enemyThreeMovement.movementEnabled = true;
-        enemyFourMovement.movementEnabled = true;
+        enemyOneAtr.InHome(false);
+        enemyTwoAtr.InHome(true);
+        enemyThreeAtr.InHome(true);
+        enemyFourAtr.InHome(true);
 
         Random rand = new Random();
         int randInt = rand.Next(0, 2);
 
         if (randInt == 0)
         {
-            enemyOneMovement.Move(Vector2.left);
-            enemyThreeMovement.Move(Vector2.left);
+            enemyOneAtr.Move(Vector2.left);
+            enemyThreeAtr.Move(Vector2.left);
         }
         else
         {
-            enemyOneMovement.Move(Vector2.right);
-            enemyThreeMovement.Move(Vector2.right);
+            enemyOneAtr.Move(Vector2.right);
+            enemyThreeAtr.Move(Vector2.right);
         }
 
-        enemyTwoMovement.Move(Vector2.right);
-        enemyFourMovement.Move(Vector2.left);
+        enemyTwoAtr.Move(Vector2.right);
+        enemyFourAtr.Move(Vector2.left);
 
         readyText.SetActive(false);
 
@@ -266,7 +264,7 @@ public class GameManager : MonoBehaviour
 
     private void SetScore(int newScore)
     {
-        this.score = newScore;
+        score = newScore;
     }
 
     private void SetLives(int newLives)
@@ -378,7 +376,7 @@ public class GameManager : MonoBehaviour
     public void EatPellet(Pellet pellet)
     {
         pellet.gameObject.SetActive(false);
-        SetScore(score + pellet.points);
+        SetScore(score + pellet.GetPoints());
     }
 
     public void EatLargePellet(LargePellet pellet)
@@ -417,7 +415,7 @@ public class GameManager : MonoBehaviour
 
         powerUpOwned = false;
 
-        int powerUpsUsed = (int) achievements.achievements["Use_PowerUp_One"];
+        int powerUpsUsed = achievements.GetAchievement("Use_PowerUp_One");
 
         achievements.updateAchievement("Use_PowerUp_One", powerUpsUsed + 1);
         achievements.updateAchievement("Use_PowerUp_Ten", powerUpsUsed + 1);
@@ -428,11 +426,11 @@ public class GameManager : MonoBehaviour
             case 1:
                 Random rand = new Random();
                 int randInt = rand.Next(0, telePoints.Count);
-                Movement playerMovement = player.GetComponent(typeof(Movement)) as Movement;
+                
+                playerAtr.HaltMovement();
 
-                player.transform.position = telePoints[randInt].transform.position;
-                playerMovement.currentDirection = (Vector2.zero);
-                playerMovement.nextDirection = (Vector2.zero);
+                playerAtr.TeleportObject(telePoints[randInt].transform.position);
+
                 break;
             case 2:
                 enemyOneAtr.ToggleIgnorePlayer(true, player);
@@ -443,31 +441,26 @@ public class GameManager : MonoBehaviour
                 Invoke("EndInvincibility", 10.0f);
                 break;
             case 3:
-                Movement enemyOneMovement = enemyOne.GetComponent(typeof(Movement)) as Movement;
-                Movement enemyTwoMovement = enemyTwo.GetComponent(typeof(Movement)) as Movement;
-                Movement enemyThreeMovement = enemyThree.GetComponent(typeof(Movement)) as Movement;
-                Movement enemyFourMovement = enemyFour.GetComponent(typeof(Movement)) as Movement;
-
-                enemyOneMovement.movementEnabled = false;
-                enemyTwoMovement.movementEnabled = false;
-                enemyThreeMovement.movementEnabled = false;
-                enemyFourMovement.movementEnabled = false;
+                enemyOneAtr.ToggleMovement(false);
+                enemyTwoAtr.ToggleMovement(false);
+                enemyThreeAtr.ToggleMovement(false);
+                enemyFourAtr.ToggleMovement(false);
 
                 Invoke("ResumeTime", 10.0f);
                 break;
             case 4:
-                enemyOneAtr.powerUpVulnerable = true;
-                enemyTwoAtr.powerUpVulnerable = true;
-                enemyThreeAtr.powerUpVulnerable = true;
-                enemyFourAtr.powerUpVulnerable = true;
+                enemyOneAtr.SetPowerUpVulnerable(true);
+                enemyTwoAtr.SetPowerUpVulnerable(true);
+                enemyThreeAtr.SetPowerUpVulnerable(true);
+                enemyFourAtr.SetPowerUpVulnerable(true);
 
                 Invoke("EndVulnerableEnemies", 10.0f);
                 break;
             case 5:
-                enemyOneAtr.scared = true;
-                enemyTwoAtr.scared = true;
-                enemyThreeAtr.scared = true;
-                enemyFourAtr.scared = true;
+                enemyOneAtr.SetScared(true);
+                enemyTwoAtr.SetScared(true);
+                enemyThreeAtr.SetScared(true);
+                enemyFourAtr.SetScared(true);
 
                 Invoke("UnscareEnemies", 10.0f);
                 break;
@@ -494,57 +487,41 @@ public class GameManager : MonoBehaviour
 
     private void ResumeTime()
     {
-        Movement enemyOneMovement = enemyOne.GetComponent(typeof(Movement)) as Movement;
-        Movement enemyTwoMovement = enemyTwo.GetComponent(typeof(Movement)) as Movement;
-        Movement enemyThreeMovement = enemyThree.GetComponent(typeof(Movement)) as Movement;
-        Movement enemyFourMovement = enemyFour.GetComponent(typeof(Movement)) as Movement;
-
-        enemyOneMovement.movementEnabled = true;
-        enemyTwoMovement.movementEnabled = true;
-        enemyThreeMovement.movementEnabled = true;
-        enemyFourMovement.movementEnabled = true;
+        enemyOneAtr.ToggleMovement(true);
+        enemyTwoAtr.ToggleMovement(true);
+        enemyThreeAtr.ToggleMovement(true);
+        enemyFourAtr.ToggleMovement(true);
     }
 
     private void EndVulnerableEnemies()
     {
-        enemyOneAtr.powerUpVulnerable = false;
-        enemyTwoAtr.powerUpVulnerable = false;
-        enemyThreeAtr.powerUpVulnerable = false;
-        enemyFourAtr.powerUpVulnerable = false;
+        enemyOneAtr.SetPowerUpVulnerable(false);
+        enemyTwoAtr.SetPowerUpVulnerable(false);
+        enemyThreeAtr.SetPowerUpVulnerable(false);
+        enemyFourAtr.SetPowerUpVulnerable(false);
     }
 
     private void UnscareEnemies()
     {
-        enemyOneAtr.scared = false;
-        enemyTwoAtr.scared = false;
-        enemyThreeAtr.scared = false;
-        enemyFourAtr.scared = false;
+        enemyOneAtr.SetScared(false);
+        enemyTwoAtr.SetScared(false);
+        enemyThreeAtr.SetScared(false);
+        enemyFourAtr.SetScared(false);
     }
 
     public void PlayerHit()
     {
-        Movement playerMovement = player.GetComponent(typeof(Movement)) as Movement;
-        Movement enemyOneMovement = enemyOne.GetComponent(typeof(Movement)) as Movement;
-        Movement enemyTwoMovement = enemyTwo.GetComponent(typeof(Movement)) as Movement;
-        Movement enemyThreeMovement = enemyThree.GetComponent(typeof(Movement)) as Movement;
-        Movement enemyFourMovement = enemyFour.GetComponent(typeof(Movement)) as Movement;
+        playerAtr.ToggleMovement(false);
+        enemyOneAtr.ToggleMovement(false);
+        enemyTwoAtr.ToggleMovement(false);
+        enemyThreeAtr.ToggleMovement(false);
+        enemyFourAtr.ToggleMovement(false);
 
-        playerMovement.movementEnabled = false;
-        enemyOneMovement.movementEnabled = false;
-        enemyTwoMovement.movementEnabled = false;
-        enemyThreeMovement.movementEnabled = false;
-        enemyFourMovement.movementEnabled = false;
-
-        playerMovement.currentDirection = Vector2.zero;
-        playerMovement.nextDirection = Vector2.zero;
-        enemyOneMovement.currentDirection = Vector2.zero;
-        enemyOneMovement.nextDirection = Vector2.zero;
-        enemyTwoMovement.currentDirection = Vector2.zero;
-        enemyTwoMovement.nextDirection = Vector2.zero;
-        enemyThreeMovement.currentDirection = Vector2.zero;
-        enemyThreeMovement.nextDirection = Vector2.zero;
-        enemyFourMovement.currentDirection = Vector2.zero;
-        enemyFourMovement.nextDirection = Vector2.zero;
+        playerAtr.HaltMovement();
+        enemyOneAtr.HaltMovement();
+        enemyTwoAtr.HaltMovement();
+        enemyThreeAtr.HaltMovement();
+        enemyFourAtr.HaltMovement();
 
         enemyOne.SetActive(false);
         enemyTwo.SetActive(false);
@@ -564,8 +541,6 @@ public class GameManager : MonoBehaviour
         CancelInvoke("UnscareEnemies");
         CancelInvoke("SpawnPowerUp");
 
-        playerAtr.aniSprites.enable(false);
-
         playerAtr.KillPlayer();
 
         Invoke("ResumePlay", 3.5f);
@@ -578,84 +553,71 @@ public class GameManager : MonoBehaviour
         enemyThree.SetActive(true);
         enemyFour.SetActive(true);
 
-        playerAtr.aniSprites.loop = true;
-        playerAtr.aniSprites.UpdateAnimationRate(0.05f);
-        playerAtr.aniSprites.sprites = playerAtr.regularSprites;
+        playerAtr.RevivePlayer();
 
         enemyOneAtr.ResetEnemy();
-        enemyOneAtr.inHome = false;
+        enemyOneAtr.InHome(false);
         enemyOneAtr.ToggleIgnorePlayer(false, player);
 
         enemyTwoAtr.ResetEnemy();
-        enemyTwoAtr.inHome = true;
+        enemyTwoAtr.InHome(true);
         enemyTwoAtr.ToggleIgnorePlayer(false, player);
 
         enemyThreeAtr.ResetEnemy();
-        enemyThreeAtr.inHome = true;
+        enemyThreeAtr.InHome(true);
         enemyThreeAtr.ToggleIgnorePlayer(false, player);
 
         enemyFourAtr.ResetEnemy();
-        enemyFourAtr.inHome = true;
+        enemyFourAtr.InHome(true);
         enemyFourAtr.ToggleIgnorePlayer(false, player);
 
         playerAtr.ResetPosition();
-        enemyOne.transform.position = new Vector3(0, 2.5f, -5.0f);
-        enemyTwo.transform.position = new Vector3(-2, -0.5f, -5.0f);
-        enemyThree.transform.position = new Vector3(0, -0.5f, -5.0f);
-        enemyFour.transform.position = new Vector3(2, -0.5f, -5.0f);
+        enemyOneAtr.ResetPosition();
+        enemyTwoAtr.ResetPosition();
+        enemyThreeAtr.ResetPosition();
+        enemyFourAtr.ResetPosition();
 
-        SetLives(this.lives - 1);
+        SetLives(lives - 1);
 
         StartCoroutine(newRoundWait());
     }
 
     private void NewRound() {
-        Movement playerMovement = player.GetComponent(typeof(Movement)) as Movement;
-        Movement enemyOneMovement = enemyOne.GetComponent(typeof(Movement)) as Movement;
-        Movement enemyTwoMovement = enemyTwo.GetComponent(typeof(Movement)) as Movement;
-        Movement enemyThreeMovement = enemyThree.GetComponent(typeof(Movement)) as Movement;
-        Movement enemyFourMovement = enemyFour.GetComponent(typeof(Movement)) as Movement;
+        playerAtr.ToggleMovement(false);
+        enemyOneAtr.ToggleMovement(false);
+        enemyTwoAtr.ToggleMovement(false);
+        enemyThreeAtr.ToggleMovement(false);
+        enemyFourAtr.ToggleMovement(false);
 
-        playerMovement.movementEnabled = false;
-        enemyOneMovement.movementEnabled = false;
-        enemyTwoMovement.movementEnabled = false;
-        enemyThreeMovement.movementEnabled = false;
-        enemyFourMovement.movementEnabled = false;
-
-        playerMovement.currentDirection = Vector2.zero;
-        playerMovement.nextDirection = Vector2.zero;
-        enemyOneMovement.currentDirection = Vector2.zero;
-        enemyOneMovement.nextDirection = Vector2.zero;
-        enemyTwoMovement.currentDirection = Vector2.zero;
-        enemyTwoMovement.nextDirection = Vector2.zero;
-        enemyThreeMovement.currentDirection = Vector2.zero;
-        enemyThreeMovement.nextDirection = Vector2.zero;
-        enemyFourMovement.currentDirection = Vector2.zero;
-        enemyFourMovement.nextDirection = Vector2.zero;
+        playerAtr.HaltMovement();
+        enemyOneAtr.HaltMovement();
+        enemyTwoAtr.HaltMovement();
+        enemyThreeAtr.HaltMovement();
+        enemyFourAtr.HaltMovement();
 
         readyText.SetActive(true);
 
         enemyOneAtr.ResetEnemy();
-        enemyOneAtr.inHome = false;
+        enemyOneAtr.InHome(false);
         enemyOneAtr.ToggleIgnorePlayer(false, player);
 
         enemyTwoAtr.ResetEnemy();
-        enemyTwoAtr.inHome = true;
+        enemyTwoAtr.InHome(true);
         enemyTwoAtr.ToggleIgnorePlayer(false, player);
 
         enemyThreeAtr.ResetEnemy();
-        enemyThreeAtr.inHome = true;
+        enemyThreeAtr.InHome(true);
         enemyThreeAtr.ToggleIgnorePlayer(false, player);
 
         enemyFourAtr.ResetEnemy();
-        enemyFourAtr.inHome = true;
+        enemyFourAtr.InHome(true);
         enemyFourAtr.ToggleIgnorePlayer(false, player);
 
         playerAtr.ResetPosition();
-        enemyOne.transform.position = new Vector3(0, 2.5f, -5.0f);
-        enemyTwo.transform.position = new Vector3(-2, -0.5f, -5.0f);
-        enemyThree.transform.position = new Vector3(0, -0.5f, -5.0f);
-        enemyFour.transform.position = new Vector3(2, -0.5f, -5.0f);
+        enemyOneAtr.ResetPosition();
+        enemyTwoAtr.ResetPosition();
+        enemyThreeAtr.ResetPosition();
+        enemyFourAtr.ResetPosition();
 
         CancelInvoke("ReleaseEnemyTwoStart");
         CancelInvoke("ReleaseEnemyThreeStart");
@@ -701,7 +663,7 @@ public class GameManager : MonoBehaviour
             leaderboard = new Leaderboard();
         }
 
-        if (leaderboard.leaderboard[username] == null)
+        if (leaderboard.GetScore(name) == 0)
         {
             leaderboard.addScore(username, score);
         }
@@ -727,7 +689,7 @@ public class GameManager : MonoBehaviour
 
         if (leaderboard != null)
         {
-            foreach (int lbScore in leaderboard.leaderboard.Values)
+            foreach (int lbScore in leaderboard.GetLeaderboards().Values)
             {
                 if (lbScore > highestScore)
                 {
@@ -877,9 +839,9 @@ public class GameManager : MonoBehaviour
                 deathSprites[3] = Resources.Load<Sprite>("Kiara_Death_04");
                 deathSprites[4] = Resources.Load<Sprite>("Kiara_Death_05");
 
-                playerAniSprites.sprites = playerSprites;
-                playerAtr.regularSprites = playerSprites;
-                playerAtr.deathSprites = deathSprites;
+                playerAniSprites.SetSprites(playerSprites);
+                playerAtr.SetRegularSprites(playerSprites);
+                playerAtr.SetDeathSprites(deathSprites);
                 powerUpSprite.sprite = Resources.Load<Sprite>("Powerup_Kotori");
 
                 LoadEnemySprites(enemyOneSprite, enemyOneAniSprites, 1, enemyOneAtr);
@@ -887,7 +849,7 @@ public class GameManager : MonoBehaviour
                 LoadEnemySprites(enemyThreeSprite, enemyThreeAniSprites, 4, enemyThreeAtr);
                 LoadEnemySprites(enemyFourSprite, enemyFourAniSprites, 5, enemyFourAtr);
 
-                powerUpAtr.type = 2;
+                powerUpAtr.SetType(2);
                 break;
             case 3:
                 playerSprite.sprite = Resources.Load<Sprite>("Ame_Normal_01");
@@ -907,9 +869,9 @@ public class GameManager : MonoBehaviour
                 deathSprites[3] = Resources.Load<Sprite>("Ame_Death_04");
                 deathSprites[4] = Resources.Load<Sprite>("Ame_Death_05");
 
-                playerAniSprites.sprites = playerSprites;
-                playerAtr.regularSprites = playerSprites;
-                playerAtr.deathSprites = deathSprites;
+                playerAniSprites.SetSprites(playerSprites);
+                playerAtr.SetRegularSprites(playerSprites);
+                playerAtr.SetDeathSprites(deathSprites);
                 powerUpSprite.sprite = Resources.Load<Sprite>("Powerup_Bubba");
 
                 LoadEnemySprites(enemyOneSprite, enemyOneAniSprites, 1, enemyOneAtr);
@@ -917,7 +879,7 @@ public class GameManager : MonoBehaviour
                 LoadEnemySprites(enemyThreeSprite, enemyThreeAniSprites, 4, enemyThreeAtr);
                 LoadEnemySprites(enemyFourSprite, enemyFourAniSprites, 5, enemyFourAtr);
 
-                powerUpAtr.type = 3;
+                powerUpAtr.SetType(3);
                 break;
             case 4:
                 playerSprite.sprite = Resources.Load<Sprite>("Calli_Normal_01");
@@ -937,9 +899,9 @@ public class GameManager : MonoBehaviour
                 deathSprites[3] = Resources.Load<Sprite>("Calli_Death_04");
                 deathSprites[4] = Resources.Load<Sprite>("Calli_Death_05");
 
-                playerAniSprites.sprites = playerSprites;
-                playerAtr.regularSprites = playerSprites;
-                playerAtr.deathSprites = deathSprites;
+                playerAniSprites.SetSprites(playerSprites);
+                playerAtr.SetRegularSprites(playerSprites);
+                playerAtr.SetDeathSprites(deathSprites);
                 powerUpSprite.sprite = Resources.Load<Sprite>("Powerup_DeathSensei");
 
                 LoadEnemySprites(enemyOneSprite, enemyOneAniSprites, 1, enemyOneAtr);
@@ -947,7 +909,7 @@ public class GameManager : MonoBehaviour
                 LoadEnemySprites(enemyThreeSprite, enemyThreeAniSprites, 3, enemyThreeAtr);
                 LoadEnemySprites(enemyFourSprite, enemyFourAniSprites, 5, enemyFourAtr);
 
-                powerUpAtr.type = 4;
+                powerUpAtr.SetType(4);
                 break;
             case 5:
                 playerSprite.sprite = Resources.Load<Sprite>("Gura_Normal_01");
@@ -967,9 +929,9 @@ public class GameManager : MonoBehaviour
                 deathSprites[3] = Resources.Load<Sprite>("Gura_Death_04");
                 deathSprites[4] = Resources.Load<Sprite>("Gura_Death_05");
 
-                playerAniSprites.sprites = playerSprites;
-                playerAtr.regularSprites = playerSprites;
-                playerAtr.deathSprites = deathSprites;
+                playerAniSprites.SetSprites(playerSprites);
+                playerAtr.SetRegularSprites(playerSprites);
+                playerAtr.SetDeathSprites(deathSprites);
                 powerUpSprite.sprite = Resources.Load<Sprite>("Powerup_Bloop");
 
                 LoadEnemySprites(enemyOneSprite, enemyOneAniSprites, 1, enemyOneAtr);
@@ -977,7 +939,7 @@ public class GameManager : MonoBehaviour
                 LoadEnemySprites(enemyThreeSprite, enemyThreeAniSprites, 3, enemyThreeAtr);
                 LoadEnemySprites(enemyFourSprite, enemyFourAniSprites, 4, enemyFourAtr);
 
-                powerUpAtr.type = 5;
+                powerUpAtr.SetType(5);
                 break;
             default:
                 playerSprite.sprite = Resources.Load<Sprite>("Ina_Normal_01");
@@ -997,9 +959,10 @@ public class GameManager : MonoBehaviour
                 deathSprites[3] = Resources.Load<Sprite>("Ina_Death_04");
                 deathSprites[4] = Resources.Load<Sprite>("Ina_Death_05");
 
-                playerAniSprites.sprites = playerSprites;
-                playerAtr.regularSprites = playerSprites;
-                playerAtr.deathSprites = deathSprites;
+                playerAniSprites.SetSprites(playerSprites);
+                playerAtr.SetRegularSprites(playerSprites);
+                playerAtr.SetDeathSprites(deathSprites);
+
                 powerUpSprite.sprite = Resources.Load<Sprite>("Powerup_Takodachi");
 
                 LoadEnemySprites(enemyOneSprite, enemyOneAniSprites, 2, enemyOneAtr);
@@ -1007,7 +970,7 @@ public class GameManager : MonoBehaviour
                 LoadEnemySprites(enemyThreeSprite, enemyThreeAniSprites, 4, enemyThreeAtr);
                 LoadEnemySprites(enemyFourSprite, enemyFourAniSprites, 5, enemyFourAtr);
 
-                powerUpAtr.type = 1;
+                powerUpAtr.SetType(1);
                 break;
         }
     }
@@ -1032,10 +995,10 @@ public class GameManager : MonoBehaviour
                 vulnerableSprites[2] = Resources.Load<Sprite>("Ina_Vulnerable_03");
                 vulnerableSprites[3] = Resources.Load<Sprite>("Ina_Vulnerable_02");
 
-                aniSprites.sprites = enemySprites;
-                enemy.regularSprites = enemySprites;
-                enemy.vulnerableSprites = vulnerableSprites;
-                enemy.eatenSprite = Resources.Load<Sprite>("Ina_Eaten");
+                aniSprites.SetSprites(enemySprites);
+                enemy.SetRegularSprites(enemySprites);
+                enemy.SetVulnerableSprites(vulnerableSprites);
+                enemy.SetEatenSprite(Resources.Load<Sprite>("Ina_Eaten"));
                 break;
             case 2:
                 sprite.sprite = Resources.Load<Sprite>("Kiara_Normal_01");
@@ -1050,10 +1013,10 @@ public class GameManager : MonoBehaviour
                 vulnerableSprites[2] = Resources.Load<Sprite>("Kiara_Vulnerable_03");
                 vulnerableSprites[3] = Resources.Load<Sprite>("Kiara_Vulnerable_02");
 
-                aniSprites.sprites = enemySprites;
-                enemy.regularSprites = enemySprites;
-                enemy.vulnerableSprites = vulnerableSprites;
-                enemy.eatenSprite = Resources.Load<Sprite>("Kiara_Eaten");
+                aniSprites.SetSprites(enemySprites);
+                enemy.SetRegularSprites(enemySprites);
+                enemy.SetVulnerableSprites(vulnerableSprites);
+                enemy.SetEatenSprite(Resources.Load<Sprite>("Kiara_Eaten"));
                 break;
             case 3:
                 sprite.sprite = Resources.Load<Sprite>("Ame_Normal_01");
@@ -1068,10 +1031,10 @@ public class GameManager : MonoBehaviour
                 vulnerableSprites[2] = Resources.Load<Sprite>("Ame_Vulnerable_03");
                 vulnerableSprites[3] = Resources.Load<Sprite>("Ame_Vulnerable_02");
 
-                aniSprites.sprites = enemySprites;
-                enemy.regularSprites = enemySprites;
-                enemy.vulnerableSprites = vulnerableSprites;
-                enemy.eatenSprite = Resources.Load<Sprite>("Ame_Eaten");
+                aniSprites.SetSprites(enemySprites);
+                enemy.SetRegularSprites(enemySprites);
+                enemy.SetVulnerableSprites(vulnerableSprites);
+                enemy.SetEatenSprite(Resources.Load<Sprite>("Ame_Eaten"));
                 break;
             case 4:
                 sprite.sprite = Resources.Load<Sprite>("Calli_Normal_01");
@@ -1086,10 +1049,10 @@ public class GameManager : MonoBehaviour
                 vulnerableSprites[2] = Resources.Load<Sprite>("Calli_Vulnerable_03");
                 vulnerableSprites[3] = Resources.Load<Sprite>("Calli_Vulnerable_02");
 
-                aniSprites.sprites = enemySprites;
-                enemy.regularSprites = enemySprites;
-                enemy.vulnerableSprites = vulnerableSprites;
-                enemy.eatenSprite = Resources.Load<Sprite>("Calli_Eaten");
+                aniSprites.SetSprites(enemySprites);
+                enemy.SetRegularSprites(enemySprites);
+                enemy.SetVulnerableSprites(vulnerableSprites);
+                enemy.SetEatenSprite(Resources.Load<Sprite>("Calli_Eaten"));
                 break;
             case 5:
                 sprite.sprite = Resources.Load<Sprite>("Gura_Normal_01");
@@ -1104,10 +1067,10 @@ public class GameManager : MonoBehaviour
                 vulnerableSprites[2] = Resources.Load<Sprite>("Gura_Vulnerable_03");
                 vulnerableSprites[3] = Resources.Load<Sprite>("Gura_Vulnerable_02");
 
-                aniSprites.sprites = enemySprites;
-                enemy.regularSprites = enemySprites;
-                enemy.vulnerableSprites = vulnerableSprites;
-                enemy.eatenSprite = Resources.Load<Sprite>("Gura_Eaten");
+                aniSprites.SetSprites(enemySprites);
+                enemy.SetRegularSprites(enemySprites);
+                enemy.SetVulnerableSprites(vulnerableSprites);
+                enemy.SetEatenSprite(Resources.Load<Sprite>("Gura_Eaten"));
                 break;
         }
     }

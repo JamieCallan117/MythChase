@@ -92,7 +92,7 @@ public class Leaderboards : MonoBehaviour
         }
         else
         {
-            foreach (DictionaryEntry entry in leaderboard.leaderboard)
+            foreach (DictionaryEntry entry in leaderboard.GetLeaderboards())
             {
                 int score = (int) entry.Value;
                 string name = (string) entry.Key;

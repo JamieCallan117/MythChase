@@ -4471,8 +4471,9 @@ GameObject:
   m_Component:
   - component: {fileID: 700458745}
   - component: {fileID: 700458744}
-  - component: {fileID: 700458746}
   - component: {fileID: 700458747}
+  - component: {fileID: 700458748}
+  - component: {fileID: 700458746}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -4508,6 +4509,7 @@ MonoBehaviour:
   gameOverPanel: {fileID: 1405405849}
   usernameObj: {fileID: 740668977}
   finalScore: {fileID: 125312711}
+  playAudio: {fileID: 700458746}
   sceneChange: {fileID: 700458747}
 --- !u!4 &700458745
 Transform:
@@ -4523,7 +4525,38 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &700458746
+--- !u!114 &700458746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 700458743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41995078d1022514f8318fb5fb71ef31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 700458748}
+  introMusic: {fileID: 8300000, guid: 10afbab4a8475a041859afb9d5d6abf7, type: 3}
+  inaDeath: {fileID: 8300000, guid: e41676b4e5010ab42a7a928a22f33c39, type: 3}
+  kiaraDeath: {fileID: 8300000, guid: 9c5e35e0c27728b40bdb38d9ccb00177, type: 3}
+  ameDeath: {fileID: 8300000, guid: 5a74b9b4c47be494ebba133f52e91aea, type: 3}
+  calliDeath: {fileID: 8300000, guid: ae728c844598800458a65784655f306b, type: 3}
+  guraDeath: {fileID: 8300000, guid: 1a6d900e21d96384d922f00a087f6927, type: 3}
+--- !u!114 &700458747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 700458743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0bc98d7e5ef97f4c93f49bf3c7b3d48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!82 &700458748
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4533,7 +4566,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 10afbab4a8475a041859afb9d5d6abf7, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -4619,18 +4652,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &700458747
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 700458743}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0bc98d7e5ef97f4c93f49bf3c7b3d48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &740668977
 GameObject:
   m_ObjectHideFlags: 0
@@ -5031,6 +5052,7 @@ GameObject:
   - component: {fileID: 988709910}
   - component: {fileID: 988709905}
   - component: {fileID: 988709912}
+  - component: {fileID: 988709913}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -5055,7 +5077,6 @@ MonoBehaviour:
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 512
-  rigidbody2d: {fileID: 0}
   currentDirection: {x: 0, y: 0}
   nextDirection: {x: 0, y: 0}
 --- !u!212 &988709906
@@ -5141,10 +5162,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 8617ae8ffa492c949a3b1ea046001ed7, type: 3}
   - {fileID: 21300000, guid: 1cbed80d12d296e4ba24acead24c3f8f, type: 3}
   - {fileID: 21300000, guid: 8617ae8ffa492c949a3b1ea046001ed7, type: 3}
-  animationRate: 0.05
   currentFrame: 0
   loop: 1
-  isEnabled: 1
 --- !u!114 &988709909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5161,12 +5180,7 @@ MonoBehaviour:
   powerUpObj: {fileID: 1868623943}
   regularSprites: []
   deathSprites: []
-  audioSource: {fileID: 988709912}
-  inaDeath: {fileID: 8300000, guid: e41676b4e5010ab42a7a928a22f33c39, type: 3}
-  kiaraDeath: {fileID: 8300000, guid: 9c5e35e0c27728b40bdb38d9ccb00177, type: 3}
-  ameDeath: {fileID: 8300000, guid: 5a74b9b4c47be494ebba133f52e91aea, type: 3}
-  calliDeath: {fileID: 8300000, guid: ae728c844598800458a65784655f306b, type: 3}
-  guraDeath: {fileID: 8300000, guid: 1a6d900e21d96384d922f00a087f6927, type: 3}
+  playAudio: {fileID: 988709913}
 --- !u!58 &988709910
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -5300,6 +5314,25 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &988709913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 988709904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41995078d1022514f8318fb5fb71ef31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 988709912}
+  introMusic: {fileID: 8300000, guid: 10afbab4a8475a041859afb9d5d6abf7, type: 3}
+  inaDeath: {fileID: 8300000, guid: e41676b4e5010ab42a7a928a22f33c39, type: 3}
+  kiaraDeath: {fileID: 8300000, guid: 9c5e35e0c27728b40bdb38d9ccb00177, type: 3}
+  ameDeath: {fileID: 8300000, guid: 5a74b9b4c47be494ebba133f52e91aea, type: 3}
+  calliDeath: {fileID: 8300000, guid: ae728c844598800458a65784655f306b, type: 3}
+  guraDeath: {fileID: 8300000, guid: 1a6d900e21d96384d922f00a087f6927, type: 3}
 --- !u!1 &1046553191
 GameObject:
   m_ObjectHideFlags: 0
@@ -5606,7 +5639,6 @@ MonoBehaviour:
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 512
-  rigidbody2d: {fileID: 0}
   currentDirection: {x: 0, y: 0}
   nextDirection: {x: 0, y: 0}
 --- !u!58 &1240750069
@@ -5664,10 +5696,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 9bdd533f181aa694291b48d45b18a1e2, type: 3}
   - {fileID: 21300000, guid: 25628e6a0e78b5846a73e1c89738e909, type: 3}
   - {fileID: 21300000, guid: 9bdd533f181aa694291b48d45b18a1e2, type: 3}
-  animationRate: 0.05
   currentFrame: 0
   loop: 1
-  isEnabled: 1
 --- !u!212 &1240750072
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5747,9 +5777,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   regularSprites: []
   vulnerableSprites: []
-  vulnerable: 0
   powerUpVulnerable: 0
-  eaten: 0
   inHome: 1
   scared: 0
   circleCollider: {fileID: 1240750069}
@@ -5795,7 +5823,6 @@ MonoBehaviour:
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 512
-  rigidbody2d: {fileID: 0}
   currentDirection: {x: 0, y: 0}
   nextDirection: {x: 0, y: 0}
 --- !u!58 &1253953041
@@ -5853,10 +5880,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 1d8d3d2f0d9d57449a8001ea894dd9a5, type: 3}
   - {fileID: 21300000, guid: 2a316f1bc7c17b243a648981568411de, type: 3}
   - {fileID: 21300000, guid: 1d8d3d2f0d9d57449a8001ea894dd9a5, type: 3}
-  animationRate: 0.05
   currentFrame: 0
   loop: 1
-  isEnabled: 1
 --- !u!212 &1253953044
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5936,9 +5961,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   regularSprites: []
   vulnerableSprites: []
-  vulnerable: 0
   powerUpVulnerable: 0
-  eaten: 0
   inHome: 0
   scared: 0
   circleCollider: {fileID: 1253953041}
@@ -11980,7 +12003,6 @@ MonoBehaviour:
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 512
-  rigidbody2d: {fileID: 0}
   currentDirection: {x: 0, y: 0}
   nextDirection: {x: 0, y: 0}
 --- !u!58 &1804379999
@@ -12038,10 +12060,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: acdcb313797537040a9568435233423b, type: 3}
   - {fileID: 21300000, guid: cc76dc9c7dc06be4cafbfa09f8246f3c, type: 3}
   - {fileID: 21300000, guid: acdcb313797537040a9568435233423b, type: 3}
-  animationRate: 0.05
   currentFrame: 0
   loop: 1
-  isEnabled: 1
 --- !u!212 &1804380002
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -12121,9 +12141,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   regularSprites: []
   vulnerableSprites: []
-  vulnerable: 0
   powerUpVulnerable: 0
-  eaten: 0
   inHome: 1
   scared: 0
   circleCollider: {fileID: 1804379999}
@@ -12304,7 +12322,6 @@ MonoBehaviour:
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 512
-  rigidbody2d: {fileID: 0}
   currentDirection: {x: 0, y: 0}
   nextDirection: {x: 0, y: 0}
 --- !u!58 &1884864703
@@ -12362,10 +12379,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 6b3084da95501f94a8258e151ca3dd72, type: 3}
   - {fileID: 21300000, guid: b19b9555ba3cb0341b7c5f791ad389fd, type: 3}
   - {fileID: 21300000, guid: 6b3084da95501f94a8258e151ca3dd72, type: 3}
-  animationRate: 0.05
   currentFrame: 0
   loop: 1
-  isEnabled: 1
 --- !u!212 &1884864706
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -12445,9 +12460,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   regularSprites: []
   vulnerableSprites: []
-  vulnerable: 0
   powerUpVulnerable: 0
-  eaten: 0
   inHome: 1
   scared: 0
   circleCollider: {fileID: 1884864703}

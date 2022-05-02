@@ -1,11 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 [System.Serializable]
 public class Achievement
 {
-    public Hashtable achievements = new Hashtable();
+    private Hashtable achievements = new Hashtable();
 
     public void createAchievement(string name, int progress)
     {
@@ -15,5 +13,10 @@ public class Achievement
     public void updateAchievement(string name, int progress)
     {
         achievements[name] = progress;
+    }
+
+    public int GetAchievement(string name)
+    {
+        return (int) achievements[name];
     }
 }

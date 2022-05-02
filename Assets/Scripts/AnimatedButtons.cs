@@ -12,35 +12,35 @@ public class AnimatedButtons : MonoBehaviour
 
     void Awake()
     {
-        image = this.GetComponent<Image>();
+        image = GetComponent<Image>();
     }
 
     void Start()
     {
-        InvokeRepeating(nameof(UpdateFrame), this.animationRate, this.animationRate);
+        InvokeRepeating(nameof(UpdateFrame), animationRate, animationRate);
     }
 
     private void UpdateFrame()
     {
         if (isEnabled) {
-            this.currentFrame++;
+            currentFrame++;
 
-            if (this.currentFrame >= this.sprites.Length)
+            if (currentFrame >= sprites.Length)
             {
-                this.currentFrame = 0;
+                currentFrame = 0;
             }
 
-            if (this.currentFrame >= 0 && this.currentFrame < this.sprites.Length)
+            if (currentFrame >= 0 && currentFrame < sprites.Length)
             {
-                image.sprite = this.sprites[currentFrame];
+                image.sprite = sprites[currentFrame];
             }
         }
     }
 
     public void enable(bool enable)
     {
-        this.isEnabled = enable;
-        this.currentFrame = 0;
-        image.sprite = this.sprites[currentFrame];
+        isEnabled = enable;
+        currentFrame = 0;
+        image.sprite = sprites[currentFrame];
     }
 }

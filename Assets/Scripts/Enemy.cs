@@ -4,25 +4,24 @@ using System;
 using UnityEngine;
 using Random=System.Random;
 
-[RequireComponent(typeof(AnimatedSprites))]
 public class Enemy : MonoBehaviour
 {
     private AnimatedSprites aniSprites;
     private Vector3 startingPos;
-    public Sprite[] regularSprites;
-    public Sprite[] vulnerableSprites;
+    private Sprite[] regularSprites;
+    private Sprite[] vulnerableSprites;
     private Movement movement;
     private bool vulnerable;
-    public bool powerUpVulnerable;
+    private bool powerUpVulnerable;
     private bool eaten;
-    public bool inHome;
-    public bool scared;
+    private bool inHome;
+    private bool scared;
     private bool enteringHome;
     private bool leavingHome;
     private bool exitingHome;
     private GameManager gameManager;
-    private CircleCollider2D circleCollider;
-    public Sprite eatenSprite;
+    [SerializeField] private CircleCollider2D circleCollider;
+    private Sprite eatenSprite;
     [SerializeField] private GameObject homePoint;
     [SerializeField] private GameObject inHomePoint;
 
@@ -45,7 +44,7 @@ public class Enemy : MonoBehaviour
     {
         if (enteringHome)
         {
-            var step = movement.speed * Time.deltaTime;
+            var step = movement.GetSpeed() * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, inHomePoint.transform.position, step);
 
             if (Vector3.Distance(transform.position, inHomePoint.transform.position) < 0.001f)
@@ -56,7 +55,7 @@ public class Enemy : MonoBehaviour
                 inHome = true;
                 aniSprites.enable(true);
 
-                aniSprites.sprites = regularSprites;
+                aniSprites.SetSprites(regularSprites);
 
                 Random rand = new Random();
                 int randInt = rand.Next(0, 2);
@@ -76,7 +75,7 @@ public class Enemy : MonoBehaviour
 
         if (leavingHome)
         {
-            var step = movement.speed * Time.deltaTime;
+            var step = movement.GetSpeed() * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, inHomePoint.transform.position, step);
 
             if (Vector3.Distance(transform.position, inHomePoint.transform.position) < 0.001f)
@@ -88,7 +87,7 @@ public class Enemy : MonoBehaviour
 
         if (exitingHome)
         {
-            var step = movement.speed * Time.deltaTime;
+            var step = movement.GetSpeed() * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, homePoint.transform.position, step);
 
             if (Vector3.Distance(transform.position, homePoint.transform.position) < 0.001f)
@@ -124,7 +123,17 @@ public class Enemy : MonoBehaviour
         exitingHome = false;
         circleCollider.enabled = true;
         aniSprites.enable(true);
-        aniSprites.sprites = regularSprites;
+
+        aniSprites.SetSprites(regularSprites);
+    }
+
+    public void IncreaseSpeed() {
+        movement.IncreaseSpeed();
+    }
+
+    public void SetSpeed(float newSpeed)
+    {
+        movement.SetSpeed(newSpeed);
     }
 
     public void SetVulnerable(bool vulnerable)
@@ -140,13 +149,13 @@ public class Enemy : MonoBehaviour
 
             if (vulnerable == true)
             {
-                aniSprites.sprites = vulnerableSprites;
+                aniSprites.SetSprites(vulnerableSprites);
 
                 Invoke("UndoVulnerability", 10.0f);
             }
             else
             {
-                aniSprites.sprites = regularSprites;
+                aniSprites.SetSprites(regularSprites);
             }
         }
     }
@@ -154,6 +163,31 @@ public class Enemy : MonoBehaviour
     private void UndoVulnerability()
     {
         SetVulnerable(false);
+    }
+
+    public void SetRegularSprites(Sprite[] spritesToUse)
+    {
+        regularSprites = spritesToUse;
+    }
+
+    public void SetVulnerableSprites(Sprite[] spritesToUse)
+    {
+        vulnerableSprites = spritesToUse;
+    }
+
+    public void SetEatenSprite(Sprite spriteToUse)
+    {
+        eatenSprite = spriteToUse;
+    }
+
+    public void SetPowerUpVulnerable(bool vul)
+    {
+        powerUpVulnerable = vul;
+    }
+
+    public void SetScared(bool scare)
+    {
+        scared = scare;
     }
 
     public void GetEaten()
@@ -165,7 +199,7 @@ public class Enemy : MonoBehaviour
         eaten = true;
 
         aniSprites.enable(false);
-        aniSprites.spriteRenderer.sprite = eatenSprite;
+        aniSprites.SetSprite(eatenSprite);
 
         gameManager.EnemyEaten();
     }
@@ -179,7 +213,27 @@ public class Enemy : MonoBehaviour
 
     public void ResetPosition()
     {
-        this.transform.position = startingPos;
+        transform.position = startingPos;
+    }
+
+    public void ToggleMovement(bool enabled)
+    {
+        movement.ToggleMovement(enabled);
+    }
+
+    public void Move(Vector2 direction)
+    {
+        movement.Move(direction);
+    }
+
+    public void HaltMovement()
+    {
+        movement.HaltMovement();
+    }
+
+    public void InHome(bool atHome)
+    {
+        inHome = atHome;
     }
 
     public void ToggleIgnorePlayer(bool ignore, GameObject player)
@@ -217,7 +271,7 @@ public class Enemy : MonoBehaviour
         {
             if (inHome)
             {
-                movement.Move(-movement.currentDirection);
+                movement.Move(-movement.GetCurrentDirection());
             }
         }
     }
@@ -260,7 +314,7 @@ public class Enemy : MonoBehaviour
     {
         CheckPoint checkPointHit = other.GetComponent<CheckPoint>();
 
-        List<Vector2> availableDirections = checkPointHit.directions;
+        List<Vector2> availableDirections = checkPointHit.GetAvailableDirections();
 
         Random rand = new Random();
         int randInt = rand.Next(0, availableDirections.Count);
@@ -274,14 +328,14 @@ public class Enemy : MonoBehaviour
 
         CheckPoint checkPointHit = other.GetComponent<CheckPoint>();
 
-        List<Vector2> availableDirections = checkPointHit.directions;
+        List<Vector2> availableDirections = checkPointHit.GetAvailableDirections();
 
         Vector3 direction = Vector3.zero;
         float minDistance = 1000.0f;
 
         foreach (Vector2 possibleDirection in availableDirections)
         {
-            if (possibleDirection != -movement.currentDirection)
+            if (possibleDirection != -movement.GetCurrentDirection())
             {
                 Vector3 testPosition = transform.position + new Vector3(possibleDirection.x, possibleDirection.y, -5);
                 float distance = Vector3.Distance(homePos, testPosition);
@@ -303,14 +357,14 @@ public class Enemy : MonoBehaviour
 
         CheckPoint checkPointHit = other.GetComponent<CheckPoint>();
 
-        List<Vector2> availableDirections = checkPointHit.directions;
+        List<Vector2> availableDirections = checkPointHit.GetAvailableDirections();
 
         Vector3 direction = Vector3.zero;
         float minDistance = 1000.0f;
 
         foreach (Vector2 possibleDirection in availableDirections)
         {
-            if (possibleDirection != -movement.currentDirection)
+            if (possibleDirection != -movement.GetCurrentDirection())
             {
                 Vector3 testPosition = transform.position + new Vector3(possibleDirection.x, possibleDirection.y, -5);
                 float distance = Vector3.Distance(playerPos, testPosition);

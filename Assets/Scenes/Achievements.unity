@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 37545696}
   - component: {fileID: 37545695}
   - component: {fileID: 37545699}
+  - component: {fileID: 37545700}
   m_Layer: 5
   m_Name: AchievementTen
   m_TagString: Untagged
@@ -289,6 +290,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0.09019608, g: 0.84705883, b: 1, a: 1}
   m_EffectDistance: {x: 10, y: 10}
   m_UseGraphicAlpha: 1
+--- !u!114 &37545700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 37545693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97829ba8b8bf2714795a5e8d42df4a4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 37545697}
+  unlockedSprite: {fileID: 21300000, guid: 1d6257c272f6bf64bb1ad35410aabc4f, type: 3}
 --- !u!1 &125934166
 GameObject:
   m_ObjectHideFlags: 0
@@ -437,6 +452,7 @@ GameObject:
   - component: {fileID: 287337020}
   - component: {fileID: 287337019}
   - component: {fileID: 287337023}
+  - component: {fileID: 287337024}
   m_Layer: 5
   m_Name: AchievementFive
   m_TagString: Untagged
@@ -589,6 +605,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0.09019608, g: 0.84705883, b: 1, a: 1}
   m_EffectDistance: {x: 10, y: 10}
   m_UseGraphicAlpha: 1
+--- !u!114 &287337024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 287337017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97829ba8b8bf2714795a5e8d42df4a4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 287337021}
+  unlockedSprite: {fileID: 21300000, guid: 1d6257c272f6bf64bb1ad35410aabc4f, type: 3}
 --- !u!1 &537753345
 GameObject:
   m_ObjectHideFlags: 0
@@ -603,6 +633,7 @@ GameObject:
   - component: {fileID: 537753348}
   - component: {fileID: 537753347}
   - component: {fileID: 537753351}
+  - component: {fileID: 537753352}
   m_Layer: 5
   m_Name: AchievementSeven
   m_TagString: Untagged
@@ -755,6 +786,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0.09019608, g: 0.84705883, b: 1, a: 1}
   m_EffectDistance: {x: 10, y: 10}
   m_UseGraphicAlpha: 1
+--- !u!114 &537753352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 537753345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97829ba8b8bf2714795a5e8d42df4a4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 537753349}
+  unlockedSprite: {fileID: 21300000, guid: 1d6257c272f6bf64bb1ad35410aabc4f, type: 3}
 --- !u!1 &641857245
 GameObject:
   m_ObjectHideFlags: 0
@@ -883,6 +928,7 @@ GameObject:
   - component: {fileID: 872333081}
   - component: {fileID: 872333080}
   - component: {fileID: 872333084}
+  - component: {fileID: 872333085}
   m_Layer: 5
   m_Name: AchievementEight
   m_TagString: Untagged
@@ -1035,6 +1081,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0.09019608, g: 0.84705883, b: 1, a: 1}
   m_EffectDistance: {x: 10, y: 10}
   m_UseGraphicAlpha: 1
+--- !u!114 &872333085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 872333078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97829ba8b8bf2714795a5e8d42df4a4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 872333082}
+  unlockedSprite: {fileID: 21300000, guid: 1d6257c272f6bf64bb1ad35410aabc4f, type: 3}
 --- !u!1 &937611064
 GameObject:
   m_ObjectHideFlags: 0
@@ -1132,6 +1192,7 @@ GameObject:
   - component: {fileID: 1024423425}
   - component: {fileID: 1024423424}
   - component: {fileID: 1024423428}
+  - component: {fileID: 1024423429}
   m_Layer: 5
   m_Name: AchievementSix
   m_TagString: Untagged
@@ -1284,6 +1345,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0.09019608, g: 0.84705883, b: 1, a: 1}
   m_EffectDistance: {x: 10, y: 10}
   m_UseGraphicAlpha: 1
+--- !u!114 &1024423429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1024423422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97829ba8b8bf2714795a5e8d42df4a4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 1024423426}
+  unlockedSprite: {fileID: 21300000, guid: 1d6257c272f6bf64bb1ad35410aabc4f, type: 3}
 --- !u!1 &1252149882
 GameObject:
   m_ObjectHideFlags: 0
@@ -1298,6 +1373,7 @@ GameObject:
   - component: {fileID: 1252149885}
   - component: {fileID: 1252149884}
   - component: {fileID: 1252149888}
+  - component: {fileID: 1252149889}
   m_Layer: 5
   m_Name: AchievementEleven
   m_TagString: Untagged
@@ -1450,6 +1526,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0.09019608, g: 0.84705883, b: 1, a: 1}
   m_EffectDistance: {x: 10, y: 10}
   m_UseGraphicAlpha: 1
+--- !u!114 &1252149889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1252149882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97829ba8b8bf2714795a5e8d42df4a4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 1252149886}
+  unlockedSprite: {fileID: 21300000, guid: 1d6257c272f6bf64bb1ad35410aabc4f, type: 3}
 --- !u!1 &1292809051
 GameObject:
   m_ObjectHideFlags: 0
@@ -1464,6 +1554,7 @@ GameObject:
   - component: {fileID: 1292809054}
   - component: {fileID: 1292809053}
   - component: {fileID: 1292809057}
+  - component: {fileID: 1292809058}
   m_Layer: 5
   m_Name: AchievementThree
   m_TagString: Untagged
@@ -1616,6 +1707,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0.09019608, g: 0.84705883, b: 1, a: 1}
   m_EffectDistance: {x: 10, y: 10}
   m_UseGraphicAlpha: 1
+--- !u!114 &1292809058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1292809051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97829ba8b8bf2714795a5e8d42df4a4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 1292809055}
+  unlockedSprite: {fileID: 21300000, guid: 1d6257c272f6bf64bb1ad35410aabc4f, type: 3}
 --- !u!1 &1310933065
 GameObject:
   m_ObjectHideFlags: 0
@@ -1630,6 +1735,7 @@ GameObject:
   - component: {fileID: 1310933068}
   - component: {fileID: 1310933067}
   - component: {fileID: 1310933071}
+  - component: {fileID: 1310933072}
   m_Layer: 5
   m_Name: AchievementTwelve
   m_TagString: Untagged
@@ -1782,6 +1888,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0.09019608, g: 0.84705883, b: 1, a: 1}
   m_EffectDistance: {x: 10, y: 10}
   m_UseGraphicAlpha: 1
+--- !u!114 &1310933072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1310933065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97829ba8b8bf2714795a5e8d42df4a4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 1310933069}
+  unlockedSprite: {fileID: 21300000, guid: 1d6257c272f6bf64bb1ad35410aabc4f, type: 3}
 --- !u!1 &1323972194
 GameObject:
   m_ObjectHideFlags: 0
@@ -1796,6 +1916,7 @@ GameObject:
   - component: {fileID: 1323972197}
   - component: {fileID: 1323972196}
   - component: {fileID: 1323972200}
+  - component: {fileID: 1323972201}
   m_Layer: 5
   m_Name: AchievementNine
   m_TagString: Untagged
@@ -1948,6 +2069,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0.09019608, g: 0.84705883, b: 1, a: 1}
   m_EffectDistance: {x: 10, y: 10}
   m_UseGraphicAlpha: 1
+--- !u!114 &1323972201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1323972194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97829ba8b8bf2714795a5e8d42df4a4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 1323972198}
+  unlockedSprite: {fileID: 21300000, guid: 1d6257c272f6bf64bb1ad35410aabc4f, type: 3}
 --- !u!1 &1411798850
 GameObject:
   m_ObjectHideFlags: 0
@@ -2028,6 +2163,7 @@ GameObject:
   - component: {fileID: 1469390792}
   - component: {fileID: 1469390791}
   - component: {fileID: 1469390795}
+  - component: {fileID: 1469390796}
   m_Layer: 5
   m_Name: AchievementFour
   m_TagString: Untagged
@@ -2180,6 +2316,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0.09019608, g: 0.84705883, b: 1, a: 1}
   m_EffectDistance: {x: 10, y: 10}
   m_UseGraphicAlpha: 1
+--- !u!114 &1469390796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1469390789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97829ba8b8bf2714795a5e8d42df4a4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 1469390793}
+  unlockedSprite: {fileID: 21300000, guid: 1d6257c272f6bf64bb1ad35410aabc4f, type: 3}
 --- !u!1 &1493110879
 GameObject:
   m_ObjectHideFlags: 0
@@ -2194,6 +2344,7 @@ GameObject:
   - component: {fileID: 1493110882}
   - component: {fileID: 1493110881}
   - component: {fileID: 1493110885}
+  - component: {fileID: 1493110886}
   m_Layer: 5
   m_Name: AchievementThirteen
   m_TagString: Untagged
@@ -2346,6 +2497,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0.09019608, g: 0.84705883, b: 1, a: 1}
   m_EffectDistance: {x: 10, y: 10}
   m_UseGraphicAlpha: 1
+--- !u!114 &1493110886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1493110879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97829ba8b8bf2714795a5e8d42df4a4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 1493110883}
+  unlockedSprite: {fileID: 21300000, guid: 1d6257c272f6bf64bb1ad35410aabc4f, type: 3}
 --- !u!1 &1728759626
 GameObject:
   m_ObjectHideFlags: 0
@@ -2360,6 +2525,7 @@ GameObject:
   - component: {fileID: 1728759628}
   - component: {fileID: 1728759627}
   - component: {fileID: 1728759632}
+  - component: {fileID: 1728759633}
   m_Layer: 5
   m_Name: AchievementOne
   m_TagString: Untagged
@@ -2512,6 +2678,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0.09019608, g: 0.84705883, b: 1, a: 1}
   m_EffectDistance: {x: 10, y: 10}
   m_UseGraphicAlpha: 1
+--- !u!114 &1728759633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1728759626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97829ba8b8bf2714795a5e8d42df4a4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 1728759629}
+  unlockedSprite: {fileID: 21300000, guid: 1d6257c272f6bf64bb1ad35410aabc4f, type: 3}
 --- !u!1 &1851173093
 GameObject:
   m_ObjectHideFlags: 0
@@ -2526,6 +2706,7 @@ GameObject:
   - component: {fileID: 1851173096}
   - component: {fileID: 1851173095}
   - component: {fileID: 1851173099}
+  - component: {fileID: 1851173100}
   m_Layer: 5
   m_Name: AchievementTwo
   m_TagString: Untagged
@@ -2678,6 +2859,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0.09019608, g: 0.84705883, b: 1, a: 1}
   m_EffectDistance: {x: 10, y: 10}
   m_UseGraphicAlpha: 1
+--- !u!114 &1851173100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1851173093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97829ba8b8bf2714795a5e8d42df4a4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 1851173097}
+  unlockedSprite: {fileID: 21300000, guid: 1d6257c272f6bf64bb1ad35410aabc4f, type: 3}
 --- !u!1 &1919251037
 GameObject:
   m_ObjectHideFlags: 0
@@ -2824,6 +3019,7 @@ GameObject:
   - component: {fileID: 2048765163}
   - component: {fileID: 2048765162}
   - component: {fileID: 2048765165}
+  - component: {fileID: 2048765166}
   m_Layer: 0
   m_Name: AchievementsLogic
   m_TagString: Untagged
@@ -2899,3 +3095,17 @@ MonoBehaviour:
   achievementText: {fileID: 125934166}
   lockedSprite: {fileID: 21300000, guid: 7ebeca451773a3a4da40f21d8dc124a5, type: 3}
   unlockedSprite: {fileID: 21300000, guid: 1d6257c272f6bf64bb1ad35410aabc4f, type: 3}
+--- !u!114 &2048765166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2048765161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97829ba8b8bf2714795a5e8d42df4a4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 0}
+  unlockedSprite: {fileID: 0}

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Pellet : MonoBehaviour
 {
-    public int points = 10;
+    protected int points = 10;
     protected GameManager gameManager;
 
     void Awake()
@@ -14,6 +14,11 @@ public class Pellet : MonoBehaviour
     protected virtual void EatPellet()
     {
         gameManager.EatPellet(this);
+    }
+
+    public int GetPoints()
+    {
+        return points;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
