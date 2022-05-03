@@ -150,7 +150,7 @@ public class GameManager : MonoBehaviour
             NewRound();
         }
 
-        if ((score - scoreLives) >= 1000 && lives < 3 && lives != 0)
+        if ((score - scoreLives) >= 10000 && lives < 3 && lives != 0)
         {
             SetLives(lives + 1);
 
