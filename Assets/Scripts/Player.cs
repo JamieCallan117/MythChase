@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private AnimatedSprites aniSprites;
+    //aniSprites has to be public for some reason as otherwise when trying to update the array
+    //of sprites it uses, the array becomes null.
+    public AnimatedSprites aniSprites;
     private Movement movement;
     private Vector3 startingPos;
     [SerializeField] private GameObject powerUpObj;
@@ -108,6 +110,11 @@ public class Player : MonoBehaviour
     public void TeleportObject(Vector3 newPos)
     {
         movement.TeleportObject(newPos);
+    }
+
+    public void SetCurrentSprites(Sprite[] spritesToUse)
+    {
+        aniSprites.SetSprites(spritesToUse);
     }
 
     public void SetRegularSprites(Sprite[] spritesToUse)
