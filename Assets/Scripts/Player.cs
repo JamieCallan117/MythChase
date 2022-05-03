@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    //aniSprites has to be public for some reason as otherwise when trying to update the array
-    //of sprites it uses, the array becomes null.
-    public AnimatedSprites aniSprites;
+    private AnimatedSprites aniSprites;
     private Movement movement;
     private Vector3 startingPos;
     [SerializeField] private GameObject powerUpObj;
@@ -18,6 +16,7 @@ public class Player : MonoBehaviour
 
     void Awake()
     {
+        aniSprites = GetComponent<AnimatedSprites>();
         movement = GetComponent<Movement>();
         gameManager = FindObjectOfType<GameManager>();
         startingPos = transform.position;
