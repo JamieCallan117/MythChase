@@ -57,11 +57,13 @@ public class GameManager : MonoBehaviour
     private int scoreLives;
     private bool powerUpOwned;
     private bool hasHighScore;
+    private bool gameOver;
     private List<Pellet> pellets = new List<Pellet>();
     private List<CheckPoint> telePoints = new List<CheckPoint>();
     private Leaderboard leaderboard;
     private Achievement achievements;
     [SerializeField] private SceneChange sceneChange;
+    private Subject subject = new Subject();
 
     void Awake()
     {
@@ -92,11 +94,14 @@ public class GameManager : MonoBehaviour
 
         powerUpOwned = false;
         hasHighScore = false;
+        gameOver = false;
 
         scoreLives = 0;
 
         LoadFile();
         LoadAchievements();
+
+        subject.SetObserver(achievements);
 
         GetHighScore();
     }
@@ -115,58 +120,59 @@ public class GameManager : MonoBehaviour
         enemyThreeAtr.SetSpeed(7.0f);
         enemyFourAtr.SetSpeed(7.0f);
 
-        StartCoroutine(newRoundWait());
-
+        readyText.SetActive(true);
         playAudio.PlayIntroMusic();
+
+        Invoke("newRoundWait", 5.0f);
     }
 
     void Update()
     {
-        scoreText.text = score.ToString();
-
-        if (hasHighScore == false && score > highScore)
+        if (!gameOver)
         {
-            hasHighScore = true;
-        }
+            scoreText.text = score.ToString();
 
-        if (hasHighScore)
-        {
-            highScoreText.text = score.ToString();
-        }
-
-        bool foundEnabledPellet = false;
-
-        for (int i = 0; i < pellets.Count; i++)
-        {
-            if (pellets[i].gameObject.activeInHierarchy == true && foundEnabledPellet == false)
+            if (hasHighScore == false && score > highScore)
             {
-                foundEnabledPellet = true;
-                break;
+                hasHighScore = true;
             }
-        }
 
-        if (foundEnabledPellet == false)
-        {
-            NewRound();
-        }
+            if (hasHighScore)
+            {
+                highScoreText.text = score.ToString();
+            }
 
-        if ((score - scoreLives) >= 10000 && lives < 3 && lives != 0)
-        {
-            SetLives(lives + 1);
+            bool foundEnabledPellet = false;
 
-            scoreLives = score;
-        }
+            for (int i = 0; i < pellets.Count; i++)
+            {
+                if (pellets[i].gameObject.activeInHierarchy == true && foundEnabledPellet == false)
+                {
+                    foundEnabledPellet = true;
+                    break;
+                }
+            }
+
+            if (foundEnabledPellet == false)
+            {
+                NewRound();
+            }
+
+            if ((score - scoreLives) >= 10000 && lives < 3 && lives != 0)
+            {
+                SetLives(lives + 1);
+
+                scoreLives = score;
+            }
+        }  
     }
 
-    private IEnumerator newRoundWait()
+    private void newRoundWait()
     {
-        readyText.SetActive(true);
-        yield return new WaitForSecondsRealtime(5);
-
         startGame();
     }
 
-    private IEnumerator roundEndWait()
+    private void roundEnd()
     {
         for (int i = 0; i < pellets.Count; i++)
         {
@@ -179,45 +185,74 @@ public class GameManager : MonoBehaviour
         enemyThreeAtr.IncreaseSpeed();
         enemyFourAtr.IncreaseSpeed();
 
-        int roundsCompleted;
-
-        switch(PlayerStats.character)
+        switch(DataStorage.character)
         {
             case 2:
-                roundsCompleted = achievements.GetAchievement("Kiara_Ten_Rounds");
-                achievements.updateAchievement("Kiara_Ten_Rounds", roundsCompleted + 1);
-                achievements.updateAchievement("Kiara_OneHundred_Rounds", roundsCompleted + 1);
+                subject.Notify("Kiara_Ten_Rounds", 1);
+                subject.Notify("Kiara_OneHundred_Rounds", 1);
                 break;
             case 3:
-                roundsCompleted = achievements.GetAchievement("Ame_Ten_Rounds");
-                achievements.updateAchievement("Ame_Ten_Rounds", roundsCompleted + 1);
-                achievements.updateAchievement("Ame_OneHundred_Rounds", roundsCompleted + 1);
+                subject.Notify("Ame_Ten_Rounds", 1);
+                subject.Notify("Ame_OneHundred_Rounds", 1);
                 break;
             case 4:
-                roundsCompleted = achievements.GetAchievement("Calli_Ten_Rounds");
-                achievements.updateAchievement("Calli_Ten_Rounds", roundsCompleted + 1);
-                achievements.updateAchievement("Calli_OneHundred_Rounds", roundsCompleted + 1);
+                subject.Notify("Calli_Ten_Rounds", 1);
+                subject.Notify("Calli_OneHundred_Rounds", 1);
                 break;
             case 5:
-                roundsCompleted = achievements.GetAchievement("Gura_Ten_Rounds");
-                achievements.updateAchievement("Gura_Ten_Rounds", roundsCompleted + 1);
-                achievements.updateAchievement("Gura_OneHundred_Rounds",  + roundsCompleted + 1);
+                subject.Notify("Gura_Ten_Rounds", 1);
+                subject.Notify("Gura_OneHundred_Rounds", 1);
                 break;
             default:
-                roundsCompleted = achievements.GetAchievement("Ina_Ten_Rounds");
-                achievements.updateAchievement("Ina_Ten_Rounds", roundsCompleted + 1);
-                achievements.updateAchievement("Ina_OneHundred_Rounds", roundsCompleted + 1);
-
+                subject.Notify("Ina_Ten_Rounds", 1);
+                subject.Notify("Ina_OneHundred_Rounds", 1);
                 break;
         }
 
-        yield return new WaitForSecondsRealtime(2);
+        Invoke("roundEndWait", 2.0f);
+    }
 
-        StartCoroutine(newRoundWait());
+    private void roundEndWait()
+    {
+        readyText.SetActive(true);
+        playAudio.PlayIntroMusic();
+
+        Invoke("newRoundWait", 5.0f);
     }
 
     private void startGame()
     {
+        if (playAudio.IsPlaying())
+        {
+            playAudio.UnPause();
+        }
+        else
+        {
+            switch(DataStorage.character)
+            {
+                case 2:
+                    playAudio.SetLoop(true);
+                    playAudio.PlayKiaraMusic();
+                    break;
+                case 3:
+                    playAudio.SetLoop(true);
+                    playAudio.PlayAmeMusic();
+                    break;
+                case 4:
+                    playAudio.SetLoop(true);
+                    playAudio.PlayCalliMusic();
+                    break;
+                case 5:
+                    playAudio.SetLoop(true);
+                    playAudio.PlayGuraMusic();
+                    break;
+                default:
+                    playAudio.SetLoop(true);
+                    playAudio.PlayInaMusic();
+                    break;
+            }
+        }
+
         playerAtr.ToggleMovement(true);
         enemyOneAtr.ToggleMovement(true);
         enemyTwoAtr.ToggleMovement(true);
@@ -276,17 +311,32 @@ public class GameManager : MonoBehaviour
                 lifeTwo.SetActive(false);
                 lifeThree.SetActive(false);
 
+                readyText.SetActive(true);
+                playAudio.PlayIntroMusic();
+
+                Invoke("newRoundWait", 5.0f);
+
                 break;
             case 2:
                 lifeOne.SetActive(true);
                 lifeTwo.SetActive(true);
                 lifeThree.SetActive(false);
 
+                readyText.SetActive(true);
+                playAudio.PlayIntroMusic();
+
+                Invoke("newRoundWait", 5.0f);
+
                 break;
             case 3:
                 lifeOne.SetActive(true);
                 lifeTwo.SetActive(true);
                 lifeThree.SetActive(true);
+
+                readyText.SetActive(true);
+                playAudio.PlayIntroMusic();
+
+                Invoke("newRoundWait", 5.0f);
 
                 break;
             default:
@@ -413,11 +463,9 @@ public class GameManager : MonoBehaviour
 
         powerUpOwned = false;
 
-        int powerUpsUsed = achievements.GetAchievement("Use_PowerUp_One");
-
-        achievements.updateAchievement("Use_PowerUp_One", powerUpsUsed + 1);
-        achievements.updateAchievement("Use_PowerUp_Ten", powerUpsUsed + 1);
-        achievements.updateAchievement("Use_PowerUp_OneHundred", powerUpsUsed + 1);
+        subject.Notify("Use_PowerUp_One", 1);
+        subject.Notify("Use_PowerUp_Ten", 1);
+        subject.Notify("Use_PowerUp_OneHundred", 1);
 
         switch(type)
         {
@@ -509,6 +557,8 @@ public class GameManager : MonoBehaviour
 
     public void PlayerHit()
     {
+        playAudio.Pause();
+
         playerAtr.ToggleMovement(false);
         enemyOneAtr.ToggleMovement(false);
         enemyTwoAtr.ToggleMovement(false);
@@ -576,8 +626,6 @@ public class GameManager : MonoBehaviour
         enemyFourAtr.ResetPosition();
 
         SetLives(lives - 1);
-
-        StartCoroutine(newRoundWait());
     }
 
     private void NewRound() {
@@ -630,11 +678,13 @@ public class GameManager : MonoBehaviour
         CancelInvoke("UnscareEnemies");
         CancelInvoke("SpawnPowerUp");
 
-        StartCoroutine(roundEndWait());
+        roundEnd();
     }
 
     private void GameOver()
     {
+        gameOver = true;
+
         player.SetActive(false);
         enemyOne.SetActive(false);
         enemyTwo.SetActive(false);
@@ -661,11 +711,11 @@ public class GameManager : MonoBehaviour
             leaderboard = new Leaderboard();
         }
 
-        if (leaderboard.GetScore(name) == 0)
+        if (leaderboard.GetScore(username) == -1)
         {
             leaderboard.addScore(username, score);
         }
-        else
+        else if (leaderboard.GetScore(username) < score)
         {
             leaderboard.updateScore(username, score);
         }
@@ -707,7 +757,7 @@ public class GameManager : MonoBehaviour
 
     private void SaveFile()
     {
-        string path = Application.persistentDataPath + "/leaderboard" + PlayerStats.level + ".dat";
+        string path = Application.persistentDataPath + "/leaderboard" + DataStorage.level + ".dat";
         FileStream file;
 
         if (File.Exists(path))
@@ -727,7 +777,7 @@ public class GameManager : MonoBehaviour
 
     private void LoadFile()
     {
-        string path = Application.persistentDataPath + "/leaderboard" + PlayerStats.level + ".dat";
+        string path = Application.persistentDataPath + "/leaderboard" + DataStorage.level + ".dat";
         FileStream file;
 
         if (File.Exists(path))
@@ -817,7 +867,7 @@ public class GameManager : MonoBehaviour
         Sprite[] playerSprites = new Sprite[4];
         Sprite[] deathSprites = new Sprite[5];
 
-        switch(PlayerStats.character)
+        switch(DataStorage.character)
         {
             case 2:
                 playerSprite.sprite = Resources.Load<Sprite>("Kiara_Normal_01");

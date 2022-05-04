@@ -21,7 +21,7 @@ public class Movement : MonoBehaviour
         yUpper = 13.4f;
         yLower = -16.4f;
 
-        if (PlayerStats.level == 1)
+        if (DataStorage.level == 1)
         {
             xLeft = -0.5f;
             xRight = 0.5f;
@@ -51,7 +51,7 @@ public class Movement : MonoBehaviour
             rigidbody2d.MovePosition(position + translation);
         }
 
-        if (PlayerStats.level == 1)
+        if (DataStorage.level == 1)
         {
             if (transform.position.y >= yUpper)
             {

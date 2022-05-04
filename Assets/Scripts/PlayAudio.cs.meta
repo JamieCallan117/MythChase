@@ -5,7 +5,13 @@ MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - audioSource: {instanceID: 0}
+  - menuMusic: {fileID: 8300000, guid: 1b4813a832afc0645ad3af71dc71815e, type: 3}
   - introMusic: {fileID: 8300000, guid: 10afbab4a8475a041859afb9d5d6abf7, type: 3}
+  - inaMusic: {fileID: 8300000, guid: 73d4bdab0247c9741a106726aa26286f, type: 3}
+  - kiaraMusic: {fileID: 8300000, guid: 0b2574cfe92f5fc4092f9fc9f7121d98, type: 3}
+  - ameMusic: {fileID: 8300000, guid: d053ece84675ef64db30a11f7ebbb43d, type: 3}
+  - calliMusic: {fileID: 8300000, guid: e47de675e927bca4d9dd8c407662114c, type: 3}
+  - guraMusic: {fileID: 8300000, guid: e3948a49cb4b3c04eb3f2aa106df2a84, type: 3}
   - inaDeath: {fileID: 8300000, guid: e41676b4e5010ab42a7a928a22f33c39, type: 3}
   - kiaraDeath: {fileID: 8300000, guid: 9c5e35e0c27728b40bdb38d9ccb00177, type: 3}
   - ameDeath: {fileID: 8300000, guid: 5a74b9b4c47be494ebba133f52e91aea, type: 3}

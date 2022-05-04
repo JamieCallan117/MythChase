@@ -1,7 +1,13 @@
 using System.Collections;
+using UnityEngine;
+
+public interface IObserver
+{
+    public void OnNotify(string name, int progress);
+}
 
 [System.Serializable]
-public class Achievement
+public class Achievement : IObserver
 {
     private Hashtable achievements = new Hashtable();
 
@@ -10,13 +16,20 @@ public class Achievement
         achievements.Add(name, progress);
     }
 
-    public void updateAchievement(string name, int progress)
+    private void updateAchievement(string name, int progress)
     {
-        achievements[name] = progress;
+        int currentProgress = (int) achievements[name];
+
+        achievements[name] = currentProgress + progress;
     }
 
     public int GetAchievement(string name)
     {
         return (int) achievements[name];
+    }
+
+    void IObserver.OnNotify(string name, int progress)
+    {
+        updateAchievement(name, progress);
     }
 }

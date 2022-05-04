@@ -10,7 +10,7 @@ public class SceneChange : MonoBehaviour
 
     public void selectLevel(int level)
     {
-        PlayerStats.level = level;
+        DataStorage.level = level;
 
         switch (level)
         {
@@ -36,9 +36,9 @@ public class SceneChange : MonoBehaviour
 
     public void selectCharacter(int character)
     {
-        PlayerStats.character = character;
+        DataStorage.character = character;
 
-        switch (PlayerStats.level)
+        switch (DataStorage.level)
         {
             case 1:
                 moveToScene(3);

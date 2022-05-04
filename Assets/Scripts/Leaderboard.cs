@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEngine;
 
 [System.Serializable]
 public class Leaderboard
@@ -17,13 +18,13 @@ public class Leaderboard
 
     public int GetScore(string name)
     {
-        if (leaderboard[name] == null)
+        if (leaderboard.ContainsKey(name))
         {
-            return 0;
+            return (int) leaderboard[name];
         }
         else
         {
-            return (int) leaderboard[name];
+            return -1;
         }
     }
 

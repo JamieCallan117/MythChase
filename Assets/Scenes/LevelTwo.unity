@@ -441,7 +441,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 148908446}
+  menuMusic: {fileID: 8300000, guid: 1b4813a832afc0645ad3af71dc71815e, type: 3}
   introMusic: {fileID: 8300000, guid: 10afbab4a8475a041859afb9d5d6abf7, type: 3}
+  inaMusic: {fileID: 8300000, guid: 73d4bdab0247c9741a106726aa26286f, type: 3}
+  kiaraMusic: {fileID: 8300000, guid: 0b2574cfe92f5fc4092f9fc9f7121d98, type: 3}
+  ameMusic: {fileID: 8300000, guid: d053ece84675ef64db30a11f7ebbb43d, type: 3}
+  calliMusic: {fileID: 8300000, guid: e47de675e927bca4d9dd8c407662114c, type: 3}
+  guraMusic: {fileID: 8300000, guid: e3948a49cb4b3c04eb3f2aa106df2a84, type: 3}
   inaDeath: {fileID: 8300000, guid: e41676b4e5010ab42a7a928a22f33c39, type: 3}
   kiaraDeath: {fileID: 8300000, guid: 9c5e35e0c27728b40bdb38d9ccb00177, type: 3}
   ameDeath: {fileID: 8300000, guid: 5a74b9b4c47be494ebba133f52e91aea, type: 3}
@@ -940,13 +946,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2143533c33ba7684a83f41270d28662f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regularSprites: []
-  vulnerableSprites: []
-  powerUpVulnerable: 0
-  inHome: 0
-  scared: 0
   circleCollider: {fileID: 491938267}
-  eatenSprite: {fileID: 0}
   homePoint: {fileID: 1202494180}
   inHomePoint: {fileID: 1450275551}
 --- !u!114 &491938266
@@ -961,13 +961,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 380b216976f26f54e80e36986ad49ef3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementEnabled: 0
-  speed: 5
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 512
-  currentDirection: {x: 0, y: 0}
-  nextDirection: {x: 0, y: 0}
 --- !u!58 &491938267
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1017,14 +1013,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67970a8e03544fd4897d9473ab4e0d71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 0}
   sprites:
   - {fileID: 21300000, guid: f0458bbafb48a514db14e6b964ecff3c, type: 3}
   - {fileID: 21300000, guid: 1d8d3d2f0d9d57449a8001ea894dd9a5, type: 3}
   - {fileID: 21300000, guid: 2a316f1bc7c17b243a648981568411de, type: 3}
   - {fileID: 21300000, guid: 1d8d3d2f0d9d57449a8001ea894dd9a5, type: 3}
-  currentFrame: 0
-  loop: 1
 --- !u!212 &491938270
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5508,13 +5501,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2143533c33ba7684a83f41270d28662f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regularSprites: []
-  vulnerableSprites: []
-  powerUpVulnerable: 0
-  inHome: 1
-  scared: 0
   circleCollider: {fileID: 871617171}
-  eatenSprite: {fileID: 0}
   homePoint: {fileID: 1202494180}
   inHomePoint: {fileID: 1450275551}
 --- !u!114 &871617170
@@ -5529,13 +5516,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 380b216976f26f54e80e36986ad49ef3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementEnabled: 0
-  speed: 5
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 512
-  currentDirection: {x: 0, y: 0}
-  nextDirection: {x: 0, y: 0}
 --- !u!58 &871617171
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -5585,14 +5568,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67970a8e03544fd4897d9473ab4e0d71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 0}
   sprites:
   - {fileID: 21300000, guid: d2c9ff0b37f311446a5137be534a9878, type: 3}
   - {fileID: 21300000, guid: 9bdd533f181aa694291b48d45b18a1e2, type: 3}
   - {fileID: 21300000, guid: 25628e6a0e78b5846a73e1c89738e909, type: 3}
   - {fileID: 21300000, guid: 9bdd533f181aa694291b48d45b18a1e2, type: 3}
-  currentFrame: 0
-  loop: 1
 --- !u!212 &871617174
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5874,7 +5854,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f01d87a8bd267454f9df313e968dbbb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
 --- !u!58 &996313632
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -10346,13 +10325,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 380b216976f26f54e80e36986ad49ef3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementEnabled: 0
-  speed: 8
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 512
-  currentDirection: {x: 0, y: 0}
-  nextDirection: {x: 0, y: 0}
 --- !u!58 &1953406827
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -10381,10 +10356,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8a08614d8494ec4187c74f27c8380f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aniSprites: {fileID: 0}
   powerUpObj: {fileID: 996313630}
-  regularSprites: []
-  deathSprites: []
   playAudio: {fileID: 1953406833}
 --- !u!50 &1953406829
 Rigidbody2D:
@@ -10419,14 +10391,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67970a8e03544fd4897d9473ab4e0d71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 0}
   sprites:
   - {fileID: 21300000, guid: 0d9d70c2b1c5f6b46a6292e708d39848, type: 3}
   - {fileID: 21300000, guid: 8617ae8ffa492c949a3b1ea046001ed7, type: 3}
   - {fileID: 21300000, guid: 1cbed80d12d296e4ba24acead24c3f8f, type: 3}
   - {fileID: 21300000, guid: 8617ae8ffa492c949a3b1ea046001ed7, type: 3}
-  currentFrame: 0
-  loop: 1
 --- !u!212 &1953406831
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10505,7 +10474,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 1953406825}
+  menuMusic: {fileID: 0}
   introMusic: {fileID: 8300000, guid: 10afbab4a8475a041859afb9d5d6abf7, type: 3}
+  inaMusic: {fileID: 0}
+  kiaraMusic: {fileID: 0}
+  ameMusic: {fileID: 0}
+  calliMusic: {fileID: 0}
+  guraMusic: {fileID: 0}
   inaDeath: {fileID: 8300000, guid: e41676b4e5010ab42a7a928a22f33c39, type: 3}
   kiaraDeath: {fileID: 8300000, guid: 9c5e35e0c27728b40bdb38d9ccb00177, type: 3}
   ameDeath: {fileID: 8300000, guid: 5a74b9b4c47be494ebba133f52e91aea, type: 3}
@@ -10679,13 +10654,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2143533c33ba7684a83f41270d28662f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regularSprites: []
-  vulnerableSprites: []
-  powerUpVulnerable: 0
-  inHome: 1
-  scared: 0
   circleCollider: {fileID: 1988144629}
-  eatenSprite: {fileID: 0}
   homePoint: {fileID: 1202494180}
   inHomePoint: {fileID: 1450275551}
 --- !u!114 &1988144628
@@ -10700,13 +10669,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 380b216976f26f54e80e36986ad49ef3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementEnabled: 0
-  speed: 5
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 512
-  currentDirection: {x: 0, y: 0}
-  nextDirection: {x: 0, y: 0}
 --- !u!58 &1988144629
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -10756,14 +10721,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67970a8e03544fd4897d9473ab4e0d71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 0}
   sprites:
   - {fileID: 21300000, guid: 07bd0bef564c69c48b3b887fbce31ed2, type: 3}
   - {fileID: 21300000, guid: 6b3084da95501f94a8258e151ca3dd72, type: 3}
   - {fileID: 21300000, guid: b19b9555ba3cb0341b7c5f791ad389fd, type: 3}
   - {fileID: 21300000, guid: 6b3084da95501f94a8258e151ca3dd72, type: 3}
-  currentFrame: 0
-  loop: 1
 --- !u!212 &1988144632
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -10863,13 +10825,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2143533c33ba7684a83f41270d28662f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regularSprites: []
-  vulnerableSprites: []
-  powerUpVulnerable: 0
-  inHome: 1
-  scared: 0
   circleCollider: {fileID: 2016417668}
-  eatenSprite: {fileID: 0}
   homePoint: {fileID: 1202494180}
   inHomePoint: {fileID: 1450275551}
 --- !u!114 &2016417667
@@ -10884,13 +10840,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 380b216976f26f54e80e36986ad49ef3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementEnabled: 0
-  speed: 5
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 512
-  currentDirection: {x: 0, y: 0}
-  nextDirection: {x: 0, y: 0}
 --- !u!58 &2016417668
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -10940,14 +10892,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67970a8e03544fd4897d9473ab4e0d71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 0}
   sprites:
   - {fileID: 21300000, guid: 7165267c98321b84c9f33ccc0e4a6515, type: 3}
   - {fileID: 21300000, guid: acdcb313797537040a9568435233423b, type: 3}
   - {fileID: 21300000, guid: cc76dc9c7dc06be4cafbfa09f8246f3c, type: 3}
   - {fileID: 21300000, guid: acdcb313797537040a9568435233423b, type: 3}
-  currentFrame: 0
-  loop: 1
 --- !u!212 &2016417671
 SpriteRenderer:
   m_ObjectHideFlags: 0

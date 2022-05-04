@@ -76,7 +76,7 @@ public class Player : MonoBehaviour
 
     private void PlayDeathSound()
     {
-        switch(PlayerStats.character)
+        switch(DataStorage.character)
         {
             case 2:
                 playAudio.PlayKiaraDeath();
