@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Controls the player.
 public class Player : MonoBehaviour
 {
     private AnimatedSprites aniSprites;
@@ -24,6 +25,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        //Handles input for direction and using power up.
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
         {
             movement.Move(Vector2.up);
@@ -47,21 +49,25 @@ public class Player : MonoBehaviour
         }
     }
 
+    //Increases players speed.
     public void IncreaseSpeed()
     {
         movement.IncreaseSpeed();
     }
 
+    //Sets player speed.
     public void SetSpeed(float newSpeed)
     {
         movement.SetSpeed(newSpeed);
     }
 
+    //Resets position of player to starting position.
     public void ResetPosition()
     {
         transform.position = startingPos;
     }
 
+    //Kills the player.
     public void KillPlayer()
     {
         aniSprites.KillPlayer(deathSprites);
@@ -69,11 +75,13 @@ public class Player : MonoBehaviour
         Invoke("PlayDeathSound", 1.5f);
     }
 
+    //Revives the player.
     public void RevivePlayer()
     {
         aniSprites.RevivePlayer(regularSprites);
     }
 
+    //Plays the death sound for the selected character.
     private void PlayDeathSound()
     {
         switch(DataStorage.character)
@@ -96,36 +104,43 @@ public class Player : MonoBehaviour
         }
     }
 
+    //Toggles movement of/off.
     public void ToggleMovement(bool enabled)
     {
         movement.ToggleMovement(enabled);
     }
 
+    //Stops current movement.
     public void HaltMovement()
     {
         movement.HaltMovement();
     }
 
+    //Teleports player.
     public void TeleportObject(Vector3 newPos)
     {
         movement.TeleportObject(newPos);
     }
 
+    //Sets currently used sprites.
     public void SetCurrentSprites(Sprite[] spritesToUse)
     {
         aniSprites.SetSprites(spritesToUse);
     }
 
+    //Sets the regular sprites.
     public void SetRegularSprites(Sprite[] spritesToUse)
     {
         regularSprites = spritesToUse;
     }
 
+    //Sets the sprites to be used on death.
     public void SetDeathSprites(Sprite[] spritesToUse)
     {
         deathSprites = spritesToUse;
     }
 
+    //When colliding with the power up object.
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject == powerUpObj)

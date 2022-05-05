@@ -7,6 +7,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using TMPro;
 using Random=System.Random;
 
+//Handles all the components of the game and makes it run.
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameObject player;
@@ -128,6 +129,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        //Check for game updates whilst the game hasn't ended.
         if (!gameOver)
         {
             scoreText.text = score.ToString();
@@ -142,6 +144,7 @@ public class GameManager : MonoBehaviour
                 highScoreText.text = score.ToString();
             }
 
+            //Checks for any uneaten pellets.
             bool foundEnabledPellet = false;
 
             for (int i = 0; i < pellets.Count; i++)
@@ -158,6 +161,7 @@ public class GameManager : MonoBehaviour
                 NewRound();
             }
 
+            //Grant a new life every 10000 points, unless at 3 or 0 lives.
             if ((score - scoreLives) >= 10000 && lives < 3 && lives != 0)
             {
                 SetLives(lives + 1);
@@ -167,11 +171,13 @@ public class GameManager : MonoBehaviour
         }  
     }
 
+    //Starts a new round, this method is always invoked.
     private void newRoundWait()
     {
         startGame();
     }
 
+    //Resets a round ready for a new one.
     private void roundEnd()
     {
         for (int i = 0; i < pellets.Count; i++)
@@ -185,6 +191,7 @@ public class GameManager : MonoBehaviour
         enemyThreeAtr.IncreaseSpeed();
         enemyFourAtr.IncreaseSpeed();
 
+        //Updates achievements.
         switch(DataStorage.character)
         {
             case 2:
@@ -212,6 +219,7 @@ public class GameManager : MonoBehaviour
         Invoke("roundEndWait", 2.0f);
     }
 
+    //Pause before new round.
     private void roundEndWait()
     {
         readyText.SetActive(true);
@@ -220,37 +228,32 @@ public class GameManager : MonoBehaviour
         Invoke("newRoundWait", 5.0f);
     }
 
+    //Starts a new round.
     private void startGame()
     {
-        if (playAudio.IsPlaying())
+        //Plays character based music.
+        switch(DataStorage.character)
         {
-            playAudio.UnPause();
-        }
-        else
-        {
-            switch(DataStorage.character)
-            {
-                case 2:
-                    playAudio.SetLoop(true);
-                    playAudio.PlayKiaraMusic();
-                    break;
-                case 3:
-                    playAudio.SetLoop(true);
-                    playAudio.PlayAmeMusic();
-                    break;
-                case 4:
-                    playAudio.SetLoop(true);
-                    playAudio.PlayCalliMusic();
-                    break;
-                case 5:
-                    playAudio.SetLoop(true);
-                    playAudio.PlayGuraMusic();
-                    break;
-                default:
-                    playAudio.SetLoop(true);
-                    playAudio.PlayInaMusic();
-                    break;
-            }
+            case 2:
+                playAudio.SetLoop(true);
+                playAudio.PlayKiaraMusic();
+                break;
+            case 3:
+                playAudio.SetLoop(true);
+                playAudio.PlayAmeMusic();
+                break;
+            case 4:
+                playAudio.SetLoop(true);
+                playAudio.PlayCalliMusic();
+                break;
+            case 5:
+                playAudio.SetLoop(true);
+                playAudio.PlayGuraMusic();
+                break;
+            default:
+                playAudio.SetLoop(true);
+                playAudio.PlayInaMusic();
+                break;
         }
 
         playerAtr.ToggleMovement(true);
@@ -264,6 +267,7 @@ public class GameManager : MonoBehaviour
         enemyThreeAtr.InHome(true);
         enemyFourAtr.InHome(true);
 
+        //Decides initial direction for enemies.
         Random rand = new Random();
         int randInt = rand.Next(0, 2);
 
@@ -283,23 +287,28 @@ public class GameManager : MonoBehaviour
 
         readyText.SetActive(false);
 
+        //Release each enemy after x seconds.
         Invoke("ReleaseEnemyTwoStart", 5.0f);
         Invoke("ReleaseEnemyThreeStart", 10.0f);
         Invoke("ReleaseEnemyFourStart", 15.0f);
 
+        //Keeps trying to spawn a powerup every 10 seconds.
         InvokeRepeating("SpawnPowerUp", 0.0f, 10.0f);
     }
 
+    //Adds a known pellet.
     public void AddPellet(Pellet pellet)
     {
         pellets.Add(pellet);
     }
 
+    //Sets the score.
     private void SetScore(int newScore)
     {
         score = newScore;
     }
 
+    //Set number of lives and update display. If 0 then end game.
     private void SetLives(int newLives)
     {
         lives = newLives;
@@ -311,32 +320,17 @@ public class GameManager : MonoBehaviour
                 lifeTwo.SetActive(false);
                 lifeThree.SetActive(false);
 
-                readyText.SetActive(true);
-                playAudio.PlayIntroMusic();
-
-                Invoke("newRoundWait", 5.0f);
-
                 break;
             case 2:
                 lifeOne.SetActive(true);
                 lifeTwo.SetActive(true);
                 lifeThree.SetActive(false);
 
-                readyText.SetActive(true);
-                playAudio.PlayIntroMusic();
-
-                Invoke("newRoundWait", 5.0f);
-
                 break;
             case 3:
                 lifeOne.SetActive(true);
                 lifeTwo.SetActive(true);
                 lifeThree.SetActive(true);
-
-                readyText.SetActive(true);
-                playAudio.PlayIntroMusic();
-
-                Invoke("newRoundWait", 5.0f);
 
                 break;
             default:
@@ -349,6 +343,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //20% chance of power up spawning if one isn't owned.
     private void SpawnPowerUp()
     {
         Random rand = new Random();
@@ -360,21 +355,25 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //Releases enemy two for the 1st time.
     private void ReleaseEnemyTwoStart()
     {
         enemyTwoAtr.Release();
     }
 
+    //Releases enemy three for the first time.
     private void ReleaseEnemyThreeStart()
     {
         enemyThreeAtr.Release();
     }
 
+    //Releases enemy four for the first time.
     private void ReleaseEnemyFourStart()
     {
         enemyFourAtr.Release();
     }
 
+    //Releases an enemy after being eaten and then returned to home base.
     public void ReleaseEnemy(Enemy enemyToRelease)
     {
         if (enemyToRelease == enemyOneAtr)
@@ -392,41 +391,48 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //Releases enemy one.
     private void ReleaseEnemyOne()
     {
         enemyOneAtr.Release();
         enemyOneAtr.ToggleIgnorePlayer(false, player);
     }
 
+    //Releases enemy two.
     private void ReleaseEnemyTwo()
     {
         enemyTwoAtr.Release();
         enemyTwoAtr.ToggleIgnorePlayer(false, player);
     }
 
+    //Releases enemy three.
     private void ReleaseEnemyThree()
     {
         enemyThreeAtr.Release();
         enemyThreeAtr.ToggleIgnorePlayer(false, player);
     }
 
+    //Releases enemy four.
     private void ReleaseEnemyFour()
     {
         enemyFourAtr.Release();
         enemyFourAtr.ToggleIgnorePlayer(false, player);
     }
 
+    //Add score when enemy eaten.
     public void EnemyEaten()
     {
         score += 250;
     }
 
+    //Eats a pellet.
     public void EatPellet(Pellet pellet)
     {
         pellet.gameObject.SetActive(false);
         SetScore(score + pellet.GetPoints());
     }
 
+    //Eats a large pellet.
     public void EatLargePellet(LargePellet pellet)
     {
         EatPellet(pellet);
@@ -434,6 +440,7 @@ public class GameManager : MonoBehaviour
         VulnerableEnemies();
     }
 
+    //Sets all enemies as vulnerable.
     private void VulnerableEnemies()
     {
         enemyOneAtr.SetVulnerable(true);
@@ -442,6 +449,7 @@ public class GameManager : MonoBehaviour
         enemyFourAtr.SetVulnerable(true);
     }
 
+    //Picks up the power up.
     public PowerUp PickUpPowerUp()
     {
         powerUp.SetActive(true);
@@ -452,21 +460,25 @@ public class GameManager : MonoBehaviour
         return powerUpAtr;
     }
 
+    //Checks if a power up is owned.
     public bool HasPowerUp()
     {
         return powerUpOwned;
     }
 
+    //Uses power up.
     public void UsePowerUp(int type)
     {
         powerUp.SetActive(false);
 
         powerUpOwned = false;
 
+        //Notifies achievements.
         subject.Notify("Use_PowerUp_One", 1);
         subject.Notify("Use_PowerUp_Ten", 1);
         subject.Notify("Use_PowerUp_OneHundred", 1);
 
+        //Uses power up depenedent on selected character.
         switch(type)
         {
             case 1:
@@ -516,13 +528,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //Adds a point to where the teleport power up can send you.
     public void AddTeleportPoint(CheckPoint newPoint)
     {
         telePoints.Add(newPoint);
     }
 
-    
-
+    //Ends invincibility power up.
     private void EndInvincibility()
     {
         enemyOneAtr.ToggleIgnorePlayer(false, player);
@@ -531,6 +543,7 @@ public class GameManager : MonoBehaviour
         enemyFourAtr.ToggleIgnorePlayer(false, player);
     }
 
+    //Unfreezes enemies.
     private void ResumeTime()
     {
         enemyOneAtr.ToggleMovement(true);
@@ -539,6 +552,7 @@ public class GameManager : MonoBehaviour
         enemyFourAtr.ToggleMovement(true);
     }
 
+    //Ends the vulnerable enemies from power up.
     private void EndVulnerableEnemies()
     {
         enemyOneAtr.SetPowerUpVulnerable(false);
@@ -547,6 +561,7 @@ public class GameManager : MonoBehaviour
         enemyFourAtr.SetPowerUpVulnerable(false);
     }
 
+    //Ends enemies being scared from power ups.
     private void UnscareEnemies()
     {
         enemyOneAtr.SetScared(false);
@@ -555,6 +570,7 @@ public class GameManager : MonoBehaviour
         enemyFourAtr.SetScared(false);
     }
 
+    //When a player is hit.
     public void PlayerHit()
     {
         playAudio.Pause();
@@ -594,6 +610,7 @@ public class GameManager : MonoBehaviour
         Invoke("ResumePlay", 3.5f);
     }
 
+    //Resume game after player was hit.
     private void ResumePlay()
     {
         enemyOne.SetActive(true);
@@ -626,9 +643,20 @@ public class GameManager : MonoBehaviour
         enemyFourAtr.ResetPosition();
 
         SetLives(lives - 1);
+
+        if (!gameOver)
+        {
+            readyText.SetActive(true);
+            playAudio.PlayIntroMusic();
+        }
+
+        Invoke("newRoundWait", 5.0f);
     }
 
+    //Start a new round.
     private void NewRound() {
+        playAudio.Pause();
+
         playerAtr.ToggleMovement(false);
         enemyOneAtr.ToggleMovement(false);
         enemyTwoAtr.ToggleMovement(false);
@@ -681,9 +709,11 @@ public class GameManager : MonoBehaviour
         roundEnd();
     }
 
+    //Ends the game.
     private void GameOver()
     {
         gameOver = true;
+        CancelInvoke("newRoundWait");
 
         player.SetActive(false);
         enemyOne.SetActive(false);
@@ -697,11 +727,13 @@ public class GameManager : MonoBehaviour
         finalScoreText.text = "Score: " + score.ToString();
     }
 
+    //Gets position of the player.
     public Vector3 GetPlayerPos()
     {
         return player.transform.position;
     }
 
+    //Saves the players score to the leaderboard.
     public void SaveScore()
     {
         string username = usernameField.text;
@@ -725,12 +757,14 @@ public class GameManager : MonoBehaviour
         sceneChange.moveToScene(0);
     }
 
+    //Exits without saving score, but achievements are saved.
     public void ExitWithoutSave()
     {
         SaveAchievements();
         sceneChange.moveToScene(0);
     }
 
+    //Gets the high score for the level.
     private void GetHighScore()
     {
         int highestScore = 0;
@@ -755,6 +789,7 @@ public class GameManager : MonoBehaviour
         highScoreText.text = highScore.ToString();
     }
 
+    //Saves the leaderboard.
     private void SaveFile()
     {
         string path = Application.persistentDataPath + "/leaderboard" + DataStorage.level + ".dat";
@@ -775,6 +810,7 @@ public class GameManager : MonoBehaviour
         file.Close();
     }
 
+    //Loads the leaderboard.
     private void LoadFile()
     {
         string path = Application.persistentDataPath + "/leaderboard" + DataStorage.level + ".dat";
@@ -798,6 +834,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //Saves the achievements file.
     private void SaveAchievements()
     {
         string path = Application.persistentDataPath + "/achievements.dat";
@@ -818,6 +855,7 @@ public class GameManager : MonoBehaviour
         file.Close();
     }
 
+    //Loads the achievements file.
     private void LoadAchievements()
     {
         string path = Application.persistentDataPath + "/achievements.dat";
@@ -843,6 +881,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //Creates the achievements if the file doesn't exist.
     private void CreateAchievements()
     {
         achievements.createAchievement("Ina_Ten_Rounds", 0);
@@ -862,6 +901,7 @@ public class GameManager : MonoBehaviour
         SaveAchievements();
     }
 
+    //Loads all the sprites to be used by the player.
     private void LoadPlayerSprites()
     {
         Sprite[] playerSprites = new Sprite[4];
@@ -1022,6 +1062,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //Loads the sprites to be used by each enemy.
     private void LoadEnemySprites(SpriteRenderer sprite, AnimatedSprites aniSprites, int character, Enemy enemy)
     {
         Sprite[] enemySprites = new Sprite[4];

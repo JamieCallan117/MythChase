@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Image))]
+//For buttons with an animated image.
 public class AnimatedButtons : MonoBehaviour
 {
     [SerializeField] private Sprite[] sprites;
@@ -17,9 +17,11 @@ public class AnimatedButtons : MonoBehaviour
 
     void Start()
     {
+        //Repeatedly call the UpdateFrame method.
         InvokeRepeating(nameof(UpdateFrame), animationRate, animationRate);
     }
 
+    //Updates what sprite is currently shown on the button.
     private void UpdateFrame()
     {
         if (isEnabled) {
@@ -37,6 +39,7 @@ public class AnimatedButtons : MonoBehaviour
         }
     }
 
+    //Sets if the animation should be enabled or not.
     public void enable(bool enable)
     {
         isEnabled = enable;

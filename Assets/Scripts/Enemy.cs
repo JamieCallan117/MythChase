@@ -4,6 +4,7 @@ using System;
 using UnityEngine;
 using Random=System.Random;
 
+//The enemies in the game.
 public class Enemy : MonoBehaviour
 {
     private AnimatedSprites aniSprites;
@@ -25,6 +26,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private GameObject homePoint;
     [SerializeField] private GameObject inHomePoint;
 
+    //Set default values for each enemy.
     void Awake()
     {
         aniSprites = GetComponent<AnimatedSprites>();
@@ -42,6 +44,7 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
+        //When the enemy is entering the home after it has been eaten.
         if (enteringHome)
         {
             var step = movement.GetSpeed() * Time.deltaTime;
@@ -73,6 +76,7 @@ public class Enemy : MonoBehaviour
             }
         }
 
+        //Moves the enemy to the center of the home base ready for it to exit.
         if (leavingHome)
         {
             var step = movement.GetSpeed() * Time.deltaTime;
@@ -85,6 +89,7 @@ public class Enemy : MonoBehaviour
             }
         }
 
+        //Makes the enemy exit the home base and then go either left or right.
         if (exitingHome)
         {
             var step = movement.GetSpeed() * Time.deltaTime;
@@ -112,6 +117,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    //Resets most values for the enemy.
     public void ResetEnemy()
     {
         scared = false;
@@ -127,15 +133,18 @@ public class Enemy : MonoBehaviour
         aniSprites.SetSprites(regularSprites);
     }
 
+    //Increases the speed of the enemy at each new round.
     public void IncreaseSpeed() {
         movement.IncreaseSpeed();
     }
 
+    //Directly set the speed of an enemy.
     public void SetSpeed(float newSpeed)
     {
         movement.SetSpeed(newSpeed);
     }
 
+    //Set if the enemy is vulnerable or not.
     public void SetVulnerable(bool vulnerable)
     {
         if (this.vulnerable == true)
@@ -160,36 +169,43 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    //Set an enemy as no longer vulnerable.
     private void UndoVulnerability()
     {
         SetVulnerable(false);
     }
 
+    //Sets the regular sprites to be used by each enemy.
     public void SetRegularSprites(Sprite[] spritesToUse)
     {
         regularSprites = spritesToUse;
     }
 
+    //Sets the vulnerable sprites to be used by each enemy.
     public void SetVulnerableSprites(Sprite[] spritesToUse)
     {
         vulnerableSprites = spritesToUse;
     }
 
+    //Sets the sprite to be used when an enemy is eaten.
     public void SetEatenSprite(Sprite spriteToUse)
     {
         eatenSprite = spriteToUse;
     }
 
+    //Makes the enemy vulnerable from the specific power up. Sprite doesn't change.
     public void SetPowerUpVulnerable(bool vul)
     {
         powerUpVulnerable = vul;
     }
 
+    //Sets if an enemy is scared from the specific power up. Sprite doesn't change.
     public void SetScared(bool scare)
     {
         scared = scare;
     }
 
+    //When an enemy gets eaten by the player.
     public void GetEaten()
     {
         SetVulnerable(false);
@@ -204,6 +220,7 @@ public class Enemy : MonoBehaviour
         gameManager.EnemyEaten();
     }
 
+    //Starts making an enemy leave the home base.
     public void Release()
     {
         movement.Move(Vector2.zero);
@@ -211,31 +228,37 @@ public class Enemy : MonoBehaviour
         circleCollider.enabled = false;
     }
 
+    //Resets the enemy to its starting position.
     public void ResetPosition()
     {
         transform.position = startingPos;
     }
 
+    //Toggles movement on or off for the enemy.
     public void ToggleMovement(bool enabled)
     {
         movement.ToggleMovement(enabled);
     }
 
+    //Moves the enemy in the desired direction.
     public void Move(Vector2 direction)
     {
         movement.Move(direction);
     }
 
+    //Makes the enemy not move.
     public void HaltMovement()
     {
         movement.HaltMovement();
     }
 
+    //Sets if an enemy is inside the home base or not.
     public void InHome(bool atHome)
     {
         inHome = atHome;
     }
 
+    //Toggles whether the enemy should collide with the player or not.
     public void ToggleIgnorePlayer(bool ignore, GameObject player)
     {
         if (ignore)
@@ -248,6 +271,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    //For when the enemy collides with the player or if it's in the home base then bounce around.
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
@@ -276,6 +300,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    //For when the enemy hits the checkpoints to determine movement.
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("CheckPoints"))
@@ -303,6 +328,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    //Starts the entering home base stage.
     private void EnterHome()
     {
         movement.Move(Vector2.zero);
@@ -310,6 +336,7 @@ public class Enemy : MonoBehaviour
         circleCollider.enabled = false;
     }
 
+    //When an enemy is vulnerable or scared it moves in random directions.
     private void RunAway(Collider2D other)
     {
         CheckPoint checkPointHit = other.GetComponent<CheckPoint>();
@@ -322,6 +349,7 @@ public class Enemy : MonoBehaviour
         movement.Move(availableDirections[randInt]);
     }
 
+    //When an enemy is eaten it heads towards the home base.
     private void ReturnHome(Collider2D other)
     {
         Vector3 homePos = homePoint.transform.position;
@@ -351,6 +379,7 @@ public class Enemy : MonoBehaviour
         movement.Move(direction);
     }
 
+    //In regular play, when the enemy is chasing the player.
     private void ChasePlayer(Collider2D other)
     {
         Vector3 playerPos = gameManager.GetPlayerPos();

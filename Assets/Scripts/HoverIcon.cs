@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 
+//Handles which arrows appear on menus when different options are selected.
 public class HoverIcon : MonoBehaviour
 {
     private GameObject playArrow;
@@ -89,6 +90,7 @@ public class HoverIcon : MonoBehaviour
         }
     }
 
+    //Play button arrow appears and the others dissapear.
     public void hoverPlay()
     {
         playArrow.SetActive(true);
@@ -97,6 +99,7 @@ public class HoverIcon : MonoBehaviour
         quitArrow.SetActive(false);
     }
 
+    //Leaderboards button arrow appears and the others dissapear.
     public void hoverLeaderboards()
     {
         playArrow.SetActive(false);
@@ -105,6 +108,7 @@ public class HoverIcon : MonoBehaviour
         quitArrow.SetActive(false);
     }
 
+    //Achievements button arrow appears and the others dissapear.
     public void hoverAchievements()
     {
         playArrow.SetActive(false);
@@ -113,6 +117,7 @@ public class HoverIcon : MonoBehaviour
         quitArrow.SetActive(false);
     }
 
+    //Quit button arrow appears and the others dissapear.
     public void hoverQuit()
     {
         playArrow.SetActive(false);
@@ -121,6 +126,7 @@ public class HoverIcon : MonoBehaviour
         quitArrow.SetActive(true);
     }
 
+    //When level one is selected, hide arrows for the others.
     public void hoverLevelOne()
     {
         levelOneArrow.SetActive(true);
@@ -128,6 +134,7 @@ public class HoverIcon : MonoBehaviour
         levelThreeArrow.SetActive(false);
     }
 
+    //When level two is selected, hide arrows for the others.
     public void hoverLevelTwo()
     {
         levelOneArrow.SetActive(false);
@@ -135,6 +142,7 @@ public class HoverIcon : MonoBehaviour
         levelThreeArrow.SetActive(false);
     }
 
+    //When level three is selected, hide arrows for the others.
     public void hoverLevelThree()
     {
         levelOneArrow.SetActive(false);
@@ -142,6 +150,7 @@ public class HoverIcon : MonoBehaviour
         levelThreeArrow.SetActive(true);
     }
 
+    //When the Ina character is selected, hide the arrows for the others and set the power up description.
     public void hoverIna()
     {
         inaArrow.SetActive(true);
@@ -153,6 +162,7 @@ public class HoverIcon : MonoBehaviour
         characterText.text = "Ina'nis - Can summon the power of the void to teleport to a random junction on the map.";
     }
 
+    //When the Kiara character is selected, hide the arrows for the others and set the power up description.
     public void hoverKiara()
     {
         inaArrow.SetActive(false);
@@ -164,6 +174,7 @@ public class HoverIcon : MonoBehaviour
         characterText.text = "Kiara - Uses her phoenix powers to become invulnerable for a short period of time.";
     }
 
+    //When the Ame character is selected, hide the arrows for the others and set the power up description.
     public void hoverAme()
     {
         inaArrow.SetActive(false);
@@ -175,6 +186,7 @@ public class HoverIcon : MonoBehaviour
         characterText.text = "Amelia - Freezes time around her to allow for a quick escape.";
     }
 
+    //When the Calli character is selected, hide the arrows for the others and set the power up description.
     public void hoverCalli()
     {
         inaArrow.SetActive(false);
@@ -186,6 +198,7 @@ public class HoverIcon : MonoBehaviour
         characterText.text = "Calliope - Unleashes her powers to harvest the souls of anyone she comes into contact with.";
     }
 
+    //When the Gura character is selected, hide the arrows for the others and set the power up description.
     public void hoverGura()
     {
         inaArrow.SetActive(false);

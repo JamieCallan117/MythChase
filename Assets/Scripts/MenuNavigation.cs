@@ -1,5 +1,6 @@
 using UnityEngine;
 
+//Used to go back through menus to previous scenes.
 public class MenuNavigation : MonoBehaviour
 {
     [SerializeField] private int returnScene;
@@ -7,6 +8,7 @@ public class MenuNavigation : MonoBehaviour
 
     void Update()
     {
+        //Esc and backspace send you to the previous scene.
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Backspace))
         {
             sceneChange.moveToScene(returnScene);
